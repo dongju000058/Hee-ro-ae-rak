@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜 joy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Hi+Melody&family=Noto+Sans+KR:wght=100;300;500;700&family=Poor+Story&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        :root { --bg-light: #fcfcfc; --accent: #ffd214; --frame-dark: #2A2A2A; }
+        
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background-color: var(--bg-light); 
+            font-family: 'Paperlogy', sans-serif; 
+            display: flex; flex-direction: column; overflow: hidden; 
+            cursor: none !important; 
+        }
+        
+        a, button, input, select, textarea, .select-thumb, .photo-slot, .color-chip, input[type="range"], canvas {
+            cursor: none !important;
+        }
+        
+        #custom-cursor {
+            position: fixed; 
+            width: 10px; 
+            height: 10px; 
+            background-color: #ffd214; 
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 999999; 
+            transform: translate(-50%, -50%);
+            transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        height 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                        background-color 0.2s;
+            box-shadow: 0 0 8px rgba(255, 210, 20, 0.5); 
+        }
+        #custom-cursor.hovered { 
+            width: 36px; 
+            height: 36px; 
+            background-color: rgba(255, 210, 20, 0.2); 
+            border: 2px solid #ffd214; 
+            box-shadow: none;
+        }
+
+        header { width: 100%; height: 50px; display: flex; justify-content: center; align-items: center; position: relative; flex-shrink: 0; }
+        .header-title { font-size: 17px; font-weight: 300; color: #222; letter-spacing: 1px; }
+        
+        .back-nav { 
+            position: absolute; left: 25px; display: flex; align-items: center; justify-content: center; 
+            color: #222; text-decoration: none; transition: all 0.3s ease; width: 32px; height: 32px;
+        }
+        .back-nav:hover { transform: translateX(-4px); color: #e6bd12; }
+        .back-nav svg { width: 22px; height: 22px; }
+
+        main { flex: 1; display: flex; justify-content: center; align-items: center; gap: 40px; padding: 20px; width: 100%; box-sizing: border-box; }
+        
+        #main-frame { 
+            width: 230px; padding: 15px; background-color: var(--frame-dark); 
+            display: none; flex-direction: column; gap: 8px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; 
+            transition: background-color 0.3s; z-index: 10; 
+        }
+        .photo-slot { width: 100%; aspect-ratio: 3/2; background-color: #3d3d3d; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.05); }
+        .photo-slot.active { border: 2px solid var(--accent); box-shadow: 0 0 10px rgba(255, 210, 20, 0.4); }
+        .drawing-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 50; pointer-events: none; }
+        .photo-slot.drawing-mode .drawing-canvas { pointer-events: auto; }
+        .photo-slot img { width: 100%; height: 100%; object-fit: cover; transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        .slot-guide { color: #666; font-size: 8px; text-align: center; font-weight: 300; letter-spacing: -0.2px; }
+        .frame-footer { margin-top: 5px; text-align: center; color: white; }
+        .frame-reason { width: 100%; border: none; background: transparent; color: inherit; text-align: center; font-size: 13px; outline: none; }
+
+        .center-booth { flex: 1; max-width: 600px; height: 520px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #f0f0f0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; position: relative; }
+        
+        .viewfinder-screen { width: 100%; flex: 1; background: #111; border-radius: 16px; overflow: hidden; position: relative; box-shadow: inset 0 0 20px rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; }
+        .viewfinder-screen video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        
+        .timer-overlay { position: absolute; font-size: 90px; font-weight: 700; color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.5); display: none; z-index: 60; pointer-events: none; font-family: 'Paperlogy', sans-serif; }
+        
+        .shutter-control-bar { width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 20px; gap: 8px; }
+        .shutter-btn { width: 64px; height: 64px; border-radius: 50%; background: white; border: 5px solid #f0f0f0; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 6px 15px rgba(0,0,0,0.1); position: relative; display: flex; align-items: center; justify-content: center; }
+        .shutter-btn::after { content: ''; width: 44px; height: 44px; background: var(--accent); border-radius: 50%; transition: transform 0.2s; }
+        .shutter-btn:hover { transform: scale(1.05); border-color: #e5e5e5; }
+        .shutter-btn:active { transform: scale(0.95); }
+        .shutter-btn:active::after { transform: scale(0.9); }
+        .chance-badge { font-size: 12px; color: #888; font-weight: 500; letter-spacing: 0.5px; font-family: 'Paperlogy', sans-serif; }
+
+        .select-grid-container { width: 100%; height: 100%; display: none; flex-direction: column; gap: 15px; font-family: 'Paperlogy', sans-serif; }
+        .select-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f5f5f5; padding-bottom: 8px; }
+        .select-title { font-size: 14px; font-weight: 500; color: #333; font-family: 'Paperlogy', sans-serif; }
+        .select-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; flex: 1; overflow-y: auto; }
+        .select-thumb { width: 100%; aspect-ratio: 3/2; background: #eee; border-radius: 8px; overflow: hidden; border: 2px solid transparent; transition: all 0.2s; position: relative; }
+        .select-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .select-thumb:hover { transform: scale(1.03); box-shadow: 0 5px 12px rgba(0,0,0,0.08); }
+        .select-thumb.picked { border-color: var(--accent); filter: brightness(0.7); }
+        .pick-badge { position: absolute; top: 6px; right: 6px; width: 20px; height: 20px; background: var(--accent); color: #222; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Paperlogy', sans-serif; }
+
+        .control-panel { width: 320px; background: white; padding: 15px 20px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 10px; max-height: 95vh; overflow-y: auto; position: relative; font-family: 'Paperlogy', sans-serif; }
+        .section-title { font-size: 9px; font-weight: 700; color: #ccc; margin-bottom: 4px; letter-spacing: 1px; border-bottom: 1px solid #f0f0f0; padding-bottom: 2px; text-transform: uppercase; font-family: 'Paperlogy', sans-serif; }
+        
+        .action-btn { width: 100%; padding: 10px; background: var(--accent); color: #5a463a; border: none; border-radius: 10px; font-weight: 700; font-size: 12px; margin-bottom: 5px; transition: background 0.2s; font-family: 'Paperlogy', sans-serif; }
+        .action-btn:hover { background: #e6bd12; }
+        
+        .decoration-lock-zone { opacity: 0.25; pointer-events: none; transition: opacity 0.4s ease; }
+        .decoration-lock-zone.unlocked { opacity: 1; pointer-events: auto; }
+        
+        .grid-container { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+        .emoji-item { font-size: 18px; background: #f9f9f9; border: none; border-radius: 6px; padding: 4px; }
+        .color-chip { width: 22px; height: 22px; border-radius: 5px; border: 1px solid transparent; }
+        .color-chip.active { border: 2px solid #555 !important; }
+        
+        .filter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 5px; }
+
+        .font-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .font-btn { padding: 6px; border: 1px solid #eee; border-radius: 6px; background: white; font-size: 10px; font-family: 'Paperlogy', sans-serif; transition: all 0.2s; }
+        .font-btn.active { background: #222; color: #fff; }
+        
+        .font-grid-option { padding: 6px; border: 1px solid #eee; border-radius: 6px; background: white; font-size: 10px; }
+        .font-grid-option.active { background: #222; color: #fff; }
+
+        .brush-control { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #666; margin-top: 5px; font-family: 'Paperlogy', sans-serif; }
+        .brush-control input { flex: 1; accent-color: var(--accent); }
+
+        #qr-area { display: none; flex-direction: column; align-items: center; gap: 10px; opacity: 0; transition: opacity 0.5s ease; font-family: 'Paperlogy', sans-serif; }
+        #qr-status-msg { font-size: 11px; color: #e6bd12; font-weight: 500; letter-spacing: 0.5px; margin-top: 5px; text-align: center; }
+        #flash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; z-index: 10000; }
+        
+        .sticker-wrap { position: absolute; z-index: 100; padding: 20px; margin: -20px; transform-origin: center center; }
+        .sticker-content { font-size: 40px; display: block; pointer-events: none; }
+        .handle { position: absolute; width: 14px; height: 14px; background: white; border: 1px solid #222; border-radius: 50%; display: none; z-index: 110; }
+        .sticker-wrap:hover .handle { display: block; }
+        .resizer { right: 10px; bottom: 10px; }
+        .rotator { top: 5px; left: 50%; transform: translateX(-50%); background: var(--accent); }
+        .deleter { top: 5px; right: 5px; background: #ff4d4d; color: white; font-size: 10px; line-height: 13px; text-align: center; font-weight: bold; border: none; font-family: 'Paperlogy', sans-serif; }
+        
+        /* 🔄 인화 완료 단계용 처음으로 이동 버튼 스타일 정의 */
+        .home-back-btn { 
+            margin-top: 20px; padding: 12px 30px; background: #222; color: white; 
+            border: none; border-radius: 30px; font-weight: 500; font-size: 13px; 
+            letter-spacing: 0.5px; transition: all 0.3s ease; display: none; text-decoration: none;
+        }
+        .home-back-btn:hover { background: var(--accent); color: #222; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <header>
+        <a href="Home.html" class="back-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </a>
+        <div class="header-title" id="flow-status-title">喜 : 당신의 기쁨을 기록하고 추억하세요.</div>
+    </header>
+
+    <main>
+        <div id="main-frame">
+            <div class="photo-slot" id="slot-0">
+                <div class="slot-guide">[ 1번째 슬롯 ]</div>
+                <canvas class="drawing-canvas"></canvas>
+            </div>
+            <div class="photo-slot" id="slot-1">
+                <div class="slot-guide">[ 2번째 슬롯 ]</div>
+                <canvas class="drawing-canvas"></canvas>
+            </div>
+            <div class="photo-slot" id="slot-2">
+                <div class="slot-guide">[ 3번째 슬롯 ]</div>
+                <canvas class="drawing-canvas"></canvas>
+            </div>
+            <div class="photo-slot" id="slot-3">
+                <div class="slot-guide">[ 4번째 슬롯 ]</div>
+                <canvas class="drawing-canvas"></canvas>
+            </div>
+            <div class="frame-footer">
+                <input type="text" class="frame-reason" id="frame-text-caption" value="오늘의 기쁜 순간" placeholder="기억의 한 줄 기록" disabled>
+            </div>
+        </div>
+
+        <div class="center-booth">
+            <div class="viewfinder-screen" id="viewfinder-container">
+                <video id="webcam" autoplay playsinline></video>
+                <div class="timer-overlay" id="timer-ui">3</div>
+            </div>
+
+            <div class="shutter-control-bar" id="shutter-panel">
+                <button class="shutter-btn" onclick="handleShutterClick()"></button>
+                <div class="chance-badge" id="chance-counter">남은 촬영 기회: 8회</div>
+            </div>
+
+            <div class="select-grid-container" id="select-panel">
+                <div class="select-header">
+                    <div class="select-title">마음에 드는 사진 4장을 순서대로 터치하세요 (다시 누르면 취소)</div>
+                    <div class="chance-badge" id="select-counter">선택완료: 0 / 4</div>
+                </div>
+                <div class="select-grid" id="thumbnail-grid"></div>
+            </div>
+        </div>
+
+        <div class="control-panel" id="panel">
+            <div class="decoration-lock-zone" id="lock-zone">
+                
+                <div>
+                    <div class="section-title">PHOTO PHOTO FILTER</div>
+                    <div class="filter-grid">
+                        <button class="font-btn active" id="filter-none" onclick="applyPhotoFilter('none', this)">원본</button>
+                        <button class="font-btn" id="filter-gray" onclick="applyPhotoFilter('grayscale(100%)', this)">흑백</button>
+                        <button class="font-btn" id="filter-sepia" onclick="applyPhotoFilter('sepia(70%)', this)">세피아</button>
+                        <button class="font-btn" id="filter-invert" onclick="applyPhotoFilter('invert(80%)', this)">반전</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <div class="section-title">PURIKURA DRAWING PEN</div>
+                    <button class="action-btn" id="draw-toggle-btn" onclick="toggleDrawingMode()" style="margin-top:5px; background:#666; color:white;">낙서 펜 모드 OFF</button>
+                    <div class="brush-control">
+                        <span>두께</span>
+                        <input type="range" id="brush-size" min="1" max="10" value="3" onchange="updateBrushSettings()">
+                        <button class="font-btn" id="eraser-btn" onclick="setEraser()" style="width:60px; padding:3px;">지우개</button>
+                    </div>
+                    <div class="grid-container" style="grid-template-columns: repeat(5, 1fr); margin-top: 5px;">
+                        <div class="color-chip active" style="background:#ffd214;" onclick="changePenColor('#ffd214', this)"></div>
+                        <div class="color-chip" style="background:#e9916d;" onclick="changePenColor('#e9916d', this)"></div>
+                        <div class="color-chip" style="background:#f4d48a;" onclick="changePenColor('#f4d48a', this)"></div>
+                        <div class="color-chip" style="background:#9ec3a6;" onclick="changePenColor('#9ec3a6', this)"></div>
+                        <div class="color-chip" style="background:#ffffff; border:1px solid #ddd;" onclick="changePenColor('#ffffff', this)"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <div class="section-title">FRAME COLOR</div>
+                    <div class="grid-container" style="grid-template-columns: repeat(5, 1fr); margin-top: 5px;">
+                        <div class="color-chip active" style="background:#2A2A2A;" onclick="changeFrameColor('#2A2A2A', 'white', this)"></div>
+                        <div class="color-chip" style="background:#f5f5f5; border:1px solid #ddd;" onclick="changeFrameColor('#f5f5f5', '#333', this)"></div>
+                        <div class="color-chip" style="background:#fdf6d7;" onclick="changeFrameColor('#fdf6d7', '#5a463a', this)"></div>
+                        <div class="color-chip" style="background:#e3ecf5;" onclick="changeFrameColor('#e3ecf5', '#3a4e5f', this)"></div>
+                        <div class="color-chip" style="background:#e4ede6;" onclick="changeFrameColor('#e4ede6', '#3e5243', this)"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <div class="section-title">DECORATION STICKERS</div>
+                    <div class="grid-container" style="margin-top: 5px;">
+                        <button class="emoji-item" onclick="addSticker('✨')">✨</button>
+                        <button class="emoji-item" onclick="addSticker('💖')">💖</button>
+                        <button class="emoji-item" onclick="addSticker('🥰')">🥰</button>
+                        <button class="emoji-item" onclick="addSticker('☀️')">☀️</button>
+                        <button class="emoji-item" onclick="addSticker('🍀')">🍀</button>
+                        <button class="emoji-item" onclick="addSticker('🧭')">🧭</button>
+                        <button class="emoji-item" onclick="addSticker('🎉')">🎉</button>
+                        <button class="emoji-item" onclick="addSticker('🌈')">🌈</button>
+                        <button class="emoji-item" onclick="addSticker('🐾')">🐾</button>
+                        <button class="emoji-item" onclick="addSticker('🍰')">🍰</button>
+                        <button class="emoji-item" onclick="addSticker('🌸')">🌸</button>
+                        <button class="emoji-item" onclick="addSticker('🎀')">🎀</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <div class="section-title">TEXT FONT STYLE</div>
+                    <div class="font-grid" style="margin-top: 5px;">
+                        <button class="font-grid-option active" style="font-family:'Noto Sans KR';" onclick="changeFont('Noto Sans KR', this)">고딕체</button>
+                        <button class="font-grid-option" style="font-family:'Gowun Dodum';" onclick="changeFont('Gowun Dodum', this)">고운돋움</button>
+                        <button class="font-grid-option" style="font-family:'Poor Story';" onclick="changeFont('Poor Story', this)">푸른이야기</button>
+                        <button class="font-grid-option" style="font-family:'Hi Melody';" onclick="changeFont('Hi Melody', this)">하이멜로디</button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px;">
+                    <button class="action-btn" onclick="generateCanvasAndUploadToFirebase()">인화하기 & QR 생성</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="qr-area">
+            <div class="section-title" style="font-size:12px; margin-bottom:10px;">PRINTED & SAVED SUCCESSFULLY</div>
+            <img id="qr-image-holder" src="" alt="QR Code" style="border: 4px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 10px; display: none;">
+            <div id="qr-status-msg">사진을 렌더링하고 클라우드에 업로드하는 중...</div>
+            <p style="font-size:11px; color:#666; margin-top:5px; font-weight:300; letter-spacing:0.5px;">스마트폰으로 스캔하여 사진을 소장하세요.</p>
+            
+            <a href="Home.html" id="home-return-btn" class="home-back-btn">처음으로 돌아가기</a>
+        </div>
+    </main>
+
+    <div id="flash"></div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        const cursor = document.getElementById('custom-cursor');
+        let stream = null;
+        const video = document.getElementById('webcam');
+        const flash = document.getElementById('flash');
+        const qrArea = document.getElementById('qr-area');
+        
+        let shotCount = 0;              
+        const capturedPhotos = [];       
+        let selectedPhotos = [];       
+        
+        let isDrawingMode = false;
+        let penColor = "#ffd214";
+        let brushSize = 3;
+        let isEraserMode = false;
+        let isFinished = false;
+        
+        let isCountingDown = false; 
+        let countdownInterval = null; 
+        let countdownValue = 3;
+
+        let currentFrameBg = "#2A2A2A";
+        let currentFrameTextColors = "white";
+        let currentSelectedFontName = "Noto Sans KR";
+
+        function playShutterSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+                const bufferSize = audioCtx.sampleRate * 0.12;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+                const noiseNode = audioCtx.createBufferSource();
+                noiseNode.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass'; filter.frequency.value = 1200; filter.Q.value = 4;
+                const gainNode = audioCtx.createGain();
+                gainNode.gain.setValueAtTime(0.7, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.11);
+                noiseNode.connect(filter); filter.connect(gainNode); gainNode.connect(audioCtx.destination);
+                noiseNode.start();
+                const osc = audioCtx.createOscillator();
+                const oscGain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.05);
+                oscGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                oscGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.connect(oscGain); oscGain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+            } catch (err) { console.warn(err); }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        function initCursorHoverEvents() {
+            const interactiveTargets = document.querySelectorAll('button, a, .select-thumb, .photo-slot, .color-chip, input[type="range"], .emoji-item, .font-btn, .font-grid-option, .home-back-btn');
+            interactiveTargets.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+
+        async function initCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } });
+                video.srcObject = stream;
+            } catch (e) {
+                console.error("카메라 하드웨어 스트림 장치 감지 오류:", e);
+            }
+        }
+
+        function handleShutterClick() {
+            if(shotCount >= 8) return;
+
+            if (isCountingDown) {
+                clearInterval(countdownInterval);
+                const timerUi = document.getElementById('timer-ui');
+                timerUi.style.display = 'none';
+                isCountingDown = false;
+                triggerSnapshotCapture(); 
+            } else {
+                startTimerCountdown();
+            }
+        }
+
+        function startTimerCountdown() {
+            if (shotCount >= 8) return;
+            
+            isCountingDown = true;
+            countdownValue = 3; 
+            
+            const timerUi = document.getElementById('timer-ui');
+            timerUi.innerText = countdownValue;
+            timerUi.style.display = 'block';
+
+            countdownInterval = setInterval(() => {
+                countdownValue--;
+                if(countdownValue > 0) {
+                    timerUi.innerText = countdownValue;
+                } else {
+                    clearInterval(countdownInterval);
+                    timerUi.style.display = 'none';
+                    isCountingDown = false;
+                    triggerSnapshotCapture();
+                }
+            }, 1000);
+        }
+
+        function triggerSnapshotCapture() {
+            playShutterSound();
+            flash.style.opacity = '1';
+            setTimeout(() => flash.style.opacity = '0', 150);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 640;
+            canvas.height = 480;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const dataUrl = canvas.toDataURL('image/png');
+            capturedPhotos.push(dataUrl);
+            
+            shotCount++;
+            document.getElementById('chance-counter').innerText = `남은 촬영 기회: ${8 - shotCount}회`;
+            document.getElementById('flow-status-title').innerText = `喜 : 1단계 - 촬영 중 [ ${shotCount} / 8 ]`;
+
+            if(shotCount >= 8) {
+                setTimeout(switchToSelectStage, 600); 
+            } else {
+                setTimeout(() => {
+                    if (shotCount < 8 && !isCountingDown) {
+                        startTimerCountdown();
+                    }
+                }, 400);
+            }
+        }
+
+        function switchToSelectStage() {
+            document.getElementById('flow-status-title').innerText = "喜 : 2단계 - 사진 선택";
+            document.getElementById('viewfinder-container').style.display = 'none';
+            document.getElementById('shutter-panel').style.display = 'none';
+            document.getElementById('main-frame').style.display = 'flex';
+            
+            const selectPanel = document.getElementById('select-panel');
+            const thumbGrid = document.getElementById('thumbnail-grid');
+            selectPanel.style.display = 'flex';
+            
+            capturedPhotos.forEach((src, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = 'select-thumb';
+                thumb.innerHTML = `<img src="${src}">`;
+                thumb.onclick = () => pickPhotoSnapshot(idx, thumb);
+                thumbGrid.appendChild(thumb);
+            });
+
+            initCursorHoverEvents();
+
+            if(stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+        }
+
+        function pickPhotoSnapshot(index, element) {
+            const pickedIndex = selectedPhotos.indexOf(index);
+
+            if (pickedIndex !== -1) {
+                selectedPhotos.splice(pickedIndex, 1); 
+                element.classList.remove('picked');
+                const badge = element.querySelector('.pick-badge');
+                if (badge) badge.remove();
+
+                const thumbs = document.querySelectorAll('.select-thumb');
+                selectedPhotos.forEach((idxPos, seq) => {
+                    const currentThumbNode = thumbs[idxPos];
+                    const currentBadge = currentThumbNode.querySelector('.pick-badge');
+                    if (currentBadge) currentBadge.innerText = seq + 1;
+                });
+
+                refreshMainFrameSlots();
+                return;
+            }
+
+            if (selectedPhotos.length >= 4) return;
+            selectedPhotos.push(index);
+            element.classList.add('picked');
+            
+            const badge = document.createElement('div');
+            badge.className = 'pick-badge';
+            badge.innerText = selectedPhotos.length;
+            element.appendChild(badge);
+
+            refreshMainFrameSlots();
+        }
+
+        function refreshMainFrameSlots() {
+            for (let i = 0; i < 4; i++) {
+                const slot = document.getElementById(`slot-${i}`);
+                const canvasNode = slot.querySelector('.drawing-canvas');
+                
+                let currentFilter = "none";
+                const existingImg = slot.querySelector('img');
+                if(existingImg) currentFilter = existingImg.style.filter || "none";
+
+                if (selectedPhotos[i] !== undefined) {
+                    const imgIndex = selectedPhotos[i];
+                    slot.innerHTML = `<img src="${capturedPhotos[imgIndex]}" style="filter: ${currentFilter};">`;
+                } else {
+                    slot.innerHTML = `<div class="slot-guide">[ ${i + 1}번째 슬롯 ]</div>`;
+                }
+                slot.appendChild(canvasNode);
+                setupCanvasDrawing(canvasNode); 
+            }
+
+            document.getElementById('select-counter').innerText = `선택완료: ${selectedPhotos.length} / 4`;
+            if (selectedPhotos.length === 4) {
+                setTimeout(switchToPurikuraDecorationStage, 800);
+            }
+        }
+
+        function switchToPurikuraDecorationStage() {
+            document.getElementById('flow-status-title').innerText = "喜 : 3단계 - 프리쿠라 꾸미기 무대";
+            document.getElementById('select-panel').style.display = 'none';
+            document.querySelector('.center-booth').style.display = 'none'; 
+            
+            document.getElementById('lock-zone').classList.add('unlocked');
+            document.querySelector('.frame-reason').removeAttribute('disabled');
+            
+            document.querySelectorAll('.photo-slot').forEach((s, idx) => {
+                if(idx === 0) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.photo-slot').forEach((slot, idx) => {
+                slot.onclick = (e) => {
+                    if(isFinished) return;
+                    e.stopPropagation();
+                    window.currentSlotIndex = idx; 
+                    document.querySelectorAll('.photo-slot').forEach((s, i) => {
+                        if(i === idx) s.classList.add('active');
+                        else s.classList.remove('active');
+                    });
+                    syncFilterButtonUI(idx);
+
+                    if(isDrawingMode) {
+                        document.querySelectorAll('.photo-slot').forEach(s => s.classList.remove('drawing-mode'));
+                        slot.classList.add('drawing-mode');
+                    }
+                };
+            });
+            window.currentSlotIndex = 0; 
+            initCursorHoverEvents();
+        }
+
+        function applyPhotoFilter(filterStyle, element) {
+            const idx = window.currentSlotIndex !== undefined ? window.currentSlotIndex : 0;
+            const targetSlot = document.getElementById(`slot-${idx}`);
+            const img = targetSlot.querySelector('img');
+            if(img) img.style.filter = filterStyle;
+
+            document.querySelectorAll('.filter-grid .font-btn').forEach(b => b.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function syncFilterButtonUI(slotIdx) {
+            const targetSlot = document.getElementById(`slot-${slotIdx}`);
+            const img = targetSlot.querySelector('img');
+            document.querySelectorAll('.filter-grid .font-btn').forEach(b => b.classList.remove('active'));
+
+            if(img) {
+                const currentFilter = img.style.filter;
+                if(currentFilter.includes('grayscale')) document.getElementById('filter-gray').classList.add('active');
+                else if(currentFilter.includes('sepia')) document.getElementById('filter-sepia').classList.add('active');
+                else if(currentFilter.includes('invert')) document.getElementById('filter-invert').classList.add('active');
+                else document.getElementById('filter-none').classList.add('active');
+            } else {
+                document.getElementById('filter-none').classList.add('active');
+            }
+        }
+
+        function setupCanvasDrawing(canvas) {
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            let drawing = false;
+
+            canvas.onmousedown = (e) => {
+                if(!isDrawingMode) return;
+                drawing = true;
+                ctx.beginPath();
+                ctx.moveTo(e.offsetX, e.offsetY);
+            };
+
+            canvas.onmousemove = (e) => {
+                if(!drawing || !isDrawingMode) return;
+                ctx.lineWidth = brushSize;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                if (isEraserMode) {
+                    ctx.globalCompositeOperation = 'destination-out';
+                } else {
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.strokeStyle = penColor;
+                }
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.stroke();
+            };
+
+            canvas.onmouseup = () => drawing = false;
+            canvas.onmouseleave = () => drawing = false;
+        }
+
+        function toggleDrawingMode() {
+            isDrawingMode = !isDrawingMode;
+            const btn = document.getElementById('draw-toggle-btn');
+            const slots = document.querySelectorAll('.photo-slot');
+            const idx = window.currentSlotIndex !== undefined ? window.currentSlotIndex : 0;
+            
+            if(isDrawingMode) {
+                btn.innerText = "낙서 펜 모드 ON";
+                btn.style.background = "var(--accent)";
+                btn.style.color = "#5a463a"; 
+                slots[idx].classList.add('drawing-mode');
+            } else {
+                btn.innerText = "낙서 펜 모드 OFF";
+                btn.style.background = "#666";
+                btn.style.color = "white";
+                slots.forEach(s => s.classList.remove('drawing-mode'));
+            }
+        }
+
+        function changePenColor(color, el) {
+            isEraserMode = false;
+            penColor = color;
+            document.querySelectorAll('.brush-control .font-btn').forEach(b => {
+                if(b.id === 'eraser-btn') b.classList.remove('active');
+            });
+            document.querySelectorAll('.control-panel .color-chip').forEach(c => {
+                if(c.parentElement.previousElementSibling.innerText.includes("PEN")) c.classList.remove('active');
+            });
+            el.classList.add('active');
+        }
+
+        function setEraser() {
+            isEraserMode = true;
+            document.getElementById('eraser-btn').classList.add('active');
+            document.querySelectorAll('.control-panel .color-chip').forEach(c => {
+                if(c.parentElement.previousElementSibling.innerText.includes("PEN")) c.classList.remove('active');
+            });
+        }
+
+        function updateBrushSettings() {
+            brushSize = document.getElementById('brush-size').value;
+        }
+
+        function changeFrameColor(bgColor, textColor, element) {
+            currentFrameBg = bgColor;
+            currentFrameTextColors = textColor;
+            document.getElementById('main-frame').style.backgroundColor = bgColor;
+            document.querySelector('.frame-reason').style.color = textColor;
+            document.querySelectorAll('.control-panel .color-chip').forEach(c => {
+                if(c.parentElement.previousElementSibling.innerText.includes("FRAME")) c.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+
+        function changeFont(fontName, element) {
+            currentSelectedFontName = fontName;
+            document.querySelector('.frame-reason').style.fontFamily = fontName;
+            document.querySelectorAll('.font-grid-option').forEach(b => b.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function addSticker(emoji) {
+            if(isFinished) return;
+            const wrap = document.createElement('div');
+            wrap.className = 'sticker-wrap';
+            wrap.style.left = '100px';
+            wrap.style.top = '200px';
+            wrap.dataset.angle = 0;
+            wrap.dataset.scale = 1;
+
+            wrap.innerHTML = `
+                <span class="sticker-content">${emoji}</span>
+                <div class="handle rotator"></div>
+                <div class="handle resizer"></div>
+                <button class="handle deleter">×</button>
+            `;
+
+            document.getElementById('main-frame').appendChild(wrap);
+            makeStickerInteractive(wrap);
+            initCursorHoverEvents();
+        }
+
+        function makeStickerInteractive(el) {
+            let isDragging = false, isResizing = false, isRotating = false;
+            let startX, startY, startLeft, startTop;
+            let startMouseAngle, startAngle;
+
+            el.addEventListener('mousedown', (e) => {
+                if(e.target.classList.contains('handle')) return;
+                isDragging = true;
+                startX = e.clientX; startY = e.clientY;
+                startLeft = el.offsetLeft; startTop = el.offsetTop;
+                e.preventDefault();
+
+                document.onmousemove = (e) => {
+                    if(isDragging) {
+                        el.style.left = (startLeft + (e.clientX - startX)) + 'px';
+                        el.style.top = (startTop + (e.clientY - startY)) + 'px';
+                    }
+                };
+            });
+
+            el.querySelector('.deleter').onclick = () => el.remove();
+
+            el.querySelector('.resizer').onmousedown = (e) => {
+                e.stopPropagation(); isResizing = true;
+                startX = e.clientX;
+                let content = el.querySelector('.sticker-content');
+                let startFontSize = parseFloat(window.getComputedStyle(content).fontSize);
+                document.onmousemove = (e) => {
+                    if(isResizing) {
+                        let diffX = e.clientX - startX;
+                        content.style.fontSize = Math.max(20, startFontSize + diffX * 0.5) + 'px';
+                    }
+                };
+            };
+
+            el.querySelector('.rotator').onmousedown = (e) => {
+                e.stopPropagation(); isRotating = true;
+                let rect = el.getBoundingClientRect(), centerX = rect.left + rect.width/2, centerY = rect.top + rect.height/2;
+                startMouseAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+                startAngle = parseFloat(el.dataset.angle) || 0;
+                document.onmousemove = (e) => {
+                    if(isRotating) {
+                        let angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+                        let rotation = (angle - startMouseAngle) * (180 / Math.PI);
+                        el.style.transform = `rotate(${startAngle + rotation}deg)`;
+                        el.dataset.angle = startAngle + rotation;
+                    }
+                };
+            };
+            document.onmouseup = () => { isDragging = isResizing = isRotating = false; document.onmousemove = null; };
+        }
+
+        function generateCanvasAndUploadToFirebase() {
+            isFinished = true;
+            isDrawingMode = false;
+            
+            document.querySelectorAll('.photo-slot').forEach(s => {
+                s.classList.remove('active');
+                s.classList.remove('drawing-mode');
+            });
+            document.querySelectorAll('.handle').forEach(h => h.style.display = 'none');
+            document.getElementById('panel').style.display = 'none';
+            document.getElementById('flow-status-title').innerText = "喜 : 인화 및 클라우드 업로드 중";
+            qrArea.style.display = 'flex';
+
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = 920;
+            exportCanvas.height = 1520; 
+            const ctx = exportCanvas.getContext('2d');
+
+            ctx.fillStyle = currentFrameBg;
+            ctx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+
+            let loadedCount = 0;
+            const slotsCount = 4;
+
+            for (let i = 0; i < slotsCount; i++) {
+                const slotNode = document.getElementById(`slot-${i}`);
+                const imgNode = slotNode.querySelector('img');
+                const lineCanvas = slotNode.querySelector('.drawing-canvas');
+
+                const currentSlotY = 60 + (i * 320); 
+
+                if (imgNode) {
+                    const tempImg = new Image();
+                    tempImg.crossOrigin = "anonymous";
+                    tempImg.src = imgNode.src;
+                    
+                    tempImg.onload = function() {
+                        ctx.save();
+                        const filterVal = imgNode.style.filter || "none";
+                        if (filterVal !== "none") ctx.filter = filterVal;
+                        
+                        ctx.drawImage(tempImg, 60, currentSlotY, 800, 300);
+                        ctx.restore();
+
+                        if (lineCanvas) {
+                            ctx.drawImage(lineCanvas, 60, currentSlotY, 800, 300);
+                        }
+
+                        loadedCount++;
+                        if (loadedCount === slotsCount) drawFooterAndUpload(exportCanvas, ctx);
+                    };
+                } else {
+                    ctx.fillStyle = "#3d3d3d";
+                    ctx.fillRect(60, currentSlotY, 800, 300);
+                    loadedCount++;
+                    if (loadedCount === slotsCount) drawFooterAndUpload(exportCanvas, ctx);
+                }
+            }
+        }
+
+        function drawFooterAndUpload(canvas, ctx) {
+            const captionText = document.getElementById('frame-text-caption').value || "";
+            ctx.fillStyle = currentFrameTextColors;
+            ctx.font = `300 48px ${currentSelectedFontName}`;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillText(captionText, canvas.width / 2, 1420);
+
+            const stickers = document.querySelectorAll('.sticker-wrap');
+            stickers.forEach(stk => {
+                const content = stk.querySelector('.sticker-content').innerText;
+                const rect = stk.getBoundingClientRect();
+                const frameRect = document.getElementById('main-frame').getBoundingClientRect();
+
+                const relativeX = (rect.left - frameRect.left) / frameRect.width * canvas.width;
+                const relativeY = (rect.top - frameRect.top) / frameRect.height * canvas.height;
+                const scaleW = rect.width / frameRect.width * canvas.width;
+
+                ctx.save();
+                ctx.font = `${scaleW * 0.7}px sans-serif`; 
+                ctx.textBaseline = 'top';
+                ctx.textAlign = 'left';
+                
+                const angle = parseFloat(stk.dataset.angle) || 0;
+                if(angle !== 0) {
+                    ctx.translate(relativeX + scaleW/2, relativeY + scaleW/2);
+                    ctx.rotate(angle * Math.PI / 180);
+                    ctx.fillText(content, -scaleW/2, -scaleW/2);
+                } else {
+                    ctx.fillText(content, relativeX, relativeY);
+                }
+                ctx.restore();
+            });
+
+            canvas.toBlob(function(blob) {
+                // 처음으로 이동하는 버튼 활성화 노출 조작
+                document.getElementById('home-return-btn').style.display = 'inline-block';
+
+                if (firebaseConfig.apiKey === "YOUR_API_KEY") {
+                    document.getElementById('qr-status-msg').style.color = "red";
+                    document.getElementById('qr-status-msg').innerText = "⚠️ 준비 단계: 코드 하단의 Firebase 인증 키 구성을 채워주셔야 실제 클라우드 업로드와 QR 발급이 개방됩니다!";
+                    
+                    const localDummyQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(canvas.toDataURL())}`;
+                    const qrImg = document.getElementById('qr-image-holder');
+                    qrImg.src = localDummyQrUrl;
+                    qrImg.style.display = 'block';
+                    initCursorHoverEvents();
+                    return;
+                }
+
+                const fileName = `purikura_${Date.now()}.png`;
+                const storageRef = firebase.storage().ref().child(`fourcuts/${fileName}`);
+
+                storageRef.put(blob).then(function(snapshot) {
+                    return snapshot.ref.getDownloadURL();
+                }).then(function(downloadUrl) {
+                    const finalQrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(downloadUrl)}`;
+                    
+                    const qrImg = document.getElementById('qr-image-holder');
+                    qrImg.src = finalQrApiUrl;
+                    qrImg.style.display = 'block';
+                    
+                    document.getElementById('qr-status-msg').style.color = "#4caf50";
+                    document.getElementById('qr-status-msg').innerText = "✓ 업로드 및 QR 발급 완료!";
+                    initCursorHoverEvents();
+                }).catch(function(error) {
+                    console.error("클라우드 전송 실패:", error);
+                    document.getElementById('qr-status-msg').innerText = "업로드 오류가 발생했습니다. Storage 규칙 설정을 확인하세요.";
+                });
+            }, 'image/png');
+        }
+
+        document.querySelectorAll('.drawing-canvas').forEach(canvas => setupCanvasDrawing(canvas));
+        initCamera();
+        initCursorHoverEvents();
+
+
+        // =======================================================
+        // ⏳ 전시장용 보완: 5분 무활동 자동 인트로(Home.html) 리셋 시스템
+        // =======================================================
+        (function() {
+            const RESET_TIMEOUT = 5 * 60 * 1000; // 5분 타임아웃 트리거 시간 설정
+            const INTRO_PAGE_URL = "index.html";   // 복귀 대상 인트로 주소
+            let inactivityTimer = null;
+
+            function resetInactivityTimer() {
+                if (inactivityTimer) {
+                    clearTimeout(inactivityTimer);
+                }
+                
+                inactivityTimer = setTimeout(() => {
+                    // 미디어 장치 정지 백업
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+                    window.location.href = INTRO_PAGE_URL;
+                }, RESET_TIMEOUT);
+            }
+
+            const interactionEvents = ['mousemove', 'mousedown', 'click', 'keypress', 'touchstart', 'touchmove'];
+
+            interactionEvents.forEach(eventType => {
+                window.addEventListener(eventType, resetInactivityTimer, { passive: true });
+            });
+
+            resetInactivityTimer();
+        })();
+    </script>
+</body>
+</html>

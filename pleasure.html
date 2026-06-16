@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>樂 : Virtual Conductor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    
+    <style>
+        @font-face { font-family: 'Paperlogy'; src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2'); }
+        :root { --joy-green: #7da87f; --bg-base: #f7faf7; }
+        body, html { margin: 0; padding: 0; overflow: hidden; background: var(--bg-base); cursor: none; font-family: 'Paperlogy', sans-serif; }
+        
+        #custom-cursor { position: fixed; width: 8px; height: 8px; background: var(--joy-green); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
+        
+        .back-nav { position: absolute; left: 25px; top: 25px; z-index: 12000; display: flex; align-items: center; color: #222; text-decoration: none; transition: 0.3s; }
+        .back-nav:hover { color: var(--joy-green); transform: translateX(-4px); }
+        .back-nav svg { width: 22px; height: 22px; }
+
+        #selector-layer { position: absolute; width: 100vw; height: 100vh; z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--bg-base); }
+        
+        .title-group { text-align: center; margin-bottom: 40px; width: 100%; }
+        .title-text { font-size: 40px; color: var(--joy-green); font-weight: 400; margin-bottom: 10px; }
+        .sub-text { font-size: 20px; color: #555; font-weight: 400; margin-bottom: 25px; }
+        
+        .guide-box { display: inline-flex; justify-content: center; align-items: center; gap: 30px; padding: 15px 30px; background: white; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        .guide-item { font-size: 16px; color: #666; display: flex; align-items: center; gap: 10px; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+
+        .music-list { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 20px; width: 100%; max-width: 1400px; margin: 0 auto; }
+        .music-card { flex: 1; max-width: 250px; aspect-ratio: 1 / 1; border-radius: 20px; cursor: pointer; position: relative; overflow: hidden; transition: 0.4s; background-size: cover; background-position: center; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .music-card:hover { transform: translateY(-10px); }
+        
+        #conducting-layer { display: none; width: 100vw; height: 100vh; justify-content: center; align-items: center; position: relative; }
+        canvas { width: 85%; border-radius: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        #ui-overlay { position: absolute; top: 40px; left: 100px; background: rgba(255,255,255,0.9); padding: 20px; border-radius: 15px; color: var(--joy-green); font-weight: 600; z-index: 10000; }
+        #stop-btn { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 200; background: white; border: 2px solid var(--joy-green); padding: 10px 20px; border-radius: 10px; color: var(--joy-green); cursor: pointer; font-weight: bold; }
+        video { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+    <audio id="bgm"></audio>
+
+    <a href="Home.html" class="back-nav" id="back-button" onclick="handleBackRoute(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+    </a>
+
+    <div id="selector-layer">
+        <div class="title-group">
+            <div class="title-text">樂 : 즐거움을 깨우다</div>
+            <div class="sub-text">당신의 손끝에서 완성되는 오케스트라, 연주하고 싶은 곡을 선택하세요.</div>
+            <div class="guide-box">
+                <div class="guide-item"><div class="dot" style="background: #a87d7d;"></div>왼쪽 화면 영역: 소리 크기 조절</div>
+                <div class="guide-item"><div class="dot" style="background: #7da87f;"></div>오른쪽 화면 영역: 템포 조절</div>
+                <div class="guide-item"><div class="dot" style="background: #e0d075;"></div>양손 높이 들기: 클라이맥스!</div>
+            </div>
+        </div>
+        
+        <div class="music-list">
+            <div class="music-card" style="background-image: url('봄의소리.png');" onclick="startConducting('SpringVoice.mp3', '봄의 소리')"></div>
+            <div class="music-card" style="background-image: url('호두까기.png');" onclick="startConducting('Nutcracker.mp3', '호두까기 인형')"></div>
+            <div class="music-card" style="background-image: url('카르멘.png');" onclick="startConducting('Carmen.mp3', '카르멘 서곡')"></div>
+            <div class="music-card" style="background-image: url('헝가리무곡.png');" onclick="startConducting('HungarianDance.mp3', '헝가리 무곡 5번')"></div>
+            <div class="music-card" style="background-image: url('캉캉.png');" onclick="startConducting('Cancan.mp3', '캉캉')"></div>
+        </div>
+    </div>
+
+    <div id="conducting-layer">
+        <div id="ui-overlay">지휘 준비 중...</div>
+        <video class="input_video"></video>
+        <canvas class="output_canvas" width="1280" height="720"></canvas>
+        <div id="stop-btn" onclick="location.reload()">지휘 그만두기</div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bgm');
+        const uiOverlay = document.getElementById('ui-overlay');
+        const cursor = document.getElementById('custom-cursor');
+        const backButton = document.getElementById('back-button');
+        let timer; 
+        let isConductingMode = false; 
+
+        document.addEventListener('mousemove', (e) => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+
+        function handleBackRoute(event) {
+            if (isConductingMode) {
+                event.preventDefault(); 
+                if (audio) { audio.pause(); audio.src = ""; }
+                if (timer) clearTimeout(timer);
+                isConductingMode = false;
+                document.getElementById('conducting-layer').style.display = 'none';
+                document.getElementById('selector-layer').style.display = 'flex';
+                uiOverlay.innerHTML = "지휘 준비 중...";
+            }
+        }
+
+        function startConducting(fileName, songTitle) {
+            isConductingMode = true; 
+            audio.src = fileName;
+            audio.play();
+            timer = setTimeout(() => { location.reload(); }, 90000); 
+
+            document.getElementById('selector-layer').style.display = 'none';
+            document.getElementById('conducting-layer').style.display = 'flex';
+            uiOverlay.innerHTML = songTitle;
+            initConducting();
+        }
+
+        function initConducting() {
+            const video = document.querySelector('.input_video');
+            const canvas = document.querySelector('.output_canvas');
+            const ctx = canvas.getContext('2d');
+            const holistic = new Holistic({ locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}` });
+            holistic.setOptions({ modelComplexity: 0, minDetectionConfidence: 0.7, minTrackingConfidence: 0.7 });
+
+            holistic.onResults((results) => {
+                ctx.save();
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+                
+                ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
+                
+                // 손 감지 여부에 따라 가이드 텍스트의 불투명도 스케일 조절
+                const hasHands = !!(results.leftHandLandmarks || results.rightHandLandmarks);
+                const bgAlpha = hasHands ? 0.4 : 0.85;
+                const textAlphaLeft = hasHands ? 0.5 : 0.9;
+                const textAlphaRight = hasHands ? 0.5 : 0.9;
+
+                // 🛠️ 가이드 영역 표시 UI 렌더링 (점선 제거 및 가독성 전면 개선)
+                ctx.save();
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1); // 글씨 반전 방지 재반전 매트릭스
+                
+                ctx.font = "600 22px 'Paperlogy', sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+
+                // --- [좌측 영역 UI: 소리 크기 조절] ---
+                const leftBoxX = canvas.width * 0.30;
+                const leftBoxY = 60;
+                const leftText = "◀  왼손 영역 : 소리 크기 조절";
+                const leftTextWidth = ctx.measureText(leftText).width + 40;
+                
+                // 배경 캡슐형 박스
+                ctx.fillStyle = `rgba(255, 255, 255, ${bgAlpha})`;
+                ctx.shadowColor = "rgba(0, 0, 0, 0.08)";
+                ctx.shadowBlur = 10;
+                drawRoundRect(ctx, leftBoxX - leftTextWidth/2, leftBoxY - 25, leftTextWidth, 50, 25);
+                ctx.fill();
+                ctx.shadowBlur = 0; // 그림자 초기화
+                
+                // 텍스트 글씨
+                ctx.fillStyle = `rgba(145, 95, 95, ${textAlphaLeft})`;
+                ctx.fillText(leftText, leftBoxX, leftBoxY);
+
+                // --- [우측 영역 UI: 템포 속도 조절] ---
+                const rightBoxX = canvas.width * 0.70;
+                const rightBoxY = 60;
+                const rightText = "오른손 영역 : 템포 속도 조절  ▶";
+                const rightTextWidth = ctx.measureText(rightText).width + 40;
+                
+                // 배경 캡슐형 박스
+                ctx.fillStyle = `rgba(255, 255, 255, ${bgAlpha})`;
+                ctx.shadowColor = "rgba(0, 0, 0, 0.08)";
+                ctx.shadowBlur = 10;
+                drawRoundRect(ctx, rightBoxX - rightTextWidth/2, rightBoxY - 25, rightTextWidth, 50, 25);
+                ctx.fill();
+                ctx.shadowBlur = 0; // 그림자 초기화
+                
+                // 텍스트 글씨
+                ctx.fillStyle = `rgba(90, 135, 92, ${textAlphaRight})`;
+                ctx.fillText(rightText, rightBoxX, rightBoxY);
+                
+                ctx.restore();
+
+                if (results.leftHandLandmarks || results.rightHandLandmarks) {
+                    if (typeof window.resetInactivityTimer === 'function') {
+                        window.resetInactivityTimer();
+                    }
+
+                    let leftHand = null, rightHand = null;
+                    const allHands = [];
+                    if(results.leftHandLandmarks) allHands.push({data: results.leftHandLandmarks[8], label: 'left'});
+                    if(results.rightHandLandmarks) allHands.push({data: results.rightHandLandmarks[8], label: 'right'});
+
+                    allHands.forEach(h => {
+                        const mirrorX = 1 - h.data.x; 
+                        if (mirrorX < 0.5) leftHand = h.data;  
+                        else rightHand = h.data;               
+                    });
+
+                    if (leftHand && rightHand) {
+                        if (leftHand.y < 0.25 && rightHand.y < 0.25) {
+                            uiOverlay.innerHTML = "✨ ULTRA CLIMAX : 축제 폭발!!! ✨";
+                            ctx.fillStyle = 'rgba(235, 205, 55, 0.35)'; 
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                            audio.playbackRate = 2.5; 
+                            audio.volume = 1.0;
+                        } else {
+                            const heightRatioRight = 1 - rightHand.y; 
+                            audio.playbackRate = 0.3 + (heightRatioRight * 1.9); 
+
+                            const heightRatioLeft = 1 - leftHand.y; 
+                            const volumeValue = Math.min(Math.max(heightRatioLeft, 0), 1);
+                            audio.volume = volumeValue; 
+                            
+                            const depth = Math.round(volumeValue * 100);
+                            uiOverlay.innerHTML = `🔊 소리 볼륨: ${depth}% | ⚡ 템포 속도: ${Math.round(audio.playbackRate * 100)}%`;
+                        }
+                        
+                        drawPoint(ctx, leftHand, '#a87d7d');  
+                        drawPoint(ctx, rightHand, '#7da87f'); 
+                    }
+                }
+                ctx.restore();
+            });
+            new Camera(video, { onFrame: async () => { await holistic.send({image: video}); }, width: 1280, height: 720 }).start();
+        }
+
+        // 🛠️ 라운드 박스를 그리기 위한 유틸리티 헬퍼 함수
+        function drawRoundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        function drawPoint(ctx, p, color) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(p.x * 1280, p.y * 720, 20, 0, Math.PI*2);
+            ctx.fill();
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 4;
+            ctx.stroke();
+        }
+
+        // =======================================================
+        // ⏳ 전시장용 보완: 5분 무활동 자동 인트로(Home.html) 리셋 시스템
+        // =======================================================
+        (function() {
+            const RESET_TIMEOUT = 5 * 60 * 1000; 
+            const INTRO_PAGE_URL = "index.html";   
+            let inactivityTimer = null;
+
+            window.resetInactivityTimer = function() {
+                if (inactivityTimer) {
+                    clearTimeout(inactivityTimer);
+                }
+                inactivityTimer = setTimeout(() => {
+                    if (audio) {
+                        audio.pause();
+                        audio.src = "";
+                    }
+                    window.location.href = INTRO_PAGE_URL;
+                }, RESET_TIMEOUT);
+            };
+
+            const interactionEvents = ['mousemove', 'mousedown', 'click', 'keypress', 'touchstart', 'touchmove'];
+            interactionEvents.forEach(eventType => {
+                window.addEventListener(eventType, window.resetInactivityTimer, { passive: true });
+            });
+
+            window.resetInactivityTimer();
+        })();
+    </script>
+</body>
+</html>

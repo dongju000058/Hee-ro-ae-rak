@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜怒哀樂: 홈</title>
+    
+    <style>
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        /* 기본 초기화 및 부드러운 배경 전환 */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0;
+        }
+        body, html { 
+            width: 100%; 
+            height: 100%; 
+            background-color: #ffffff; 
+            font-family: 'Paperlogy', sans-serif; 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            cursor: none; /* 기본 커서 숨김 */
+            /* 배경이 바뀔 때 안개처럼 부드럽게 번지는 효과 */
+            transition: background 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+        }
+
+        /* 🎯 디자인 통일성을 맞춘 핀포인트 점 커서 + 호버 링 */
+        #custom-cursor {
+            position: fixed; 
+            width: 6px; 
+            height: 6px; 
+            background: #e2629b; /* 시그니처 핑크 컬러 */
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                        height 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                        background-color 0.3s, border 0.3s;
+        }
+        /* 버튼이나 링크에 올라갔을 때의 확장 스타일 클래스 */
+        #custom-cursor.hovered {
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: 1px solid #e2629b;
+        }
+
+        /* 메인 레이아웃 컨테이너 */
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            z-index: 10;
+        }
+
+        /* 네 가지 감정 그리드 레이아웃 */
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            width: 100%;
+        }
+
+        /* 각 감정 아이템 스타일 (정갈한 선 디테일) */
+        .emotion-card {
+            border-left: 1px solid #e5e5e5;
+            padding-left: 20px;
+            padding-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
+        }
+
+        /* 카드 상단 번호 및 태그 */
+        .emotion-card .tag {
+            font-size: 11px;
+            font-weight: 500;
+            color: #999999;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* 거대하고 투명한 한자 타이틀 */
+        .emotion-card .hanja {
+            font-size: 64px;
+            font-weight: 100;
+            color: #ccc;
+            line-height: 1;
+            margin-bottom: 15px;
+            transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 한글 이름 */
+        .emotion-card .name {
+            font-size: 14px;
+            font-weight: 300;
+            color: #555555;
+            letter-spacing: 0.5px;
+        }
+
+        /* 💡 각 감정별 호버 시 무드 액션 (텍스트 색상 변화) */
+        .emotion-card:hover .hanja {
+            transform: translateY(-5px);
+        }
+        
+        .card-hee:hover .hanja { color: #e9916d; } /* 喜 - 오렌지 */
+        .card-no:hover .hanja { color: #df4d4d; }  /* 怒 - 레드 */
+        .card-ae:hover .hanja { color: #6b8bb4; }  /* 哀 - 블루 */
+        .card-rak:hover .hanja { color: #6fa076; } /* 樂 - 그린 */
+
+        .emotion-card:hover {
+            border-color: #999999;
+        }
+
+        /* 반응형 모바일/태블릿 대응 */
+        @media (max-width: 900px) {
+            .emotion-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px 20px;
+            }
+        }
+        @media (max-width: 500px) {
+            .emotion-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-container {
+                padding: 0 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <div class="main-container">
+        <div class="emotion-grid">
+            
+            <a href="Joy.html" class="emotion-card card-hee" data-bg="rgba(233, 145, 109, 0.08)">
+                <span class="tag">01 / JOY</span>
+                <span class="hanja">喜</span>
+                <span class="name">기쁨의 기록</span>
+            </a>
+
+            <a href="Anger.html" class="emotion-card card-no" data-bg="rgba(223, 77, 77, 0.06)">
+                <span class="tag">02 / ANGER</span>
+                <span class="hanja">怒</span>
+                <span class="name">분노의 해소</span>
+            </a>
+
+            <a href="Sorrow.html" class="emotion-card card-ae" data-bg="rgba(107, 139, 180, 0.08)">
+                <span class="tag">03 / SORROW</span>
+                <span class="hanja">哀</span>
+                <span class="name">슬픔의 위로</span>
+            </a>
+
+            <a href="Pleasure.html" class="emotion-card card-rak" data-bg="rgba(111, 160, 118, 0.07)">
+                <span class="tag">04 / PLEASURE</span>
+                <span class="hanja">樂</span>
+                <span class="name">즐거움의 발산</span>
+            </a>
+
+        </div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        const body = document.body;
+        const cards = document.querySelectorAll('.emotion-card');
+
+        // 1. 마우스 움직임에 따른 포인터 트래킹
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // 2. 카드 호버 인터랙션 (커서 링 확장 및 감정별 안개 배경색 연출)
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                cursor.classList.add('hovered');
+                
+                // 각 카드 고유의 부드러운 배경색 가져오기
+                const targetBg = card.getAttribute('data-bg');
+                body.style.backgroundColor = targetBg;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hovered');
+                // 마우스가 벗어나면 다시 깨끗한 흰색 갤러리 톤으로 복구
+                body.style.backgroundColor = '#ffffff';
+            });
+
+            // 3. 클릭 시 화면이 페이드아웃 되면서 부드럽게 페이지 이동하는 고급 감성 로직
+            card.addEventListener('click', (e) => {
+                e.preventDefault(); // 즉시 이동하는 기본 기능 방지
+                const targetUrl = card.getAttribute('href');
+
+                // 순간적으로 커서 링을 조이고 화면을 흐리게 페이드아웃
+                cursor.style.width = '0px';
+                cursor.style.height = '0px';
+                body.style.opacity = '0';
+
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 400); // 0.4초 후 부드럽게 이동
+            });
+        });
+
+        // =======================================================
+        // ⏳ 전시장용 보완: 5분 무활동 자동 인트로(index.html) 리셋 시스템
+        // =======================================================
+        (function() {
+            const RESET_TIMEOUT = 5 * 60 * 1000; // 5분 타임아웃 시간 (5분 * 60초 * 1000ms)
+            const INTRO_PAGE_URL = "index.html";  // 되돌아갈 메인 인트로 주소
+            let inactivityTimer = null;
+
+            function resetInactivityTimer() {
+                if (inactivityTimer) {
+                    clearTimeout(inactivityTimer);
+                }
+                
+                inactivityTimer = setTimeout(() => {
+                    // 홈 화면의 우아한 페이드아웃 느낌을 유지하며 리셋 페이지로 이동
+                    cursor.style.width = '0px';
+                    cursor.style.height = '0px';
+                    body.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        window.location.href = INTRO_PAGE_URL;
+                    }, 400);
+                }, RESET_TIMEOUT);
+            }
+
+            // 관람객 조작 감지 이벤트 리스트 (마우스 이동, 클릭, 드래그, 터치 인터랙션 포함)
+            const interactionEvents = ['mousemove', 'mousedown', 'mouseup', 'click', 'keydown', 'keypress', 'touchstart', 'touchmove'];
+
+            interactionEvents.forEach(eventType => {
+                window.addEventListener(eventType, resetInactivityTimer, { passive: true });
+            });
+
+            // 화면 초기 구동 시점부터 리셋 타이머 작동
+            resetInactivityTimer();
+        })();
+    </script>
+
+</body>
+</html>

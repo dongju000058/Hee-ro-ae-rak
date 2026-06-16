@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>怒: The Perfect Purge</title>
+    <style>
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
+        }
+        body, html { margin: 0; background-color: #111; font-family: 'Paperlogy', sans-serif; overflow: hidden; user-select: none; cursor: none; }
+        
+        /* 전체 화면 설정 */
+        .desktop { 
+            width: 100vw; 
+            height: 100vh; 
+            position: relative; 
+            background-color: #FDFBFB;
+            transition: background-color 0.2s ease-out, transform 0.03s ease-out; 
+        }
+        
+        /* 미니멀 SVG 백버튼 내비게이션 (기본 커서 해제) */
+        .back-nav { 
+            position: absolute; 
+            top: 25px; 
+            left: 25px; 
+            z-index: 10000; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: #222; 
+            text-decoration: none; 
+            transition: all 0.3s ease; 
+            width: 32px; 
+            height: 32px;
+            cursor: none;
+        }
+        .back-nav:hover { 
+            transform: translateX(-4px); 
+            color: #d9534f; 
+        }
+        .back-nav svg { width: 24px; height: 24px; }
+        
+        /* 오직 '점'만 보이도록 세팅한 커서 스타일 */
+        #custom-cursor {
+            position: fixed; width: 6px; height: 6px; background: #d9534f; border-radius: 50%; pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, border 0.3s;
+        }
+        #custom-cursor.hovered { width: 32px; height: 32px; background: transparent; border: 1px solid #d9534f; }
+
+        /* 섬광 효과용 레이어 */
+        .flash-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #ffffff;
+            z-index: 99999; 
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 섬광 지속 시간 및 페이드아웃 애니메이션 */
+        @keyframes flash-bang-sustained {
+            0% { opacity: 1; }
+            40% { opacity: 1; }     
+            100% { opacity: 0; }    
+        }
+        
+        /* 안내 문구 영역 */
+        .guide-text { 
+            position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); 
+            text-align: center; color: #555; pointer-events: none; width: 100%; 
+            transition: color 0.3s;
+        }
+        .guide-text h1 { font-weight: 300; font-size: 32px; }
+        .guide-text p { font-weight: 300; color: #aaa; margin-top: 15px; }
+        
+        /* 파쇄기 */
+        .shredder-img { 
+            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); 
+            max-width: 250px; z-index: 20; pointer-events: none; 
+            transition: transform 0.03s ease-out;
+        }
+
+        /* 파일 스타일 (기본 커서 해제) */
+        .file-obj { 
+            width: 90px; padding: 10px; background: #fff; border: 1px solid #eee; 
+            border-radius: 8px; position: absolute; z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-size: 13px; text-align: center;
+            cursor: none;
+        }
+
+        /* 대형 전시용 파쇄 종이 조각 */
+        .shredded-piece {
+            position: absolute; 
+            width: 14px;          
+            height: 70px;         
+            background: #eef0f2; 
+            box-shadow: 1px 2px 5px rgba(0,0,0,0.08); 
+            z-index: 15;
+            border-radius: 2px;
+            transform-origin: center top;
+        }
+
+        /* 종이가 펄럭이며 떨어지는 애니메이션 */
+        @keyframes fall-heavy {
+            0% { transform: translateY(0) rotate(0deg) scaleX(1); opacity: 1; }
+            50% { transform: translateY(120px) rotate(var(--mid-rot)) scaleX(0.5); opacity: 0.9; }
+            100% { transform: translateY(300px) rotate(var(--max-rot)) scaleX(1); opacity: 0; }
+        }
+
+        /* 모달 디자인 (기본 커서 해제) */
+        .modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 9000; 
+        }
+        .modal-content { background: #fff; padding: 30px; border-radius: 20px; width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box; font-family: 'Paperlogy', sans-serif; cursor: none; }
+        .btn-submit { width: 100%; padding: 12px; background: #222; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: none; }
+        
+        /* 컨텍스트 메뉴 커서 해제 */
+        #context-menu { cursor: none; }
+
+        #action-msg { 
+            position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%);
+            color: #d9534f; font-size: 22px; font-weight: bold; opacity: 0; transition: 0.5s; 
+            transition: color 0.3s;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <div id="flash" class="flash-overlay"></div>
+
+    <main class="desktop" id="desktop">
+        <a href="Home.html" class="back-nav" id="back-btn" title="돌아가기">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </a>
+
+        <div id="guide" class="guide-text">
+            <h1>분노를 해소하세요.</h1>
+            <p>바탕화면 우클릭으로 파일을 생성하여 기록하고 파쇄기에 장착한 뒤<br>스페이스바를 연타하세요.</p>
+        </div>
+        
+        <img src="파쇄기.png" class="shredder-img" id="shredder">
+        <div id="action-msg">스페이스바를 연타하세요!!!</div>
+        
+        <div id="context-menu" style="display:none; position:fixed; background:#fff; padding:8px 16px; border-radius:8px; border:1px solid #eee; box-shadow:0 4px 10px rgba(0,0,0,0.1); z-index:9999;" onclick="openModal()">파일 생성</div>
+    </main>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <input type="text" id="title" placeholder="제목">
+            <textarea id="body" rows="3" placeholder="내용"></textarea>
+            <button onclick="createFile()" class="btn-submit">기록 완료</button>
+        </div>
+    </div>
+
+    <script>
+        const desktop = document.getElementById('desktop');
+        const shredder = document.getElementById('shredder');
+        const actionMsg = document.getElementById('action-msg');
+        const guideText = document.getElementById('guide');
+        const flash = document.getElementById('flash');
+        const backBtn = document.getElementById('back-btn');
+        const cursor = document.getElementById('custom-cursor');
+        
+        let currentFile = null, isReady = false, shredProgress = 0;
+        let audioCtx = null; // 실시간 사운드 합성용 컨텍스트 변수
+
+        // 🛠️ 파일 없이 웹 브라우저가 직접 파쇄기 효과음을 물리적으로 만들어내는 함수 (Web Audio API)
+        function playShredderSound() {
+            try {
+                // 첫 연타 타이밍에 오디오 엔진 생성 및 활성화
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const duration = 0.18; // 효과음 길이 (연타에 최적화된 컴팩트한 길이)
+                const bufferSize = audioCtx.sampleRate * duration;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+
+                // 화이트 노이즈(바스락거리는 종이 질감) 생성용 랜덤 파형 수식
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    // 로우패스 필터 효과를 코드로 연산하여 묵직하고 거친 찢는 소리 질감 구현
+                    data[i] = 0.7 * lastOut + 0.3 * white;
+                    lastOut = data[i];
+                    
+                    // 모터 드르륵거리는 주기적인 거친 주파수 톱니파 인쇄 인터랙션 중첩
+                    if (i % 400 < 120) {
+                        data[i] += Math.sin(i * 0.15) * 0.45;
+                    }
+                }
+
+                // 오디오 노드 연결 및 출력
+                const bufferSource = audioCtx.createBufferSource();
+                bufferSource.buffer = buffer;
+
+                const gainNode = audioCtx.createGain();
+                // 사운드가 탁 끊기지 않고 자연스럽게 스러지도록 볼륨 엔벨로프 곡선 적용
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+                bufferSource.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                bufferSource.start();
+            } catch (e) {
+                console.error("Audio Synthesis Error: ", e);
+            }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        function initCursorHoverEvents() {
+            const interactiveTargets = document.querySelectorAll('button, a, .file-obj, input, textarea, #context-menu');
+            interactiveTargets.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
+
+        window.oncontextmenu = (e) => { e.preventDefault(); const m = document.getElementById('context-menu'); m.style.display = 'block'; m.style.left = e.clientX + 'px'; m.style.top = e.clientY + 'px'; };
+        document.onclick = () => document.getElementById('context-menu').style.display = 'none';
+
+        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+
+        function createFile() {
+            document.getElementById('modal').style.display = 'none';
+            const file = document.createElement('div');
+            file.className = 'file-obj';
+            file.innerHTML = `📄 ${document.getElementById('title').value || 'Anger'}.txt`;
+            file.style.left = '100px'; file.style.top = '100px';
+            desktop.appendChild(file);
+            currentFile = file;
+            
+            initCursorHoverEvents();
+
+            file.onmousedown = (e) => {
+                let shiftX = e.clientX - file.getBoundingClientRect().left;
+                let shiftY = e.clientY - file.getBoundingClientRect().top;
+                document.onmousemove = (e) => { file.style.left = e.clientX - shiftX + 'px'; file.style.top = e.clientY - shiftY + 'px'; };
+                file.onmouseup = () => {
+                    document.onmousemove = null;
+                    const f = file.getBoundingClientRect(), s = shredder.getBoundingClientRect();
+                    if (Math.abs(f.left - s.left) < 100 && Math.abs(f.top - s.top) < 100) {
+                        file.style.display = 'none';
+                        guideText.style.display = 'none'; 
+                        actionMsg.style.opacity = "1";
+                        isReady = true;
+                    }
+                };
+            };
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.code === 'Space' && isReady) {
+                e.preventDefault(); 
+
+                // 🛠️ 직접 구현한 실시간 사운드 제너레이터 함수 호출
+                playShredderSound();
+
+                shredProgress += 2; 
+
+                const ratio = shredProgress / 100; 
+                const r = Math.round(253 - (253 - 139) * ratio);
+                const g = Math.round(251 - (251 - 0) * ratio);
+                const b = Math.round(251 - (251 - 0) * ratio);
+                desktop.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+                if(shredProgress > 40) {
+                    actionMsg.style.color = "#ffffff";
+                    backBtn.style.color = "#ffffff";
+                }
+
+                const shakeX = (Math.random() * 34) - 17;
+                const shakeY = (Math.random() * 34) - 17;
+                const shakeRot = (Math.random() * 3) - 1.5;
+                desktop.style.transform = `translate(${shakeX}px, ${shakeY}px) rotate(${shakeRot}deg)`;
+
+                const shredderShakeX = (Math.random() * 14) - 7;
+                const shredderShakeY = (Math.random() * 14) - 7;
+                shredder.style.transform = `translate(calc(-50% + ${shredderShakeX}px), calc(-50% + ${shredderShakeY}px)) scale(${1 + Math.random() * 0.06})`;
+
+                setTimeout(() => {
+                    desktop.style.transform = 'translate(0, 0) rotate(0deg)';
+                    shredder.style.transform = 'translate(-50%, -50%)';
+                }, 30);
+
+                for (let i = 0; i < 3; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'shredded-piece';
+                    
+                    const colors = ['#ffffff', '#f4f4f4', '#eaeaea', '#e0e0e0'];
+                    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const s = shredder.getBoundingClientRect();
+                    piece.style.left = (s.left + s.width/2 + (Math.random() * 120 - 60)) + 'px';
+                    piece.style.top = (s.top + s.height - 40) + 'px';
+                    
+                    const midRot = (Math.random() * 180 - 90) + 'deg';
+                    const maxRot = (Math.random() * 360 - 180) + 'deg';
+                    piece.style.setProperty('--mid-rot', midRot);
+                    piece.style.setProperty('--max-rot', maxRot);
+                    
+                    const duration = 0.8 + Math.random() * 0.4;
+                    piece.style.animation = `fall-heavy ${duration}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+                    
+                    desktop.appendChild(piece);
+                    setTimeout(() => piece.remove(), duration * 1000);
+                }
+
+                if(shredProgress >= 100) { 
+                    isReady = false; 
+                    
+                    flash.style.animation = "flash-bang-sustained 2.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards";
+                    
+                    setTimeout(() => {
+                        alert("💥 완.벽.숙.청! 모든 스트레스가 완전히 파쇄되었습니다.");
+                        location.reload(); 
+                    }, 2200);
+                }
+            }
+        });
+
+        initCursorHoverEvents();
+
+        // =======================================================
+        // ⏳ 전시장용 보완: 5분 무활동 자동 인트로(Home.html) 리셋 시스템
+        // =======================================================
+        (function() {
+            const RESET_TIMEOUT = 5 * 60 * 1000; 
+            const INTRO_PAGE_URL = "index.html";   
+            let inactivityTimer = null;
+
+            function resetInactivityTimer() {
+                if (inactivityTimer) {
+                    clearTimeout(inactivityTimer);
+                }
+                
+                inactivityTimer = setTimeout(() => {
+                    window.location.href = INTRO_PAGE_URL;
+                }, RESET_TIMEOUT);
+            }
+
+            const interactionEvents = ['mousemove', 'mousedown', 'mouseup', 'click', 'keydown', 'keypress', 'touchstart', 'touchmove', 'contextmenu'];
+
+            interactionEvents.forEach(eventType => {
+                window.addEventListener(eventType, resetInactivityTimer, { passive: true });
+            });
+
+            resetInactivityTimer();
+        })();
+    </script>
+</body>
+</html>

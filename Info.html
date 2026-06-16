@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 삶의 네가지 무대</title>
+    
+    <style>
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* 기본 스타일 초기화 및 스크롤 스냅 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            font-family: 'Paperlogy', sans-serif;
+            color: #333333;
+            background-color: #ffffff;
+            line-height: 1.6;
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            cursor: none; /* 💡 기본 마우스 포인터 숨김 */
+        }
+
+        /* 💡 Intro.html과 동일한 미니멀 점 커서 스타일 구현 */
+        #custom-cursor {
+            position: fixed; 
+            width: 6px; 
+            height: 6px; 
+            background: #e2629b; /* 시그니처 핑크 색상 */
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s;
+        }
+
+        /* 전체 화면 세로 정렬을 위한 컨테이너 */
+        .container {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 각 섹션을 전체 화면(100vh) 크기로 지정 */
+        .section {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            padding-left: calc(50% - 400px); 
+            padding-right: 20px;
+            scroll-snap-align: start; 
+            position: relative;
+        }
+
+        /* 내부 콘텐츠 영역 (왼쪽 선 디테일 유지) */
+        .section-content {
+            border-left: 1px solid #e0e0e0;
+            padding-left: 20px;
+        }
+
+        /* 상단 소제목 */
+        .section-tag {
+            font-size: 11px;
+            font-weight: 500;
+            color: #999999;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        /* 대제목 스타일 */
+        .section-title {
+            font-size: 28px;
+            font-weight: 300;
+            color: #444444;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        /* 본문 텍스트 스타일 */
+        .section-desc {
+            font-size: 13px;
+            color: #777777;
+            font-weight: 300;
+            word-break: keep-all;
+        }
+        .section-desc p {
+            margin-bottom: 12px;
+        }
+
+        /* 01 섹션의 희노애락 컬러 포인트 */
+        .hee { color: #e9916d; font-weight: 500; } 
+        .no { color: #df4d4d; font-weight: 500; }  
+        .ae { color: #6b8bb4; font-weight: 500; }  
+        .rak { color: #6fa076; font-weight: 500; } 
+
+        /* 02, 03 섹션의 핑크색 포인트 컬러 */
+        .point-pink {
+            color: #e2629b;
+            font-weight: 500;
+        }
+
+        /* 02 섹션 본문 내 강조 텍스트 */
+        .bold-text {
+            font-weight: 500;
+            color: #222222;
+        }
+
+        /* 03 섹션의 버튼 스타일 */
+        .cta-button {
+            display: inline-block;
+            background-color: #e2629b;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 12px 35px;
+            margin-top: 25px;
+            border-radius: 0px; 
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+        }
+        .cta-button:hover {
+            background-color: #cb4f87;
+        }
+
+        /* 반응형 여백 조정 */
+        @media (max-width: 840px) {
+            .section {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+            .section-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <div class="container">
+
+        <section class="section">
+            <div class="section-content">
+                <div class="section-tag">01 / INTRODUCTION</div>
+                <h1 class="section-title">
+                    우리 삶의 네가지 무대,<br>
+                    <span class="hee">喜</span> <span class="no">怒</span> <span class="ae">哀</span> <span class="rak">樂</span>
+                </h1>
+                <div class="section-desc">
+                    <p>이 웹사이트는 인간이 느끼는 가장 본질적인 네 가지 감정인 희,로,애,락을<br>디지털 공간에서 해소하고 기록하는 경험을 제공하는 공간입니다.</p>
+                    <p>당신의 감정을 인터랙션으로 경험해보세요.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-content">
+                <div class="section-tag">02 / EMOTION & INTERACTION</div>
+                <h2 class="section-title">
+                    감정을 표현하는<br>
+                    <span class="point-pink">네가지 방식</span>
+                </h2>
+                <div class="section-desc">
+                    <p>미소를 지어 <span class="bold-text">기쁨</span>을 기록하고 추억하고, 키보드를 연타하여 마음속의 <span class="bold-text">분노</span>를 통쾌하게 터뜨려보세요.</p>
+                    <p>심호흡을 함께하며 <span class="bold-text">슬픔</span>을 위로하고, 경쾌한 클래식 음악을 연주하며 <span class="bold-text">즐거움</span>의 에너지를 발산 할 것입니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-content">
+                <div class="section-tag">03 / EXPERIENCE</div>
+                <h2 class="section-title">
+                    당신의 감정을<br>
+                    <span class="point-pink">경험해보세요</span>
+                </h2>
+                <a href="Home.html" class="cta-button">Strat Experience</a>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // 링크나 버튼에 마우스를 올렸을 때 커서가 살짝 커지는 인터랙션 추가
+        const interactiveElements = document.querySelectorAll('a, .cta-button');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '12px';
+                cursor.style.height = '12px';
+                cursor.style.backgroundColor = '#cb4f87';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '6px';
+                cursor.style.height = '6px';
+                cursor.style.backgroundColor = '#e2629b';
+            });
+        });
+    </script>
+
+</body>
+</html>

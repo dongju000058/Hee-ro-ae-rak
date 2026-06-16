@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜怒哀樂: Intro</title>
+    
+    <style>
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: #ffffff; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            font-family: 'Paperlogy', sans-serif; 
+            cursor: none; /* 기본 마우스 포인터 숨김 */
+        }
+
+        /* 💡 인포 화면과 완벽히 호환되는 미니멀 점 커서 */
+        #custom-cursor {
+            position: fixed; 
+            width: 6px; 
+            height: 6px; 
+            background: #e2629b; /* 인포 화면의 시그니처 핑크 포인트 컬러 반영 */
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        /* 몽환적인 감정의 일렁임 (Info.html 컬러 스키마 반영) */
+        #canvas-bg { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 1; 
+            filter: blur(80px) saturate(1.2); 
+            opacity: 0.5; /* 너무 강하지 않고 은은하게 고급스러운 톤 연출 */
+            transition: filter 0.6s ease, opacity 0.6s ease; 
+        }
+        
+        /* 중앙 텍스트 레이어 */
+        .ui-layer { 
+            position: relative; 
+            z-index: 10; 
+            text-align: center; 
+            color: #444444; 
+            pointer-events: none; 
+            user-select: none;
+        }
+        
+        h1 { 
+            font-size: 32px; 
+            letter-spacing: 12px; 
+            font-weight: 300; 
+            margin: 0; 
+            padding-left: 12px;
+        }
+
+        /* Info.html의 오리지널 감정별 상징색 완벽 매칭 */
+        .logo-hee { color: #e9916d; } /* 喜 - 오렌지 */
+        .logo-no { color: #df4d4d; }  /* 怒 - 레드 */
+        .logo-ae { color: #6b8bb4; }  /* 哀 - 블루 */
+        .logo-rak { color: #6fa076; } /* 樂 - 그린 */
+        
+        /* 하단 안내 가이드 텍스트 */
+        .click-guide { 
+            position: absolute; 
+            bottom: 60px; 
+            font-size: 10px; 
+            letter-spacing: 2px; 
+            color: #999999; 
+            z-index: 10; 
+            animation: breathe 3s infinite ease-in-out; 
+            font-weight: 300; 
+            user-select: none;
+        }
+        @keyframes breathe { 
+            0%, 100% { opacity: 0.2; transform: translateY(0); } 
+            50% { opacity: 0.7; transform: translateY(-2px); } 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+    <div id="canvas-bg"></div>
+
+    <div class="ui-layer">
+        <h1>
+            <span class="logo-hee">喜</span><span class="logo-no">怒</span><span class="logo-ae">哀</span><span class="logo-rak">樂</span>
+        </h1>
+        </div>
+
+    <div class="click-guide">화면을 클릭하여 진입하세요</div>
+
+    <script>
+        const bg = document.getElementById('canvas-bg');
+        const cursor = document.getElementById('custom-cursor');
+        
+        let mouseX = 50, mouseY = 50, curX = 50, curY = 50;
+        let time = 0;
+
+        // 마우스의 움직임에 따라 커서 위치 동기화 및 부드러운 위치값 연산
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+
+            mouseX = (e.clientX / window.innerWidth) * 100;
+            mouseY = (e.clientY / window.innerHeight) * 100;
+        });
+
+        // 클릭 액션 시 Info.html로 자연스럽게 페이드인 진입 효과
+        document.addEventListener('click', () => {
+            cursor.style.width = '30px';
+            cursor.style.height = '30px';
+            cursor.style.backgroundColor = 'rgba(222, 77, 77, 0.2)';
+
+            bg.style.filter = "blur(10px) saturate(1.8)";
+            bg.style.opacity = "0.9";
+            
+            setTimeout(() => {
+                window.location.href = "Info.html";
+            }, 500);
+        });
+
+        // 유기적이고 몽환적으로 움직이는 사색 그라디언트 알고리즘
+        function animate() {
+            time += 0.0025; 
+            
+            // 마우스 움직임 관성 보간 처리
+            curX += (mouseX - curX) * 0.03; 
+            curY += (mouseY - curY) * 0.03;
+
+            // 자연스러운 흐름을 유도하기 위한 수학적 삼각함수 궤적 연산
+            const autoX1 = curX + Math.sin(time * 1.0) * 12 + Math.cos(time * 0.6) * 8;
+            const autoY1 = curY + Math.cos(time * 0.9) * 12 + Math.sin(time * 0.4) * 6;
+            
+            const autoX2 = (100 - curX) + Math.cos(time * 0.7) * 10 + Math.sin(time * 1.2) * 8;
+            const autoY2 = (100 - curY) + Math.sin(time * 1.0) * 10 + Math.cos(time * 0.5) * 6;
+
+            const autoX3 = curX + Math.sin(time * 0.4) * 15;
+            const autoY3 = (100 - curY) + Math.cos(time * 1.1) * 12;
+
+            const autoX4 = 50 + Math.cos(time * 0.5) * 20;
+            const autoY4 = 50 + Math.sin(time * 0.5) * 20;
+            
+            // Info.html의 완벽한 색상값 대입 (RGB 환산 적용)
+            bg.style.background = `
+                radial-gradient(circle at ${autoX1}% ${autoY1}%, rgba(233, 145, 109, 0.4), transparent 60%), 
+                radial-gradient(circle at ${autoX2}% ${autoY2}%, rgba(223, 77, 77, 0.35), transparent 60%), 
+                radial-gradient(circle at ${autoX3}% ${autoY3}%, rgba(107, 139, 180, 0.4), transparent 60%), 
+                radial-gradient(circle at ${autoX4}% ${autoY4}%, rgba(111, 160, 118, 0.3), transparent 70%)
+            `;
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
