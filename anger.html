@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>怒: The Perfect Purge</title>
+    <style>
+        @font-face {
+            font-family: 'Paperlogy';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
+        }
+        body, html { margin: 0; background-color: #111; font-family: 'Paperlogy', sans-serif; overflow: hidden; user-select: none; cursor: none; }
+        
+        .desktop { 
+            width: 100vw; height: 100vh; position: relative; background-color: #FDFBFB;
+            transition: background-color 0.2s ease-out, transform 0.03s ease-out; 
+        }
+        
+        .back-nav { 
+            position: absolute; top: 25px; left: 25px; z-index: 10000; 
+            display: flex; align-items: center; justify-content: center; 
+            color: #222; text-decoration: none; transition: all 0.3s ease; 
+            width: 32px; height: 32px; cursor: none;
+        }
+        .back-nav:hover { transform: translateX(-4px); color: #d9534f; }
+        .back-nav svg { width: 24px; height: 24px; }
+        
+        #custom-cursor {
+            position: fixed; width: 6px; height: 6px; background: #d9534f; border-radius: 50%; pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%); transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, border 0.3s;
+        }
+        #custom-cursor.hovered { width: 32px; height: 32px; background: transparent; border: 1px solid #d9534f; }
+
+        .flash-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #ffffff; z-index: 99999; opacity: 0; pointer-events: none;
+        }
+        
+        @keyframes flash-bang-sustained { 0% { opacity: 1; } 40% { opacity: 1; } 100% { opacity: 0; } }
+        
+        .guide-text { 
+            position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); 
+            text-align: center; color: #555; pointer-events: none; width: 100%; 
+        }
+        
+        .shredder-img { 
+            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); 
+            max-width: 250px; z-index: 20; pointer-events: none; 
+        }
+
+        .file-obj { 
+            width: 90px; padding: 10px; background: #fff; border: 1px solid #eee; 
+            border-radius: 8px; position: absolute; z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-size: 13px; text-align: center;
+        }
+
+        .shredded-piece {
+            position: absolute; width: 14px; height: 70px; background: #eef0f2; 
+            box-shadow: 1px 2px 5px rgba(0,0,0,0.08); z-index: 15; border-radius: 2px;
+            transform-origin: center top;
+        }
+
+        @keyframes fall-heavy {
+            0% { transform: translateY(0) rotate(0deg) scaleX(1); opacity: 1; }
+            100% { transform: translateY(200px) rotate(var(--max-rot)) scaleX(1); opacity: 0; }
+        }
+
+        .modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 9000; 
+        }
+        .modal-content { background: #fff; padding: 30px; border-radius: 20px; width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 8px; box-sizing: border-box; }
+        .btn-submit { width: 100%; padding: 12px; background: #222; color: #fff; border: none; border-radius: 8px; font-weight: bold; }
+        
+        #action-msg { 
+            position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%);
+            color: #d9534f; font-size: 22px; font-weight: bold; opacity: 0; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+    <div id="flash" class="flash-overlay"></div>
+
+    <main class="desktop" id="desktop">
+        <a href="index.html" class="back-nav" id="back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </a>
+
+        <div id="guide" class="guide-text">
+            <h1>분노를 해소하세요.</h1>
+            <p>바탕화면 우클릭으로 파일을 생성하여 기록하고 파쇄기에 장착한 뒤<br>스페이스바를 연타하세요.</p>
+        </div>
+        
+        <img src="Shredder.png" class="shredder-img" id="shredder">
+        
+        <div id="action-msg">스페이스바를 연타하세요!!!</div>
+        
+        <div id="context-menu" style="display:none; position:fixed; background:#fff; padding:8px 16px; border-radius:8px; border:1px solid #eee; box-shadow:0 4px 10px rgba(0,0,0,0.1); z-index:9999;" onclick="openModal()">파일 생성</div>
+    </main>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <input type="text" id="title" placeholder="제목">
+            <textarea id="body" rows="3" placeholder="내용"></textarea>
+            <button onclick="createFile()" class="btn-submit">기록 완료</button>
+        </div>
+    </div>
+
+    <script>
+        const desktop = document.getElementById('desktop');
+        const shredder = document.getElementById('shredder');
+        const actionMsg = document.getElementById('action-msg');
+        const guideText = document.getElementById('guide');
+        const flash = document.getElementById('flash');
+        const backBtn = document.getElementById('back-btn');
+        const cursor = document.getElementById('custom-cursor');
+        
+        let isReady = false, shredProgress = 0;
+        let audioCtx = null;
+
+        function playShredderSound() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const buffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.1, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+                const source = audioCtx.createBufferSource();
+                source.buffer = buffer;
+                source.connect(audioCtx.destination);
+                source.start();
+            } catch (e) {}
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        window.oncontextmenu = (e) => { e.preventDefault(); const m = document.getElementById('context-menu'); m.style.display = 'block'; m.style.left = e.clientX + 'px'; m.style.top = e.clientY + 'px'; };
+        document.onclick = () => document.getElementById('context-menu').style.display = 'none';
+        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+
+        function createFile() {
+            document.getElementById('modal').style.display = 'none';
+            const file = document.createElement('div');
+            file.className = 'file-obj';
+            file.innerHTML = `📄 ${document.getElementById('title').value || 'Anger'}.txt`;
+            file.style.left = '100px'; file.style.top = '100px';
+            desktop.appendChild(file);
+            file.onmousedown = (e) => {
+                let sX = e.clientX - file.offsetLeft, sY = e.clientY - file.offsetTop;
+                document.onmousemove = (e) => { file.style.left = e.clientX - sX + 'px'; file.style.top = e.clientY - sY + 'px'; };
+                file.onmouseup = () => {
+                    document.onmousemove = null;
+                    const f = file.getBoundingClientRect(), s = shredder.getBoundingClientRect();
+                    if (Math.abs(f.left - s.left) < 100 && Math.abs(f.top - s.top) < 100) {
+                        file.style.display = 'none'; guideText.style.display = 'none'; actionMsg.style.opacity = "1"; isReady = true;
+                    }
+                };
+            };
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if(e.code === 'Space' && isReady) {
+                e.preventDefault(); playShredderSound(); shredProgress += 2;
+                const s = shredder.getBoundingClientRect();
+                for (let i = 0; i < 2; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'shredded-piece';
+                    piece.style.left = (s.left + s.width/2) + 'px';
+                    piece.style.top = (s.top + s.height * 0.8) + 'px'; // 파쇄기 입구 근처 생성
+                    piece.style.setProperty('--max-rot', (Math.random() * 360 - 180) + 'deg');
+                    piece.style.animation = `fall-heavy ${0.5 + Math.random() * 0.5}s forwards`;
+                    desktop.appendChild(piece);
+                    setTimeout(() => piece.remove(), 1000);
+                }
+                if(shredProgress >= 100) { 
+                    isReady = false; flash.style.animation = "flash-bang-sustained 2s forwards";
+                    setTimeout(() => { alert("숙청 완료!"); location.reload(); }, 2000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
