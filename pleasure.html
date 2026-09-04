@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>락 — 움직이고 멈춘 다섯 순간</title>
+    <style>@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-4Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-5Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-6SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-7Bold.woff2') format('woff2');font-weight:700 900;font-style:normal;font-display:swap;}@font-face{font-family:Inter;src:url('./assets/fonts/InterLatin-v20.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2191,
+          U+2193, U+2212;}</style>
+    <style>:root{--paper:#fff;--ink:#101010;--muted:#7f817d;--line:#d9dcd8;--rak:#4ba86a;--header-h:74px;}*{box-sizing:border-box;}html,
+      body{width:100%;height:100%;margin:0;background:var(--paper);color:var(--ink);}body{overflow:hidden;font-family:Paperlogy, Arial, sans-serif;}button,
+      a{color:inherit;font:inherit;}button{border:0;}button:focus-visible,
+      a:focus-visible{outline:2px solid var(--rak);outline-offset:5px;}[hidden]{display:none !important;}.app{position:relative;width:100%;height:100dvh;min-height:620px;overflow:hidden;background:#fff;}.header{position:absolute;inset:0 0 auto;z-index:90;height:var(--header-h);display:grid;grid-template-columns:1fr minmax(220px, 38vw) 1fr;align-items:center;padding:0 clamp(20px, 3vw, 48px);border-bottom:1px solid var(--line);background:rgba(255, 255, 255, 0.97);}.brand,
+      .header-state,
+      .home-link{margin:0;font-size:11px;letter-spacing:-0.03em;text-decoration:none;}.header-state{justify-self:center;width:100%;color:var(--muted);}.header-state span{display:flex;justify-content:space-between;gap:12px;}.header-line{display:block;height:2px;margin-top:9px;background:#e5e8e4;overflow:hidden;}.header-line i{display:block;width:0;height:100%;background:var(--rak);transition:width 0.6s cubic-bezier(0.16, 1, 0.3, 1);}.home-link{justify-self:end;padding:8px 0;border-bottom:1px solid currentColor;}.experience{position:absolute;inset:var(--header-h) 0 0;overflow:hidden;}.screen{position:absolute;inset:0;visibility:hidden;opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity 0.55s ease,
+          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          visibility 0s linear 0.7s;}.screen.is-active{visibility:visible;opacity:1;transform:none;pointer-events:auto;transition-delay:0s;}.screen-kicker{margin:0 0 22px;color:var(--rak);font:500 10px/1 Inter,
+          Arial,
+          sans-serif;letter-spacing:0.08em;}.display-title{margin:0;font-size:clamp(40px, 4.1vw, 64px);font-weight:600;line-height:1.12;letter-spacing:-0.035em;word-break:keep-all;overflow-wrap:anywhere;}.display-copy{max-width:440px;margin:28px 0 0;color:var(--muted);font-size:12px;line-height:1.75;word-break:keep-all;}.text-action{display:inline-flex;align-items:center;min-height:40px;padding:8px 0;border-bottom:1px solid currentColor;background:transparent;text-decoration:none;font-size:12px;cursor:pointer;}.text-action.primary{color:var(--rak);font-size:14px;font-weight:600;}.text-action:disabled{color:#bbb;cursor:default;}.music-screen{display:grid;grid-template-columns:minmax(260px, 0.75fr) minmax(460px, 1.25fr);gap:8vw;padding:clamp(46px, 7vh, 88px) clamp(28px, 6vw, 100px);}.music-copy{align-self:start;padding-top:2vh;}.music-title{max-width:100%;}.music-title span{display:block;white-space:nowrap;}.music-list-wrap{align-self:center;}.music-list{margin:0;padding:0;list-style:none;border-top:1px solid var(--ink);}.track-button{position:relative;width:100%;min-height:65px;display:grid;grid-template-columns:42px 1fr auto;align-items:center;gap:15px;padding:0 4px;border-bottom:1px solid var(--line);background:#fff;text-align:left;cursor:pointer;}.track-button::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--rak);transform:scaleX(0);transform-origin:left;transition:transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);}.track-index{color:#a1a39f;font:400 10px/1 Inter,
+          sans-serif;}.track-name{font-size:clamp(18px, 2vw, 28px);font-weight:400;letter-spacing:-0.045em;}.track-mark{opacity:0.7;transition:opacity 0.25s;}.track-button:hover .track-name,
+      .track-button:focus-visible .track-name{color:var(--rak);}.track-button.is-selected::after{transform:scaleX(1);}.track-button.is-selected .track-mark{opacity:1;}.track-note{min-height:18px;margin:18px 0 0;color:var(--muted);font-size:10px;}.music-next{margin-top:25px;}.guide-screen{display:grid;grid-template-columns:minmax(340px, 1fr) minmax(380px, 1fr);gap:7vw;align-items:center;padding:5vh 7vw;}.guide-title{font-size:clamp(52px, 6.3vw, 96px);}.guide-details{align-self:center;padding-top:5vh;}.guide-details p{margin:0;color:var(--muted);font-size:13px;line-height:1.7;word-break:keep-all;}.guide-details .permission{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:10px;}.guide-assurance{margin-top:22px !important;color:var(--rak) !important;font-size:15px !important;}.guide-actions{display:flex;flex-wrap:wrap;gap:24px;margin-top:35px;}.pose-strip{display:grid;grid-template-columns:repeat(5, 1fr);gap:12px;margin-top:42px;}.pose-mini{min-width:0;border-top:1px solid var(--line);padding-top:10px;color:#777;}.pose-mini svg{width:100%;height:92px;}.pose-mini span{display:block;font-size:9px;text-align:center;}.pose-stroke{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:square;stroke-linejoin:miter;}.pose-joint{fill:var(--rak);}.live-screen{background:#111;color:#fff;isolation:isolate;}.camera-video{position:absolute;inset:0;width:100%;height:calc(100% - var(--companion-height));object-fit:cover;transform:scaleX(-1);}.live-screen.is-pointer .camera-video{display:none;}.pointer-field{position:absolute;inset:0 0 var(--companion-height);display:none;background:#f7f8f5;}.live-screen.is-pointer .pointer-field{display:block;}.fx-canvas{position:absolute;inset:0;z-index:12;width:100%;height:100%;pointer-events:none;}.live-vignette{position:absolute;inset:0 0 var(--companion-height);z-index:14;pointer-events:none;background:linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.36),
+          transparent 24%,
+          transparent 72%,
+          rgba(0, 0, 0, 0.26)
+        );}.live-meta{position:absolute;z-index:30;left:28px;right:28px;top:23px;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:18px;}.now-playing,
+      .live-state,
+      .trace-count{margin:0;font-size:11px;}.now-playing{color:#fff;}.live-state{color:var(--rak);text-align:center;font-weight:600;}.trace-count{text-align:right;font-family:Inter, sans-serif;}.live-progress{position:absolute;z-index:30;left:28px;right:28px;top:51px;height:1px;background:rgba(255, 255, 255, 0.35);}.live-progress i{display:block;width:0;height:100%;background:var(--rak);transition:width 0.5s linear;}.presence-note{position:absolute;z-index:30;left:28px;top:68px;margin:0;color:rgba(255, 255, 255, 0.74);font-size:10px;}.center-message{position:absolute;z-index:40;left:50%;top:50%;max-width:70vw;margin:0;transform:translate(-50%, -50%);color:#fff;text-align:center;font-size:clamp(25px, 4vw, 58px);font-weight:600;line-height:1.05;letter-spacing:-0.05em;opacity:0;transition:opacity 0.35s ease,
+          transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);}.center-message.is-visible{opacity:1;transform:translate(-50%, -52%);}.center-message.is-small{font-size:clamp(17px, 2vw, 28px);font-weight:400;}.center-message.is-countdown{min-width:128px;padding:18px 24px;background:rgba(16, 16, 16, 0.82);color:#fff;font-family:Inter, Paperlogy, sans-serif;font-size:clamp(56px, 8vw, 104px);font-variant-numeric:tabular-nums;line-height:1.1;letter-spacing:-0.04em;}.center-message.is-countdown.is-small{font-size:clamp(24px, 3.5vw, 48px);line-height:1.12;letter-spacing:-0.035em;word-break:keep-all;}.pose-preview{position:absolute;z-index:35;right:24px;bottom:24px;width:224px;padding:18px;border-top:3px solid var(--rak);background:#fff;color:var(--ink);visibility:hidden;opacity:0;pointer-events:none;transition:opacity 0.18s ease;}.pose-preview.is-visible{visibility:visible;opacity:1;transition-delay:0s;}.pose-preview svg{display:block;width:100%;height:clamp(120px, 23vh, 184px);opacity:0.25;transition:opacity 3s linear;}.pose-preview.is-visible svg{opacity:1;}.pose-preview .pose-stroke{stroke:var(--ink);stroke-width:3;}.pose-preview .pose-joint{fill:var(--rak);}.pose-preview-label{margin:10px 0 0;color:#267c45;font-size:13px;font-weight:500;}.pose-preview-name{margin:8px 0 0;font-size:18px;font-weight:500;line-height:1.4;word-break:keep-all;}.pose-preview-copy{margin:10px 0 0;color:#555;font-size:13px;line-height:1.5;word-break:keep-all;}.live-reset{position:absolute;z-index:42;right:28px;top:75px;padding:6px 0;border-bottom:1px solid currentColor;background:transparent;color:rgba(255, 255, 255, 0.72);font-size:10px;cursor:pointer;}.flash{position:absolute;inset:0;z-index:70;background:#fff;opacity:0;pointer-events:none;}.flash.is-active{animation:stampFlash 0.18s ease-out;}.scan-line{position:absolute;z-index:68;left:0;right:0;top:50%;height:2px;background:var(--rak);opacity:0;pointer-events:none;}.scan-line.is-active{animation:scanAcross 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);}@keyframes stampFlash{0%{opacity:0;}28%{opacity:0.82;}100%{opacity:0;}}@keyframes scanAcross{0%{opacity:0;transform:translateY(-35vh);}15%{opacity:1;}100%{opacity:0;transform:translateY(35vh);}}.transition-mark{position:fixed;inset:0;z-index:150;display:grid;place-items:center;background:#fff;pointer-events:none;opacity:0;visibility:hidden;}.transition-mark::before{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:var(--rak);transform:scaleX(0);}.transition-mark span{position:relative;color:var(--rak);font-size:clamp(90px, 18vw, 260px);font-weight:600;line-height:1;}.transition-mark.is-active{visibility:visible;animation:markFade 0.75s ease both;}.transition-mark.is-active::before{animation:markLine 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;}@keyframes markFade{0%{opacity:0;}22%,
+        68%{opacity:1;}100%{opacity:0;}}@keyframes markLine{0%{transform:scaleX(0);}48%,
+        100%{transform:scaleX(1);}}.finale-screen{display:grid;grid-template-columns:minmax(0, 1.5fr) minmax(260px, 1fr);align-items:center;gap:clamp(32px, 5vw, 80px);padding:clamp(32px, 6vh, 72px) 7vw;overflow-y:auto;}.finale-title{max-width:none;font-size:clamp(40px, 5.6vw, 100px);line-height:1.12;word-break:keep-all;}.finale-title span{display:block;white-space:nowrap;}.finale-side{min-width:0;}.finale-side p{max-width:420px;margin:0;color:var(--muted);font-size:13px;line-height:1.75;word-break:keep-all;}.finale-actions{display:flex;flex-wrap:wrap;gap:24px;margin-top:35px;}@media (max-width: 900px){:root{--header-h:64px;}.app{min-height:560px;}.header{grid-template-columns:auto 1fr auto;gap:16px;padding:0 18px;}.header-state{width:min(100%, 320px);}.music-screen,
+        .guide-screen,
+        .finale-screen{overflow-y:auto;}.music-screen{grid-template-columns:1fr;gap:45px;padding:42px 22px 70px;}.music-title{max-width:none;font-size:clamp(48px, 9vw, 72px);line-height:1.12;}.music-list-wrap{width:100%;}.guide-screen{grid-template-columns:1fr;align-items:start;gap:25px;padding:42px 22px 70px;}.guide-title{font-size:clamp(48px, 11vw, 78px);}.guide-details{padding:0;}.pose-strip{margin-top:28px;gap:5px;}.pose-mini svg{height:72px;}.finale-screen{grid-template-columns:minmax(0, 1fr);align-content:center;gap:36px;padding:42px 22px;}.finale-title{font-size:clamp(36px, 8vw, 72px);}.live-meta{left:15px;right:15px;top:16px;grid-template-columns:1fr auto;}.live-state{grid-column:1 / -1;grid-row:2;margin-top:10px;text-align:left;}.trace-count{grid-column:2;grid-row:1;}.live-progress{left:15px;right:15px;top:47px;}.presence-note{left:15px;top:76px;}.pose-preview{display:grid;grid-template-columns:84px minmax(0, 1fr);align-items:center;gap:16px;left:16px;right:16px;bottom:16px;width:auto;padding:14px 18px;}.pose-preview svg{height:126px;}.pose-preview-label{margin-top:0;}.live-reset{right:15px;top:72px;}}@media (max-width: 560px){.brand{max-width:70px;line-height:1.25;}.home-link{max-width:82px;text-align:right;line-height:1.3;}.music-screen{gap:34px;padding-top:34px;}.music-title{font-size:clamp(42px, 12.2vw, 50px);letter-spacing:-0.035em;}.music-copy .display-copy{margin-top:22px;}.track-button{min-height:59px;grid-template-columns:30px 1fr 24px;}.track-name{font-size:19px;}.pose-strip{grid-template-columns:repeat(5, minmax(58px, 1fr));overflow-x:auto;}.pose-mini{min-width:58px;}.guide-actions,
+        .finale-actions{gap:16px 22px;}.center-message{max-width:86vw;}}@media (max-height: 520px) and (orientation: landscape){:root{--header-h:54px;}.app{height:100svh;min-height:0;}.header{padding:0 18px;}.music-screen{grid-template-columns:minmax(250px, 0.78fr) minmax(360px, 1.22fr);align-items:start;gap:5vw;padding:20px 3vw 28px;}.music-copy{padding-top:0;}.music-title{font-size:clamp(40px, 6.3vw, 54px);line-height:1.12;}.music-copy .display-copy{margin-top:16px;line-height:1.55;}.music-list-wrap{align-self:start;}.track-button{min-height:45px;}.track-name{font-size:16px;}.track-note{margin-top:10px;}.music-next{margin-top:10px;}.guide-screen{grid-template-columns:minmax(300px, 1fr) minmax(300px, 1fr);align-items:start;gap:4vw;padding:18px 3vw 28px;}.guide-title{font-size:42px;}.pose-strip{margin-top:14px;}.pose-mini svg{height:54px;}.guide-details{padding:0;}.guide-details p{font-size:11px;line-height:1.5;}.guide-details .permission{margin-top:12px;padding-top:10px;}.guide-assurance{margin-top:10px !important;font-size:13px !important;}.guide-actions{margin-top:14px;gap:14px 22px;}.finale-screen{grid-template-columns:minmax(0, 1.5fr) minmax(220px, 1fr);align-items:center;align-content:center;gap:24px;padding:24px 5vw;}.finale-title{font-size:clamp(28px, 4.6vw, 44px);}.pose-preview{left:auto;right:16px;bottom:16px;width:208px;display:grid;grid-template-columns:60px minmax(0, 1fr);gap:10px;padding:12px;}.pose-preview svg{height:100px;}.pose-preview-name{font-size:16px;}}@media (pointer: coarse){button,
+        a{min-height:44px;}}.cursor{display:none;}@media (pointer: fine){html,
+        body,
+        button,
+        a{cursor:none;}.cursor{display:block;position:fixed;left:0;top:0;z-index:220;width:7px;height:7px;border-radius:50%;background:var(--rak);pointer-events:none;transform:translate(-50%, -50%);transition:width 0.2s,
+            height 0.2s,
+            background 0.2s,
+            border 0.2s;}.cursor.active{width:38px;height:38px;border:1px solid var(--rak);background:rgba(75, 168, 106, 0.14);}}@media (prefers-reduced-motion: reduce){*,
+        *::before,
+        *::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}.pose-preview{transition:opacity 0.2s linear !important;}}.live-screen{--companion-height:88px;}.dance-companion{position:absolute;left:0;right:0;bottom:0;height:var(--companion-height);z-index:35;display:flex;align-items:center;gap:20px;padding:8px 28px;background:#fff;color:var(--ink);font-size:14px;pointer-events:none;}.dance-companion img{width:64px;height:64px;object-fit:contain;}img.track-mark{width:44px;height:44px;object-fit:contain;}.track-button{grid-template-columns:32px minmax(0, 1fr) 48px;}.is-previewing .track-mark{opacity:1;}.is-previewing .track-mark,
+      .dance-companion.is-dancing img{animation:character-dance var(--character-beat, 0.5s) ease-in-out
+          infinite alternate;}@keyframes character-dance{from{transform:translateY(3px) rotate(-9deg) scale(1.04, 0.96);}to{transform:translateY(-4px) rotate(9deg) scale(0.97, 1.03);}}.live-screen .pose-preview{bottom:calc(var(--companion-height) + 24px);}@media (max-width: 900px), (max-height: 500px){.live-screen{--companion-height:68px;}.dance-companion{padding:6px 16px;gap:12px;}.dance-companion img{width:48px;height:48px;}.live-screen .pose-preview{bottom:calc(var(--companion-height) + 16px);}}@media (prefers-reduced-motion: reduce){.is-previewing .track-mark,
+        .dance-companion.is-dancing img{animation:none;}}</style>
+    <script src="exhibition-navigation.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <div class="cursor" id="cursor" aria-hidden="true"></div>
+      <header class="header">
+        <p class="brand">감정을 마주하다</p>
+        <div class="header-state" aria-live="polite">
+          <span
+            ><b id="header-phase">樂 · 음악 선택</b
+            ><em id="header-count">00 / 05</em></span
+          >
+          <i class="header-line"><i id="header-progress"></i></i>
+        </div>
+        <a class="home-link" href="Home.html">감정 선택으로 돌아가기 ↗</a>
+      </header>
+
+      <main class="experience">
+        <section
+          class="screen music-screen is-active"
+          id="music-screen"
+          aria-labelledby="music-title"
+          aria-hidden="false"
+        >
+          <div class="music-copy">
+            <p class="screen-kicker">樂 · 움직임의 시작</p>
+            <h1 class="display-title music-title" id="music-title"
+              ><span>어떤 곡으로</span><span>시작할까요?</span></h1
+            >
+            <p class="display-copy"
+              >음악이 흐르면 자유롭게 움직이고, 멈추는 순간의 자세를 다섯 번
+              남깁니다. 곡에 마우스를 올리거나 키보드로 포커스하면 잠시 미리
+              들을 수 있어요.</p
+            >
+          </div>
+          <div class="music-list-wrap">
+            <ol class="music-list" id="music-list">
+              <li
+                ><button
+                  class="track-button"
+                  type="button"
+                  aria-pressed="false"
+                  data-file="Carmen.mp3"
+                  data-name="카르멘"
+                  data-bpm="128"
+                  ><span class="track-index">01</span
+                  ><span class="track-name">카르멘</span
+                  ><img
+                    class="track-mark"
+                    src="assets/characters/pleasure.webp"
+                    width="384"
+                    height="384"
+                    alt=""
+                    decoding="async" /></button
+              ></li>
+              <li
+                ><button
+                  class="track-button"
+                  type="button"
+                  aria-pressed="false"
+                  data-file="Cancan.mp3"
+                  data-name="캉캉"
+                  data-bpm="132"
+                  ><span class="track-index">02</span
+                  ><span class="track-name">캉캉</span
+                  ><img
+                    class="track-mark"
+                    src="assets/characters/pleasure.webp"
+                    width="384"
+                    height="384"
+                    alt=""
+                    decoding="async" /></button
+              ></li>
+              <li
+                ><button
+                  class="track-button"
+                  type="button"
+                  aria-pressed="false"
+                  data-file="Nutcracker.mp3"
+                  data-name="호두까기 인형"
+                  data-bpm="116"
+                  ><span class="track-index">03</span
+                  ><span class="track-name">호두까기 인형</span
+                  ><img
+                    class="track-mark"
+                    src="assets/characters/pleasure.webp"
+                    width="384"
+                    height="384"
+                    alt=""
+                    decoding="async" /></button
+              ></li>
+              <li
+                ><button
+                  class="track-button"
+                  type="button"
+                  aria-pressed="false"
+                  data-file="HungarianDance.mp3"
+                  data-name="헝가리 무곡"
+                  data-bpm="126"
+                  ><span class="track-index">04</span
+                  ><span class="track-name">헝가리 무곡</span
+                  ><img
+                    class="track-mark"
+                    src="assets/characters/pleasure.webp"
+                    width="384"
+                    height="384"
+                    alt=""
+                    decoding="async" /></button
+              ></li>
+              <li
+                ><button
+                  class="track-button"
+                  type="button"
+                  aria-pressed="false"
+                  data-file="SpringVoice.mp3"
+                  data-name="봄의 소리"
+                  data-bpm="120"
+                  ><span class="track-index">05</span
+                  ><span class="track-name">봄의 소리</span
+                  ><img
+                    class="track-mark"
+                    src="assets/characters/pleasure.webp"
+                    width="384"
+                    height="384"
+                    alt=""
+                    decoding="async" /></button
+              ></li>
+            </ol>
+            <p class="track-note" id="track-note" aria-live="polite"
+              >한 곡을 선택해주세요.</p
+            >
+            <button
+              class="text-action primary music-next"
+              type="button"
+              id="music-next"
+              disabled
+              >이 음악으로 움직이기 ↗</button
+            >
+          </div>
+        </section>
+
+        <section
+          class="screen guide-screen"
+          id="guide-screen"
+          aria-labelledby="guide-title"
+          aria-hidden="true"
+          inert
+        >
+          <div>
+            <p class="screen-kicker">樂 · 카메라 안내</p>
+            <h2 class="display-title guide-title" id="guide-title"
+              >음악에 맞춰,<br />내 맘대로.</h2
+            >
+            <div
+              class="pose-strip"
+              id="pose-strip"
+              aria-label="다섯 번의 정지 자세"
+            ></div>
+          </div>
+          <div class="guide-details">
+            <p
+              >음악이 멈추면,<br />화면에 보이는 자세를 따라 하거나<br />당신만의
+              자세로 잠시 멈춰주세요.<br />3 · 2 · 1이 끝나면 그 자세를
+              남깁니다.</p
+            >
+            <p class="guide-assurance">닮아도, 달라도 괜찮아요.</p>
+            <p class="permission"
+              >카메라 영상과 포착된 자세는 브라우저 내부에서만 처리됩니다.<br />영상과
+              이미지는 서버로 전송하거나 저장하지 않습니다.</p
+            >
+            <div class="guide-actions">
+              <button
+                class="text-action primary"
+                type="button"
+                id="camera-start"
+                >카메라를 켜고 시작하기 ↗</button
+              >
+              <button class="text-action" type="button" id="pointer-start"
+                >카메라 없이 움직이기</button
+              >
+              <button class="text-action" type="button" id="guide-back"
+                >음악 다시 고르기</button
+              >
+            </div>
+          </div>
+        </section>
+
+        <section
+          class="screen live-screen"
+          id="live-screen"
+          aria-label="움직이고 멈추는 락 체험"
+          aria-hidden="true"
+          inert
+        >
+          <video
+            class="camera-video"
+            id="camera-video"
+            playsinline
+            muted
+          ></video>
+          <div class="pointer-field" id="pointer-field"></div>
+          <canvas class="fx-canvas" id="fx-canvas"></canvas>
+          <div class="live-vignette" aria-hidden="true"></div>
+          <div class="live-meta">
+            <p class="now-playing" id="now-playing">樂 · 음악</p>
+            <p
+              class="live-state"
+              id="live-state"
+              role="status"
+              aria-live="polite"
+              >준비 중</p
+            >
+            <p class="trace-count" id="trace-count">0 / 5</p>
+          </div>
+          <span class="live-progress" aria-hidden="true"
+            ><i id="live-progress"></i
+          ></span>
+          <p class="presence-note" id="presence-note"
+            >화면 안으로 조금만 들어와 주세요.</p
+          >
+          <p
+            class="center-message"
+            id="center-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+          <aside
+            class="pose-preview"
+            id="pose-preview"
+            role="img"
+            aria-label="다음 자세"
+            aria-hidden="true"
+          >
+            <svg
+              id="pose-preview-svg"
+              viewBox="0 0 120 180"
+              aria-hidden="true"
+            ></svg>
+            <div class="pose-preview-text">
+              <p class="pose-preview-label">다음 자세</p>
+              <p class="pose-preview-name" id="pose-preview-name"></p>
+              <p class="pose-preview-copy">닮아도, 달라도 괜찮아요.</p>
+            </div>
+          </aside>
+          <button class="live-reset" type="button" id="live-reset"
+            >처음부터 ↗</button
+          >
+          <div class="flash" id="flash" aria-hidden="true"></div>
+          <div class="scan-line" id="scan-line" aria-hidden="true"></div>
+          <div class="dance-companion" id="dance-companion">
+            <img
+              id="dance-character"
+              src="assets/characters/pleasure-01.webp"
+              width="256"
+              height="256"
+              alt=""
+              loading="lazy"
+            />
+            <span id="dance-character-caption">나란히 준비해요.</span>
+          </div>
+        </section>
+
+        <section
+          class="screen finale-screen"
+          id="finale-screen"
+          aria-labelledby="finale-title"
+          aria-hidden="true"
+          inert
+        >
+          <div>
+            <p class="screen-kicker">樂 · 다섯 순간</p>
+            <h2 class="display-title finale-title" id="finale-title"
+              ><span>한 곡 더</span><span>갈까요?</span></h2
+            >
+          </div>
+          <div class="finale-side">
+            <p>당신이 멈춘 다섯 순간도<br />잠시 함께 춤추고 있었습니다.</p>
+            <div class="finale-actions">
+              <button
+                class="text-action primary"
+                type="button"
+                id="again-button"
+                >다시 춤추기 ↗</button
+              >
+              <button class="text-action" type="button" id="change-music-button"
+                >다른 음악 고르기</button
+              >
+              <a class="text-action" href="Home.html">Home으로 돌아가기</a>
+            </div>
+          </div>
+        </section>
+      </main>
+      <div class="transition-mark" id="transition-mark" aria-hidden="true"
+        ><span>樂</span></div
+      >
+      <audio id="music" preload="metadata"></audio>
+    </div>
+
+    <script>(()=>{"use strict";const COLORS=["#4ba86a","#f2c230","#ef4b3d","#4d86c6","#173f27"];const STOP_TARGETS=[6,12.5,19,25.5,32];const STOP_CUE_MS=500;const STOP_COUNTDOWN_SECONDS=3;const reducedMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;const customCursor=document.querySelector("#cursor");addEventListener("pointermove",event=>{customCursor.style.left=`${event.clientX}px`;customCursor.style.top=`${event.clientY}px`},{passive:true});addEventListener("pointerover",event=>{if(event.target.closest("button,a"))customCursor.classList.add("active")});addEventListener("pointerout",event=>{if(event.target.closest("button,a"))customCursor.classList.remove("active")});const screens={music:document.querySelector("#music-screen"),guide:document.querySelector("#guide-screen"),live:document.querySelector("#live-screen"),finale:document.querySelector("#finale-screen")};const audio=document.querySelector("#music");const companion=document.querySelector("#dance-companion");const danceCharacter=document.querySelector("#dance-character");const video=document.querySelector("#camera-video");const live=screens.live;const canvas=document.querySelector("#fx-canvas");const ctx=canvas.getContext("2d");const message=document.querySelector("#center-message");const liveState=document.querySelector("#live-state");const traceCount=document.querySelector("#trace-count");const liveProgress=document.querySelector("#live-progress");const presenceNote=document.querySelector("#presence-note");const posePreview=document.querySelector("#pose-preview");const posePreviewSvg=document.querySelector("#pose-preview-svg");const posePreviewName=document.querySelector("#pose-preview-name");const transitionMark=document.querySelector("#transition-mark");const flash=document.querySelector("#flash");const scanLine=document.querySelector("#scan-line");const headerPhase=document.querySelector("#header-phase");const headerCount=document.querySelector("#header-count");const headerProgress=document.querySelector("#header-progress");const POSES=[{name:"자유롭게 멈추기",alt:"자유롭게 멈춘 자세",icon:"free"},{name:"만세 자세",alt:"두 팔을 위로 올린 만세 자세",icon:"up"},{name:"한쪽으로 기울기",alt:"몸과 팔을 한쪽으로 기울인 자세",icon:"lean"},{name:"로봇 자세",alt:"한 손은 위, 다른 손은 옆으로 뻗은 로봇 자세",icon:"robot"},{name:"가장 큰 자유 자세",alt:"몸과 팔을 최대한 크게 펼친 자세",icon:"big"}];function poseMarkup(type,mini=false){const joint=(x,y)=>`<circle class="pose-joint" cx="${x}" cy="${y}" r="${mini?3.2:4}"/>`;const head=`<circle class="pose-stroke" cx="60" cy="27" r="11"/>`;const shapes={free:`<path class="pose-stroke" d="M60 39L58 91M58 55L31 72M58 57L88 48M58 91L39 139M58 91L82 137"/>${joint(58,55)}${joint(58,91)}`,up:`<path class="pose-stroke" d="M60 39L60 94M60 56L35 24M60 56L85 24M60 94L43 143M60 94L78 143"/>${joint(60,56)}${joint(35,24)}${joint(85,24)}`,lean:`<path class="pose-stroke" d="M60 40L76 91M68 56L35 67M68 56L98 42M76 91L63 143M76 91L98 132"/>${joint(68,56)}${joint(76,91)}`,robot:`<path class="pose-stroke" d="M60 39L60 94M60 56L34 56L34 25M60 56L88 56L105 76M60 94L43 143M60 94L79 143"/>${joint(34,56)}${joint(34,25)}${joint(88,56)}`,big:`<path class="pose-stroke" d="M60 39L60 94M60 58L18 35M60 58L102 35M60 94L25 145M60 94L96 145"/>${joint(18,35)}${joint(102,35)}${joint(25,145)}${joint(96,145)}`};return head+shapes[type]}document.querySelector("#pose-strip").innerHTML=POSES.map((pose,index)=>`\n        <div class="pose-mini">\n          <svg viewBox="0 0 120 170" role="img" aria-label="${pose.alt}">${poseMarkup(pose.icon,true)}</svg>\n          <span>${String(index+1).padStart(2,"0")}</span>\n        </div>`).join("");let selectedTrack=null;let previewTimer=0;let previewRequest=0;let previewButton=null;let stream=null;let pointerMode=false;let pointer={x:.5,y:.5,moving:false};let W=1;let H=1;let traceArea={width:1,height:1};let dpr=1;let animationId=0;let lastRenderAt=0;let timers=new Set;let stopIndex=0;let stopSchedule=[];let lastStopTarget=0;let experienceState="idle";let silhouettes=[];let climaxStartedAt=0;let movementEnergy=0;let lastPointerMoveAt=0;let lastMotionSampleAt=0;const motionCanvas=document.createElement("canvas");motionCanvas.width=48;motionCanvas.height=36;const motionCtx=motionCanvas.getContext("2d",{willReadFrequently:true});let previousLuma=new Uint8Array(48*36);let hasMotionSample=false;let audioContext=null;function later(fn,delay){const id=setTimeout(()=>{timers.delete(id);fn()},delay);timers.add(id);return id}function clearTimers(){timers.forEach(id=>clearTimeout(id));timers.clear();clearTimeout(previewTimer);previewTimer=0}function setHeader(phase,count,percent){headerPhase.textContent=phase;headerCount.textContent=count;headerProgress.style.width=`${percent}%`}function showScreen(screen,withTransition=true){Object.values(screens).forEach(item=>{const active=item===screen;item.classList.toggle("is-active",active);item.setAttribute("aria-hidden",active?"false":"true");item.toggleAttribute("inert",!active)});if(withTransition){transitionMark.classList.remove("is-active");void transitionMark.offsetWidth;transitionMark.classList.add("is-active")}if(screen===live)startRender();else stopRender()}function showMessage(text,duration=0,small=false,countdown=false){message.textContent=text;message.classList.toggle("is-small",small);message.classList.toggle("is-countdown",countdown);message.classList.add("is-visible");if(duration)later(()=>message.classList.remove("is-visible"),duration)}function setLiveState(text){liveState.textContent=text;syncDanceCharacter()}function syncDanceCharacter(){const dancing=(experienceState==="dance"||experienceState==="climax")&&!audio.paused&&!document.hidden;const frozen=experienceState==="hold"||experienceState==="stamp";companion.classList.toggle("is-dancing",dancing);companion.style.setProperty("--character-beat",`${60/(selectedTrack?.bpm||120)}s`);const file=frozen?"pleasure-04.webp":dancing?"pleasure.webp":"pleasure-01.webp";if(!danceCharacter.getAttribute("src").endsWith(file))danceCharacter.src=`assets/characters/${file}`;document.querySelector("#dance-character-caption").textContent=frozen?"나도 잠깐 멈출게요.":dancing?"같이 움직여요.":"나란히 준비해요.";if(previewButton)previewButton.classList.toggle("is-previewing",experienceState==="preview"&&!audio.paused&&!document.hidden)}audio.addEventListener("playing",syncDanceCharacter);audio.addEventListener("pause",syncDanceCharacter);audio.addEventListener("ended",syncDanceCharacter);function stopPreview(){previewRequest+=1;clearTimeout(previewTimer);previewTimer=0;previewButton?.classList.remove("is-previewing");previewButton=null;if(experienceState==="preview"){audio.pause();audio.currentTime=0;experienceState="idle"}}async function previewTrack(button){if(!screens.music.classList.contains("is-active"))return;if(previewButton===button&&experienceState==="preview")return;stopPreview();const request=previewRequest;previewButton=button;button.style.setProperty("--character-beat",`${60/Number(button.dataset.bpm)}s`);experienceState="preview";audio.loop=false;audio.volume=.45;audio.src=button.dataset.file;audio.currentTime=0;document.querySelector("#track-note").textContent=`${button.dataset.name} · 5초 미리 듣기`;try{await audio.play();if(request!==previewRequest)return;syncDanceCharacter();previewTimer=setTimeout(()=>{stopPreview();document.querySelector("#track-note").textContent=selectedTrack?`${selectedTrack.name}을 선택했습니다.`:"미리듣기가 끝났어요. 한 곡을 골라주세요."},5e3)}catch{if(request!==previewRequest)return;stopPreview();document.querySelector("#track-note").textContent="소리가 나지 않으면 곡을 한 번 눌러주세요."}}document.querySelectorAll(".track-button").forEach(button=>{button.addEventListener("pointerenter",()=>previewTrack(button));button.addEventListener("focus",()=>previewTrack(button));button.addEventListener("pointerleave",()=>{if(previewButton===button)stopPreview()});button.addEventListener("blur",()=>{if(previewButton===button)stopPreview()});button.addEventListener("click",()=>{stopPreview();selectedTrack={file:button.dataset.file,name:button.dataset.name,bpm:Number(button.dataset.bpm)};document.querySelectorAll(".track-button").forEach(item=>{const selected=item===button;item.classList.toggle("is-selected",selected);item.setAttribute("aria-pressed",selected?"true":"false")});document.querySelector("#track-note").textContent=`${selectedTrack.name}을 선택했습니다.`;document.querySelector("#music-next").disabled=false;previewTrack(button)})});document.querySelector("#music-next").addEventListener("click",()=>{if(!selectedTrack)return;stopPreview();setHeader("樂 · 카메라 안내","00 / 05",8);showScreen(screens.guide)});document.querySelector("#guide-back").addEventListener("click",()=>{setHeader("樂 · 음악 선택","00 / 05",0);showScreen(screens.music)});async function primeAudio(){audio.pause();audio.src=selectedTrack.file;audio.loop=true;audio.volume=.78;audio.currentTime=0;try{await audio.play();audio.pause();audio.currentTime=0}catch{}}function ensureAudioContext(){if(!audioContext)audioContext=new(window.AudioContext||window.webkitAudioContext);if(audioContext.state==="suspended")audioContext.resume()}function stampSound(){try{ensureAudioContext();const start=audioContext.currentTime;const oscillator=audioContext.createOscillator();const gain=audioContext.createGain();oscillator.type="square";oscillator.frequency.setValueAtTime(150,start);oscillator.frequency.exponentialRampToValueAtTime(65,start+.07);gain.gain.setValueAtTime(.07,start);gain.gain.exponentialRampToValueAtTime(.001,start+.09);oscillator.connect(gain).connect(audioContext.destination);oscillator.start(start);oscillator.stop(start+.1)}catch{}}async function begin(usePointer){if(!selectedTrack)return;cleanupExperience(false);pointerMode=usePointer;live.classList.toggle("is-pointer",usePointer);await primeAudio();if(!usePointer){try{stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:640,max:640},height:{ideal:480,max:480},facingMode:"user"},audio:false});video.srcObject=stream;await video.play()}catch(error){console.warn("카메라를 열 수 없어 마우스 체험으로 전환합니다.",error);pointerMode=true;live.classList.add("is-pointer")}}document.querySelector("#now-playing").textContent=`樂 · ${selectedTrack.name}`;setHeader("樂 · 준비","00 / 05",12);showScreen(live);resizeCanvas();experienceState="ready";setLiveState("준비 중");traceCount.textContent="0 / 5";presenceNote.hidden=pointerMode;showMessage(pointerMode?"마우스를 움직이며 몸의 리듬을 그려보세요.":"화면 안으로 조금만 들어와 주세요.",1300,true);later(runReadySequence,1400)}async function runReadySequence(){if(experienceState!=="ready")return;presenceNote.hidden=true;showMessage("곧 음악이 시작됩니다.",900,true);await wait(900);for(const number of["3","2","1"]){if(experienceState!=="ready")return;showMessage(number,0,true);await wait(680)}message.classList.remove("is-visible");startDance()}function wait(ms){return new Promise(resolve=>later(resolve,ms))}function startDance(){experienceState="dance";stopIndex=0;lastStopTarget=0;stopSchedule=STOP_TARGETS.map(seconds=>seconds+(Math.random()*.4-.2));setLiveState("움직여요");setHeader("樂 · 움직여요","00 / 05",16);showMessage("움직여요.",1800);audio.currentTime=0;audio.loop=true;audio.play().catch(()=>showMessage("화면을 한 번 눌러 음악을 시작해주세요.",2200,true));scheduleStop()}function scheduleStop(){if(stopIndex>=5||experienceState!=="dance")return;const gap=Math.max(4,stopSchedule[stopIndex]-lastStopTarget)*1e3;if(stopIndex>0)later(()=>showPosePreview(stopIndex),Math.max(0,gap-3e3));later(beginStop,gap)}function showPosePreview(index){if(experienceState!=="dance")return;const pose=POSES[index];posePreviewSvg.innerHTML=poseMarkup(pose.icon);posePreviewName.textContent=pose.name;posePreview.setAttribute("aria-label",`다음 자세: ${pose.alt}. 닮아도, 달라도 괜찮아요.`);posePreview.setAttribute("aria-hidden","false");posePreview.classList.add("is-visible");updateTraceArea();setLiveState("다음 자세")}function hidePosePreview(){posePreview.classList.remove("is-visible");posePreview.setAttribute("aria-hidden","true");updateTraceArea()}function updateTraceArea(){traceArea={width:W,height:H};if(posePreview.classList.contains("is-visible")){if(posePreview.offsetWidth>W*.6){traceArea.height=Math.max(1,posePreview.offsetTop-20)}else{traceArea.width=Math.max(1,posePreview.offsetLeft-20)}}message.style.left=`${traceArea.width/2}px`;message.style.top=`${traceArea.height/2}px`;message.style.maxWidth=`${Math.max(1,traceArea.width-32)}px`}function beginStop(){if(experienceState!=="dance")return;experienceState="hold";audio.pause();setLiveState("멈춰요");setHeader("樂 · 멈춰요",`${String(stopIndex+1).padStart(2,"0")} / 05`,20+stopIndex*13);showMessage("그대로, 잠깐!",0,true,true);later(()=>runStopCountdown(STOP_COUNTDOWN_SECONDS),STOP_CUE_MS)}function runStopCountdown(remaining){if(experienceState!=="hold")return;if(remaining===0){captureCurrentPose();return}setLiveState("자세를 유지해 주세요");showMessage(String(remaining),0,false,true);later(()=>runStopCountdown(remaining-1),1e3)}function captureCurrentPose(){if(experienceState!=="hold")return;experienceState="stamp";let silhouette;let captureKind=pointerMode?"silhouette":"photo";try{silhouette=pointerMode?createPointerSilhouette(COLORS[stopIndex]):createVideoSnapshot()}catch(error){console.warn("정지 이미지를 만들 수 없어 단순 실루엣으로 대신합니다.",error);silhouette=createPointerSilhouette(COLORS[stopIndex]);captureKind="silhouette"}silhouettes.push({canvas:silhouette,color:COLORS[stopIndex],kind:captureKind,visible:true,createdAt:performance.now()});traceCount.textContent=`${silhouettes.length} / 5`;flash.classList.remove("is-active");scanLine.classList.remove("is-active");void flash.offsetWidth;flash.classList.add("is-active");scanLine.classList.add("is-active");stampSound();showMessage(stopIndex===0?"첫 번째 순간이 남았습니다.":"당신의 방식으로 멈췄습니다.",1e3,true);later(()=>{hidePosePreview();lastStopTarget=stopSchedule[stopIndex];stopIndex+=1;if(stopIndex<5){experienceState="dance";setLiveState("움직여요");setHeader("樂 · 움직여요",`${String(stopIndex).padStart(2,"0")} / 05`,24+stopIndex*13);audio.play().catch(()=>{});scheduleStop()}else{startClimax()}},reducedMotion?450:1050)}function startClimax(){experienceState="climax";climaxStartedAt=performance.now();setLiveState("함께 움직여요");setHeader("樂 · 다섯 자세와 함께","05 / 05",88);showMessage("다섯 순간과 함께 움직여요.",1800,true);audio.play().catch(()=>{});later(finishDance,13500)}function finishDance(){if(experienceState!=="climax")return;experienceState="ending";audio.pause();setLiveState("흔적을 놓아주는 중");setHeader("樂 · 끝맺기","05 / 05",100);silhouettes.forEach((silhouette,index)=>later(()=>{silhouette.visible=false},index*420));later(()=>{clearSilhouettes();stopCamera();setHeader("樂 · 다섯 순간","05 / 05",100);showScreen(screens.finale);experienceState="complete"},reducedMotion?800:2800)}function drawImageCover(target,source,width,height){const sw=source.videoWidth||640;const sh=source.videoHeight||480;const scale=Math.max(width/sw,height/sh);const dw=sw*scale;const dh=sh*scale;target.drawImage(source,(width-dw)/2,(height-dh)/2,dw,dh)}function createVideoSnapshot(){const result=document.createElement("canvas");result.width=320;result.height=240;const out=result.getContext("2d");out.save();out.translate(result.width,0);out.scale(-1,1);drawImageCover(out,video,result.width,result.height);out.restore();return result}function createPointerSilhouette(color){const result=document.createElement("canvas");result.width=240;result.height=180;const out=result.getContext("2d");const rgb=color;const lean=(pointer.x-.5)*28;out.strokeStyle=rgb;out.fillStyle=rgb;out.lineWidth=16;out.lineCap="round";out.beginPath();out.arc(120+lean*.35,38,18,0,Math.PI*2);out.fill();out.beginPath();out.moveTo(120+lean*.35,59);out.lineTo(120+lean,111);out.moveTo(120+lean*.55,72);out.lineTo(58+pointer.x*25,61+pointer.y*28);out.moveTo(120+lean*.55,72);out.lineTo(182-pointer.x*25,48+pointer.y*35);out.moveTo(120+lean,109);out.lineTo(81,161);out.moveTo(120+lean,109);out.lineTo(164,160);out.stroke();return result}function resizeCanvas(){const rect=live.getBoundingClientRect();W=Math.max(1,rect.width);H=Math.max(1,rect.height-companion.offsetHeight);updateTraceArea();dpr=Math.min(devicePixelRatio||1,2);const width=Math.round(W*dpr);const height=Math.round(H*dpr);if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;canvas.style.width=`${W}px`;canvas.style.height=`${H}px`}}function sampleMovement(now){if(now-lastMotionSampleAt<90)return;lastMotionSampleAt=now;if(pointerMode){movementEnergy+=((performance.now()-lastPointerMoveAt<140?.12:0)-movementEnergy)*.35;return}if(!video.videoWidth)return;motionCtx.save();motionCtx.translate(48,0);motionCtx.scale(-1,1);drawImageCover(motionCtx,video,48,36);motionCtx.restore();const pixels=motionCtx.getImageData(0,0,48,36).data;let difference=0;for(let index=0;index<previousLuma.length;index++){const i=index*4;const luminance=pixels[i]*.299+pixels[i+1]*.587+pixels[i+2]*.114;if(hasMotionSample)difference+=Math.abs(luminance-previousLuma[index]);previousLuma[index]=luminance}hasMotionSample=true;const next=Math.min(.2,difference/previousLuma.length/255);movementEnergy+=(next-movementEnergy)*.32;if(experienceState==="ready"&&next>.008)presenceNote.hidden=true}function silhouettePlacement(index,climaxTime){const base=[[.16,.74,.27],[.82,.74,.27],[.17,.26,.25],[.82,.26,.25],[.5,.51,.31]][index];let[x,y,scale]=base;if(experienceState==="climax"){const beat=60/(selectedTrack?.bpm||120);const phase=climaxTime/1e3/beat;const pulse=1+Math.max(0,Math.sin(phase*Math.PI*2))*.09;scale*=pulse;if(climaxTime>5200&&climaxTime<8500)x=1-x;if(climaxTime>9e3){const angle=index/5*Math.PI*2-Math.PI/2;x=.5+Math.cos(angle)*.28;y=.5+Math.sin(angle)*.27}if(climaxTime>12e3)scale*=1.28}const area=experienceState==="climax"?{width:W,height:H}:traceArea;return{x:x*area.width,y:y*area.height,width:scale*Math.min(area.width,area.height)}}function drawSilhouettes(now){const climaxTime=experienceState==="climax"?now-climaxStartedAt:0;silhouettes.forEach((silhouette,index)=>{if(!silhouette.visible)return;if(experienceState==="climax"&&climaxTime<index*420)return;const p=silhouettePlacement(index,climaxTime);const ratio=silhouette.canvas.height/silhouette.canvas.width;ctx.save();ctx.globalAlpha=silhouette.kind==="photo"?experienceState==="climax"?.96:.88:experienceState==="climax"?.72:.46;ctx.translate(p.x,p.y);const drawX=-p.width/2;const drawY=-p.width*ratio/2;const drawHeight=p.width*ratio;if(silhouette.kind==="photo"){ctx.fillStyle="rgba(255,255,255,.94)";ctx.fillRect(drawX-5,drawY-5,p.width+10,drawHeight+10)}ctx.drawImage(silhouette.canvas,drawX,drawY,p.width,drawHeight);if(silhouette.kind==="photo"){ctx.globalAlpha=1;ctx.strokeStyle=silhouette.color;ctx.lineWidth=Math.max(2,p.width*.012);ctx.strokeRect(drawX,drawY,p.width,drawHeight)}ctx.restore()})}function drawMotionField(now){const energy=Math.min(1,movementEnergy*12);ctx.save();ctx.strokeStyle="rgba(75,168,106,.78)";ctx.lineWidth=1.2;for(let line=0;line<3;line++){const offset=(line-1)*(18+energy*26);ctx.beginPath();ctx.moveTo(0,H*.5+offset);for(let x=0;x<=W;x+=40){const wave=Math.sin(x*.012+now*.003+line)*energy*18;ctx.lineTo(x,H*.5+offset+wave)}ctx.stroke()}if(pointerMode){ctx.fillStyle="#4ba86a";ctx.beginPath();ctx.arc(pointer.x*W,pointer.y*H,5+energy*12,0,Math.PI*2);ctx.fill()}ctx.restore()}function render(now){animationId=0;if(document.hidden||!live.classList.contains("is-active"))return;if(now-lastRenderAt<1e3/30){animationId=requestAnimationFrame(render);return}lastRenderAt=now;sampleMovement(now);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);if(live.classList.contains("is-active")){drawSilhouettes(now);if(experienceState==="dance"||experienceState==="climax")drawMotionField(now);if(experienceState==="dance"){const progress=stopIndex===0?0:stopIndex/5;liveProgress.style.width=`${Math.min(100,12+progress*68)}%`}else if(experienceState==="climax"){liveProgress.style.width=`${Math.min(100,88+(now-climaxStartedAt)/13500*12)}%`}}animationId=requestAnimationFrame(render)}function startRender(){if(!animationId&&!document.hidden)animationId=requestAnimationFrame(render)}function stopRender(){if(!animationId)return;cancelAnimationFrame(animationId);animationId=0}function stopCamera(){if(stream)stream.getTracks().forEach(track=>track.stop());stream=null;video.pause();video.srcObject=null}function clearSilhouettes(){silhouettes.forEach(item=>{item.canvas.width=0;item.canvas.height=0});silhouettes.length=0;traceCount.textContent="0 / 5"}function cleanupExperience(clearTrack=false){stopPreview();clearTimers();audio.pause();audio.currentTime=0;stopCamera();clearSilhouettes();hidePosePreview();message.classList.remove("is-visible");flash.classList.remove("is-active");scanLine.classList.remove("is-active");liveProgress.style.width="0";experienceState="idle";syncDanceCharacter();stopIndex=0;movementEnergy=0;hasMotionSample=false;previousLuma.fill(0);if(clearTrack)selectedTrack=null}document.querySelector("#camera-start").addEventListener("click",()=>begin(false));function advancePleasureStage(){if(screens.music.classList.contains("is-active")){if(!selectedTrack)return false;document.querySelector("#music-next").click()}else if(screens.guide.classList.contains("is-active")){return begin(false)}else if(live.classList.contains("is-active")){if(experienceState==="ready"){clearTimers();startDance()}else if(experienceState==="dance"){clearTimers();showPosePreview(stopIndex);beginStop()}else if(experienceState==="hold"){clearTimers();captureCurrentPose()}else if(experienceState==="climax"){clearTimers();finishDance()}else return false}else return false;return true}ExhibitionNavigation.onAdvance(advancePleasureStage);document.querySelector("#pointer-start").addEventListener("click",()=>begin(true));document.querySelector("#live-reset").addEventListener("click",()=>{cleanupExperience(false);setHeader("樂 · 카메라 안내","00 / 05",8);showScreen(screens.guide)});document.querySelector("#again-button").addEventListener("click",()=>begin(pointerMode));document.querySelector("#change-music-button").addEventListener("click",()=>{cleanupExperience(true);document.querySelectorAll(".track-button").forEach(button=>{button.classList.remove("is-selected");button.setAttribute("aria-pressed","false")});document.querySelector("#music-next").disabled=true;document.querySelector("#track-note").textContent="한 곡을 선택해주세요.";setHeader("樂 · 음악 선택","00 / 05",0);showScreen(screens.music)});live.addEventListener("pointermove",event=>{if(!pointerMode)return;const rect=live.getBoundingClientRect();pointer.x=Math.max(0,Math.min(1,(event.clientX-rect.left)/rect.width));pointer.y=Math.max(0,Math.min(1,(event.clientY-rect.top)/rect.height));pointer.moving=true;lastPointerMoveAt=performance.now()});live.addEventListener("pointerdown",()=>{if(experienceState==="dance"&&audio.paused)audio.play().catch(()=>{})});document.querySelectorAll('a[href="Home.html"]').forEach(link=>link.addEventListener("click",cleanupExperience));addEventListener("resize",resizeCanvas,{passive:true});window.visualViewport?.addEventListener("resize",resizeCanvas,{passive:true});addEventListener("visibilitychange",()=>{if(document.hidden)stopPreview();syncDanceCharacter();if(document.hidden)stopRender();else if(live.classList.contains("is-active"))startRender()});addEventListener("pagehide",()=>{cleanupExperience(false);stopRender();if(audioContext&&audioContext.state!=="closed")audioContext.close()})})();</script>
+    <script>(()=>{if(window.top!==window.self)return;if(window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker"in navigator){navigator.serviceWorker.register(new URL("exhibition-font-cache.js",document.baseURI),{scope:new URL("./",document.baseURI).href,updateViaCache:"none"}).catch(()=>{})}const IDLE_LIMIT=5*60*1e3;const INTRO_URL=new URL("index.html",document.baseURI).href;let idleTimer;let lastPointerReset=0;function stopMedia(){document.querySelectorAll("audio, video").forEach(media=>{try{media.pause()}catch{}const stream=media.srcObject;if(stream&&typeof stream.getTracks==="function"){stream.getTracks().forEach(track=>track.stop())}})}function returnToIntro(){stopMedia();location.replace(INTRO_URL)}function resetIdleTimer(){clearTimeout(idleTimer);idleTimer=setTimeout(returnToIntro,IDLE_LIMIT)}function resetFromPointerMove(){const now=Date.now();if(now-lastPointerReset<500)return;lastPointerReset=now;resetIdleTimer()}["pointerdown","keydown","wheel","touchstart","input"].forEach(eventName=>{addEventListener(eventName,resetIdleTimer,{passive:true})});addEventListener("pointermove",resetFromPointerMove,{passive:true});addEventListener("pageshow",resetIdleTimer);addEventListener("pagehide",()=>clearTimeout(idleTimer));resetIdleTimer()})();</script>
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>애 · 슬픔 곁에 머물다 — 감정을 마주하다</title>
+    <style>@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-1Thin.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-3Light.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-4Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-5Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-7Bold.woff2') format('woff2');font-weight:700 900;font-style:normal;font-display:swap;}@font-face{font-family:Inter;src:url('./assets/fonts/InterLatin-v20.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2191,
+          U+2193, U+2212;}</style>
+    <style>:root{--paper:#fff;--ink:#111;--muted:#77716d;--line:rgba(17, 17, 17, 0.16);--sorrow:#4d86c6;--sorrow-faint:rgba(77, 134, 198, 0.14);}*{box-sizing:border-box;}html,
+      body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--paper);}body{font-family:Paperlogy, sans-serif;color:var(--ink);font-weight:300;user-select:none;}button,
+      input,
+      textarea,
+      a{font:inherit;color:inherit;}button:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible,
+      a:focus-visible{outline:1px solid var(--ink);outline-offset:5px;}.latin,
+      .stage-index,
+      .top-progress,
+      .counter{font-family:Inter, sans-serif;}.app{position:relative;width:100vw;height:100vh;min-height:620px;overflow:hidden;background:var(--paper);isolation:isolate;}.app::before{content:'';position:absolute;left:0;right:0;top:62px;height:1px;background:var(--line);z-index:80;}.topbar{position:absolute;left:0;right:0;top:0;z-index:90;height:62px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 32px;background:rgba(255, 255, 255, 0.97);}.brand,
+      .home-link{color:var(--ink);text-decoration:none;font-size:12px;}.brand{font-weight:500;}.home-link{justify-self:end;color:var(--muted);transition:color 0.2s;}.home-link:hover{color:var(--sorrow);}.top-progress{color:var(--sorrow);font-size:10px;font-weight:500;letter-spacing:0.14em;}.intro{position:absolute;inset:0;z-index:100;display:grid;place-items:center;background:#fff;transition:opacity 0.55s ease,
+          visibility 0.55s ease;}.intro.hide{opacity:0;visibility:hidden;}.intro-inner{text-align:center;}.intro .intro-mark{margin:0;color:var(--sorrow);font-size:112px;font-weight:100;line-height:0.9;}.intro h1{margin:26px 0 14px;font-size:34px;font-weight:500;letter-spacing:-0.035em;line-height:1.12;word-break:keep-all;overflow-wrap:anywhere;}.intro p{margin:0;color:var(--muted);font-size:14px;line-height:1.75;}.text-action{position:relative;border:0;border-bottom:1px solid currentColor;padding:0 0 5px;background:transparent;color:var(--ink);font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;}.text-action::after{content:'';position:absolute;left:0;right:100%;bottom:-1px;height:2px;background:var(--sorrow);transition:right 0.38s cubic-bezier(0.16, 1, 0.3, 1);}.text-action:hover::after,
+      .text-action:focus-visible::after{right:0;}.intro .text-action{margin-top:28px;}.stage{position:absolute;inset:0;z-index:5;display:none;padding:94px 5vw 32px;background:var(--paper);}.stage.on{display:block;animation:stage-in 0.52s cubic-bezier(0.16, 1, 0.3, 1);}@keyframes stage-in{from{opacity:0;transform:translateY(9px);}to{opacity:1;transform:none;}}.stage-index{position:absolute;left:5vw;top:94px;margin:0;color:var(--sorrow);font-size:10px;font-weight:500;letter-spacing:0.14em;}.stage-title{position:absolute;margin:0;font-size:clamp(40px, 4.6vw, 68px);font-weight:500;line-height:1.12;letter-spacing:-0.035em;word-break:keep-all;overflow-wrap:anywhere;}.stage-copy{position:absolute;margin:0;color:var(--muted);font-size:14px;line-height:1.72;word-break:keep-all;}.privacy{position:absolute;right:5vw;bottom:26px;margin:0;color:#898984;font-size:10px;line-height:1.55;text-align:right;}.cursor{display:none;}.sorrow-transition{position:fixed;inset:0;z-index:200;pointer-events:none;visibility:hidden;background:#fff;opacity:0;}.sorrow-transition::before{content:'';position:absolute;left:0;top:50%;width:100%;height:1px;background:var(--sorrow);transform:scaleX(0);transform-origin:left;}.sorrow-transition span{position:absolute;left:50%;top:50%;z-index:1;padding:0 22px;background:#fff;color:var(--sorrow);font-size:58px;font-weight:100;line-height:1;opacity:0;transform:translate(-50%, -50%);}.sorrow-transition.play{visibility:visible;animation:transition-surface 0.9s ease both;}.sorrow-transition.play::before{animation:transition-line 0.9s cubic-bezier(0.16, 1, 0.3, 1);}.sorrow-transition.play span{animation:transition-mark 0.9s ease;}@keyframes transition-line{0%{transform:scaleX(0);opacity:0;}36%{transform:scaleX(1);opacity:1;}70%{transform-origin:right;transform:scaleX(1);opacity:1;}100%{transform-origin:right;transform:scaleX(0);opacity:0;}}@keyframes transition-mark{0%,
+        22%,
+        100%{opacity:0;}38%,
+        66%{opacity:1;}}@keyframes transition-surface{0%{opacity:0;}16%,
+        78%{opacity:1;}100%{opacity:0;}}.write-title{left:8.5%;top:24%;width:43%;}.write-copy{left:9%;bottom:12%;max-width:330px;}.keyword-cluster{position:absolute;left:47%;right:6%;top:18%;bottom:24%;}.keyword-prompt{position:absolute;left:4%;top:-3%;margin:0;color:var(--muted);font-size:14px;line-height:1.6;}.keyword-list{position:absolute;inset:11% 0 0;}.keyword{position:absolute;border:0;padding:8px 0;background:transparent;color:var(--sorrow);font-size:clamp(20px, 2.25vw, 33px);font-weight:300;letter-spacing:-0.045em;cursor:pointer;opacity:var(--breath-high, 0.88);animation:keyword-breathe var(--breath-duration, 7s) ease-in-out
+          var(--breath-delay, 0s) infinite alternate;transition:color 0.25s ease,
+          transform 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.45s ease;}.keyword::before,
+      .keyword::after{content:'';position:absolute;left:50%;top:50%;width:26px;height:26px;border:1px solid var(--sorrow);border-radius:50%;opacity:0;pointer-events:none;transform:translate(-50%, -50%) scale(0.4);}.keyword::after{animation-delay:0.08s;}.keyword:hover,
+      .keyword:focus-visible,
+      .keyword.selected{color:var(--sorrow);opacity:1;animation:none;transform:translateY(-2px);}.keyword:focus-visible{outline:0;}.keyword:hover::before,
+      .keyword:focus-visible::before,
+      .keyword.selected::before{animation:keyword-wave 1.05s ease-out;}.keyword:hover::after,
+      .keyword:focus-visible::after,
+      .keyword.selected::after{animation:keyword-wave 1.05s 0.1s ease-out;}.keyword-list.has-selection .keyword:not(.selected){opacity:0.13;animation:none;}@keyframes keyword-breathe{0%,
+        100%{opacity:var(--breath-low, 0.22);}50%{opacity:var(--breath-high, 0.88);}}@keyframes keyword-wave{0%{opacity:0.4;transform:translate(-50%, -50%) scale(0.35);}100%{opacity:0;transform:translate(-50%, -50%) scale(3);}}.keyword:nth-child(1){left:5%;top:3%;}.keyword:nth-child(2){left:44%;top:10%;}.keyword:nth-child(3){left:17%;top:37%;}.keyword:nth-child(4){left:58%;top:46%;}.keyword:nth-child(5){left:33%;top:72%;}.write-step{position:absolute;left:47%;right:7%;bottom:9%;opacity:0;visibility:hidden;transform:translateY(14px);transition:opacity 0.4s ease,
+          transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+          visibility 0.4s;}.write-step.visible{opacity:1;visibility:visible;transform:none;}.selected-keyword{display:inline-block;margin:0 0 10px;color:var(--sorrow);font-size:11px;letter-spacing:0.08em;}.keyword-back{margin-left:16px;border:0;border-bottom:1px solid var(--line);padding:0 0 3px;background:transparent;color:var(--muted);font-size:10px;cursor:pointer;}.write-question{display:block;margin-bottom:8px;color:var(--sorrow);font-size:14px;line-height:1.5;}.sad-text{display:block;width:100%;height:62px;resize:none;border:0;border-bottom:1px solid rgba(17, 17, 17, 0.58);outline:0;padding:7px 0 10px;background:transparent;color:var(--ink);font-size:18px;font-weight:300;line-height:1.55;user-select:text;transition:border-color 0.25s;}.sad-text:focus,
+      .sad-text:focus-visible{border-bottom-color:var(--sorrow);outline:0;}.sad-text::placeholder{color:#aaa9a4;}.input-feedback{min-height:19px;margin:7px 105px 0 0;color:var(--sorrow);font-size:11px;line-height:1.5;}.write-bottom{position:absolute;right:0;bottom:-27px;display:flex;align-items:center;gap:18px;}.char-count{color:#9a9994;font-size:9px;}.write-next:disabled{opacity:0.28;cursor:not-allowed;}.write-next:disabled::after{display:none;}.observe-title{left:7.5%;top:22%;width:38%;}.observe-copy{left:8%;bottom:12%;max-width:320px;}.ink-field{position:absolute;left:34%;right:4%;top:15%;bottom:8%;display:grid;place-items:center;overflow:hidden;cursor:crosshair;}.ink-field::after{content:'';position:absolute;left:8%;right:5%;top:50%;height:1px;background:var(--sorrow-faint);transform:scaleX(0.14);transition:transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);}.ink-field:hover::after{transform:scaleX(1);}.ink-text{position:relative;z-index:4;width:78%;border:0;padding:46px 18px;background:transparent;color:var(--ink);font-size:clamp(26px, 3.15vw, 49px);font-weight:300;line-height:1.42;text-align:left;letter-spacing:-0.05em;word-break:keep-all;white-space:pre-line;cursor:pointer;opacity:0.38;filter:blur(2px);transition:opacity 0.72s ease,
+          filter 0.72s ease,
+          letter-spacing 0.9s ease;}.ink-text::after{content:attr(data-trace);position:absolute;left:18px;right:18px;top:46px;z-index:-1;color:var(--sorrow);opacity:0;transform:translateX(-8px);transition:opacity 0.5s ease,
+          transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);white-space:pre-line;}.ink-text:focus-visible{outline:0;color:var(--sorrow);}.ink-text[data-seen='1']{opacity:0.62;filter:blur(1px);}.ink-text[data-seen='2']{opacity:0.84;filter:blur(0.35px);}.ink-text[data-seen='2']::after{opacity:0.22;transform:translateX(8px);}.ink-text[data-seen='3']{opacity:1;filter:none;letter-spacing:-0.035em;}.ink-text[data-seen='3']::after{opacity:0.09;transform:translateX(3px);}.ripple{position:absolute;z-index:2;width:28px;height:28px;border:1px solid rgba(77, 134, 198, 0.58);border-radius:50%;pointer-events:none;animation:ripple-out 1.05s ease-out forwards;}@keyframes ripple-out{to{opacity:0;transform:scale(5.4);}}.memory{position:absolute;left:8%;bottom:6%;z-index:5;max-width:390px;margin:0;color:var(--muted);font-size:12px;line-height:1.65;opacity:0;transition:opacity 0.55s;}.memory.show{opacity:1;}.ink-hint{position:absolute;right:7%;bottom:5%;z-index:5;color:var(--muted);font-size:11px;}.observe-next{position:absolute;right:7%;bottom:10%;z-index:6;opacity:0;pointer-events:none;transform:translateY(7px);transition:opacity 0.35s,
+          transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);}.observe-next.ready{opacity:1;pointer-events:auto;transform:none;}.breath-title{left:7.5%;top:25%;width:47%;}.breath-copy{left:8%;bottom:13%;max-width:345px;}.breath-wrap{position:absolute;left:35%;right:4%;top:13%;bottom:7%;overflow:hidden;cursor:pointer;touch-action:none;}.breath-wrap:focus{outline:none;}.breath-wrap:focus-visible .breath-ring{outline:2px solid var(--sorrow);outline-offset:6px;}.breath-ring{position:absolute;left:18%;top:8%;width:68%;aspect-ratio:1;border:1px solid var(--sorrow);border-left-color:transparent;border-bottom-color:rgba(77, 134, 198, 0.28);border-radius:50%;background:transparent;transform:scale(0.7);opacity:1;transition:transform 3.4s cubic-bezier(0.35, 0, 0.2, 1),
+          opacity 0.9s ease;}.breath-ring::before{content:'';position:absolute;left:8%;top:1%;width:7px;height:7px;border-radius:50%;background:var(--sorrow);}.breath-ring.inhale{transform:scale(1.08);}.breath-ring.exhale{transform:scale(0.74);transition-duration:3.7s;}.breath-character{position:absolute;width:56%;height:56%;left:22%;top:22%;object-fit:contain;pointer-events:none;transition:transform 3.4s ease-in-out;}.inhale .breath-character{transform:scale(1.04, 1.09);}.exhale .breath-character{transform:scale(1.02, 0.95);}.breath-word{position:absolute;left:50%;bottom:36px;z-index:4;color:var(--sorrow);font-size:14px;letter-spacing:-0.02em;transform:translateX(-50%);width:90%;text-align:center;line-height:1.5;pointer-events:none;}.breath-count{position:absolute;right:1%;bottom:0;color:var(--sorrow);font-size:14px;letter-spacing:0.16em;}.breath-guide{position:absolute;left:38%;bottom:5%;margin:0;color:var(--muted);font-size:14px;}.breath-guide .latin{color:var(--ink);font-weight:500;}.ink-trace{position:absolute;z-index:2;color:var(--ink);font-size:clamp(13px, 1.25vw, 18px);opacity:0.24;filter:blur(0.25px);pointer-events:none;transition:transform 3.4s cubic-bezier(0.35, 0, 0.2, 1),
+          opacity 1.5s ease,
+          filter 1.5s ease;}.breath-wrap.inhaling .ink-trace{transform:translate(var(--drift-x), var(--drift-y));}.ink-trace.fade{opacity:0.045;filter:blur(1.2px);}.ending{position:absolute;inset:0;z-index:105;display:none;background:#fff;padding:12vh 8vw;}.ending.show{display:block;animation:ending-in 1.1s ease both;}@keyframes ending-in{from{opacity:0;}to{opacity:1;}}.ending-mark{position:absolute;right:13%;top:24%;width:220px;height:220px;border:1px solid rgba(77, 134, 198, 0.42);border-left-color:transparent;border-radius:50%;}.ending-mark::after{content:'';position:absolute;right:-4px;top:49%;width:7px;height:7px;border-radius:50%;background:var(--sorrow);}.ending h2{margin:14vh 0 0;font-size:clamp(42px, 5.8vw, 82px);font-weight:500;line-height:1.12;letter-spacing:-0.035em;word-break:keep-all;overflow-wrap:anywhere;}.ending p{margin:26px 0 0;color:var(--muted);font-size:14px;line-height:1.75;}.actions{display:flex;gap:28px;margin-top:42px;}.actions button,
+      .actions a{font-size:12px;}@media (pointer: fine){html,
+        body,
+        button,
+        a,
+        .ink-field,
+        .breath-wrap{cursor:none;}.cursor{display:block;position:fixed;left:0;top:0;z-index:150;width:7px;height:7px;border-radius:50%;background:var(--sorrow);pointer-events:none;transform:translate(-50%, -50%);transition:width 0.2s,
+            height 0.2s,
+            background 0.2s,
+            border 0.2s;}.cursor.active{width:38px;height:38px;background:rgba(77, 134, 198, 0.12);border:1px solid var(--sorrow);}}@media (max-width: 900px){.stage{padding-left:4vw;padding-right:4vw;}.stage-title{font-size:clamp(44px, 7vw, 66px);}.write-title{left:6%;top:20%;width:50%;}.keyword-cluster{left:43%;right:4%;}.write-step{left:43%;right:6%;}.observe-title,
+        .breath-title{left:6%;width:44%;}.ink-field,
+        .breath-wrap{left:38%;right:3%;}}@media (max-width: 680px){.app{height:100svh;min-height:540px;}.app::before{top:56px;}.topbar{height:56px;padding:0 18px;}.brand,
+        .home-link{font-size:11px;}.top-progress{font-size:9px;}.stage{inset:0;padding:76px 18px 18px;}.stage-index{left:18px;top:76px;}.stage-title{line-height:1.12;}.stage-copy{font-size:12px;}.privacy{right:18px;bottom:14px;font-size:9px;}.intro{padding:24px;}.intro .intro-mark{font-size:86px;}.intro h1{font-size:28px;}.intro p{font-size:13px;}.write-copy{display:none;}.keyword-prompt{display:none;}.keyword-list{inset:0;}.keyword:nth-child(1){left:4%;top:0;}.keyword:nth-child(2){left:48%;top:6%;}.keyword:nth-child(3){left:14%;top:34%;}.keyword:nth-child(4){left:52%;top:46%;}.keyword:nth-child(5){left:28%;top:74%;}.write-question{font-size:13px;}.sad-text{font-size:16px;height:58px;}.input-feedback{font-size:10px;margin-right:80px;}.write-bottom{bottom:-26px;gap:12px;}.observe-copy,
+        .breath-copy{display:none;}.ink-text{padding:28px 10px;}.ink-text::after{left:10px;right:10px;top:28px;}.memory{bottom:4%;font-size:10px;}.ink-hint{bottom:4%;font-size:10px;}.breath-ring{top:8%;}.breath-word{font-size:12px;}.breath-guide{bottom:5%;text-align:left;}.breath-count{right:2%;bottom:0;}.ending{padding:11vh 24px;}.ending-mark{right:-40px;top:18%;width:180px;height:180px;}.ending h2{margin-top:19vh;}.actions{gap:22px;margin-top:34px;}body.keyboard-open .write-title{opacity:0.08;}body.keyboard-open .keyword-cluster{opacity:0.06;pointer-events:none;}body.keyboard-open .write-step{top:170px;bottom:auto;}body.keyboard-open .privacy{display:none;}}@media (max-width: 680px) and (max-height: 650px){.write-title{top:14%;}.keyword-cluster{top:28%;bottom:30%;}.write-step{bottom:8%;}.observe-title,
+        .breath-title{top:13%;}.ink-field,
+        .breath-wrap{top:31%;bottom:9%;}.ending h2{margin-top:13vh;}}@media (max-width: 680px){html,
+        body,
+        .app{width:100%;max-width:100%;overflow-x:hidden;}.topbar{gap:10px;}.brand,
+        .home-link{max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.stage{width:100%;max-width:100%;overflow:hidden;}.stage-title{left:18px;right:18px;width:auto;max-width:calc(100% - 36px);font-size:clamp(34px, 10vw, 44px);white-space:normal;}.write-title,
+        .observe-title,
+        .breath-title{left:18px;right:18px;width:auto;top:15%;}.keyword-cluster{left:18px;right:18px;top:32%;bottom:31%;}.keyword{max-width:42vw;font-size:clamp(17px, 5vw, 22px);white-space:nowrap;}.write-step{left:18px;right:18px;bottom:9%;width:auto;max-width:none;}.write-question,
+        .input-feedback,
+        .privacy,
+        .memory,
+        .ink-hint,
+        .breath-guide{word-break:keep-all;}.sad-text{width:100%;max-width:100%;min-width:0;}.write-bottom{left:0;right:0;width:100%;max-width:100%;flex-wrap:wrap;}.observe-title,
+        .breath-title{top:14%;}.ink-field,
+        .breath-wrap{left:18px;right:18px;top:31%;bottom:12%;width:auto;max-width:none;}.ink-text{width:100%;max-width:100%;font-size:clamp(21px, 6.5vw, 30px);word-break:keep-all;}.observe-next{right:0;bottom:9%;}.memory{left:0;max-width:58%;}.ink-hint{right:0;max-width:38%;text-align:right;}.breath-ring{left:calc(50% - min(33vw, 125px));width:min(66vw, 250px);}.breath-guide{left:0;right:0;max-width:76%;font-size:9.5px;}.ending{width:100%;max-width:100%;overflow:hidden;padding-left:20px;padding-right:20px;}.ending h2{max-width:100%;font-size:clamp(34px, 10vw, 48px);word-break:keep-all;}.ending p{max-width:100%;font-size:12px;word-break:keep-all;}.actions{max-width:100%;flex-wrap:wrap;}}@media (max-width: 360px){.topbar{padding-left:12px;padding-right:12px;}.stage{padding-left:12px;padding-right:12px;}.stage-index{left:12px;}.stage-title,
+        .write-title,
+        .observe-title,
+        .breath-title{left:12px;right:12px;max-width:calc(100% - 24px);font-size:32px;}.keyword-cluster,
+        .write-step,
+        .ink-field,
+        .breath-wrap{left:12px;right:12px;}.keyword{font-size:16px;}.ink-text{font-size:21px;}.ending h2{font-size:32px;}}@media (pointer: coarse){button,
+        a,
+        input,
+        textarea{touch-action:manipulation;}.ink-text,
+        .breath-wrap{touch-action:none;}.cursor{display:none;}}@media (prefers-reduced-motion: reduce){*,
+        *::before,
+        *::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}.sorrow-transition{display:none;}.ripple{display:none;}}</style>
+    <script src="exhibition-navigation.js"></script>
+  </head>
+  <body>
+    <main class="app" id="app">
+      <div class="cursor" id="cursor" aria-hidden="true"></div>
+      <div class="sorrow-transition" id="sorrow-transition" aria-hidden="true"
+        ><span>哀</span></div
+      >
+      <header class="topbar">
+        <a class="brand" href="Home.html">감정을 마주하다</a>
+        <span class="top-progress" id="top-progress">哀 · 00 / 03</span>
+        <a class="home-link" href="Home.html">감정 선택 ↗</a>
+      </header>
+
+      <section class="intro" id="intro">
+        <div class="intro-inner">
+          <p class="intro-mark">哀</p>
+          <h1>아직 마음에 남아 있나요?</h1>
+          <p
+            >단어에서 시작해 마음을 꺼내고,<br />문장을 바라본 뒤 호흡과 함께
+            천천히 놓아봅니다.</p
+          >
+          <button class="text-action" id="start" type="button"
+            >경험 시작하기 ↗</button
+          >
+        </div>
+      </section>
+
+      <section class="stage on" id="write-stage" aria-labelledby="write-title">
+        <p class="stage-index">01 / 슬픔의 단서</p>
+        <h1 class="stage-title write-title" id="write-title"
+          >어떤 말부터<br />꺼낼까요?</h1
+        >
+        <p class="stage-copy write-copy"
+          >가장 오래 머무는 단어 하나를 고르세요.<br />선택한 단어가 한 문장의
+          시작이 됩니다.</p
+        >
+        <div class="keyword-cluster">
+          <p class="keyword-prompt"
+            >지금 마음에 가장 오래 머무는 단어는 무엇인가요?</p
+          >
+          <div
+            class="keyword-list"
+            id="keyword-list"
+            aria-label="슬픔의 단서 선택"
+          >
+            <button class="keyword" type="button" data-keyword="빈자리"
+              >빈자리</button
+            >
+            <button class="keyword" type="button" data-keyword="못한 말"
+              >못한 말</button
+            >
+            <button class="keyword" type="button" data-keyword="멀어진 사람"
+              >멀어진 사람</button
+            >
+            <button class="keyword" type="button" data-keyword="마지막 장면"
+              >마지막 장면</button
+            >
+            <button class="keyword" type="button" data-keyword="괜찮은 척"
+              >괜찮은 척</button
+            >
+          </div>
+        </div>
+        <div class="write-step" id="write-step" aria-hidden="true">
+          <span class="selected-keyword" id="selected-keyword"></span>
+          <button class="keyword-back" id="keyword-back" type="button"
+            >단어 다시 고르기</button
+          >
+          <label class="write-question" for="sad-text" id="write-question"
+            >떠오르는 장면을 적어보세요.</label
+          >
+          <textarea
+            class="sad-text"
+            id="sad-text"
+            maxlength="120"
+            placeholder="떠오른 장면을 한 문장으로 적어보세요."
+          ></textarea>
+          <p class="input-feedback" id="input-feedback" aria-live="polite"></p>
+          <div class="write-bottom"
+            ><span class="char-count counter" id="char-count">0 / 120</span
+            ><button
+              class="text-action write-next"
+              id="make-rain"
+              type="button"
+              disabled
+              >문장 마주하기 →</button
+            ></div
+          >
+        </div>
+        <p class="privacy"
+          >선택과 입력은 저장되거나 서버로 전송되지 않습니다.</p
+        >
+      </section>
+
+      <section class="stage" id="observe-stage" aria-labelledby="observe-title">
+        <p class="stage-index">02 / 문장 마주하기</p>
+        <h1 class="stage-title observe-title" id="observe-title"
+          >내가 쓴 말을<br />천천히<br />읽어보세요.</h1
+        >
+        <p class="stage-copy observe-copy"
+          >문장을 누를 때마다 흐렸던 획이 돌아옵니다.<br />파란 흔적은 잠시
+          남았다가 옅어집니다.</p
+        >
+        <div class="ink-field" id="ink-field">
+          <button
+            class="ink-text"
+            id="ink-text"
+            type="button"
+            data-seen="0"
+            data-trace=""
+          ></button>
+          <p class="memory" id="memory"
+            >이 문장 뒤에 남은 마음을 잠시 바라봅니다.</p
+          >
+          <span class="ink-hint" id="ink-hint" aria-live="polite"
+            >문장을 천천히 눌러보세요.</span
+          >
+          <button
+            class="text-action observe-next"
+            id="to-breathe"
+            type="button"
+            disabled
+            >호흡으로 이어가기 →</button
+          >
+        </div>
+      </section>
+
+      <section class="stage" id="breath-stage" aria-labelledby="breath-title">
+        <p class="stage-index">03 / 네 번의 호흡</p>
+        <h1 class="stage-title breath-title" id="breath-title"
+          >잠깐,<br />숨을 고를까요?</h1
+        >
+        <p class="stage-copy breath-copy"
+          >원을 누르는 동안 천천히 들이쉬고,<br />손을 놓으며 편안하게
+          내쉬어요.<br />파란 친구와 함께 네 번, 서두르지 않아도 괜찮아요.</p
+        >
+        <div
+          class="breath-wrap"
+          id="breath-wrap"
+          role="button"
+          tabindex="0"
+          aria-label="누르고 있는 동안 들이마시고 놓으면 내쉬기"
+        >
+          <div class="breath-ring" id="breath-ring">
+            <img
+              class="breath-character"
+              id="breath-character"
+              src="assets/characters/sorrow-breath-hd.webp"
+              width="2048"
+              height="2048"
+              alt="함께 숨 쉬는 파란 캐릭터"
+              loading="lazy"
+              draggable="false"
+            />
+          </div>
+          <span
+            class="breath-word"
+            id="breath-word"
+            role="status"
+            aria-live="polite"
+            >준비되면 원을 눌러주세요</span
+          >
+          <div class="breath-count counter" id="breath-count">00 — 04</div>
+        </div>
+        <p class="breath-guide"
+          ><span class="latin">SPACE</span>를 누르고 있다가 천천히
+          놓아주세요.</p
+        >
+      </section>
+
+      <section class="ending" id="ending" aria-labelledby="ending-title">
+        <div class="ending-mark" aria-hidden="true"></div>
+        <h2 id="ending-title"
+          >조금 더<br />쉬었다 가도 돼요.</h2
+        >
+        <p>지금 남아 있는 감정도 그대로 두어도 괜찮습니다.</p>
+        <div class="actions"
+          ><a class="text-action" href="Home.html">감정 선택으로 돌아가기 ↗</a
+          ><button class="text-action" id="again" type="button"
+            >다시 호흡하기</button
+          ></div
+        >
+      </section>
+    </main>
+
+    <script>const $=selector=>document.querySelector(selector),$$=selector=>[...document.querySelectorAll(selector)];const TOTAL_BREATHS=4;const prompts={"빈자리":"그 자리가 비었다고 느낀 순간은 언제였나요?","못한 말":"그때 하지 못한 말은 무엇이었나요?","멀어진 사람":"아직 선명하게 기억나는 모습은 무엇인가요?","마지막 장면":"마지막으로 마음에 남은 장면은 무엇인가요?","괜찮은 척":"괜찮다고 말했지만, 사실 어떤 마음이었나요?"};let stage=0,sourceText="",selectedKeyword="",seen=0,breaths=0,pressStart=0,breathing=false,breathInput=null,exhaling=false,breathTimer=0,endingTimer=0,unclearAttempts=0,audioContext,transitionBusy=false,lastWave=0;const reducedMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;const touchMode=matchMedia("(pointer:coarse)").matches;const cursor=$("#cursor");addEventListener("pointermove",event=>{cursor.style.left=event.clientX+"px";cursor.style.top=event.clientY+"px"},{passive:true});$$("button,a,input,textarea").forEach(element=>{element.addEventListener("pointerenter",()=>cursor.classList.add("active"));element.addEventListener("pointerleave",()=>cursor.classList.remove("active"))});if(touchMode)$(".breath-guide").textContent="원 안을 누르고 있다가 천천히 놓아주세요.";function changeScene(callback){if(transitionBusy)return;transitionBusy=true;const transition=$("#sorrow-transition");transition.classList.remove("play");void transition.offsetWidth;transition.classList.add("play");setTimeout(callback,reducedMotion?0:360);setTimeout(()=>{transition.classList.remove("play");transitionBusy=false},reducedMotion?30:920)}function go(index){stage=index;$$(".stage").forEach((element,stageIndex)=>element.classList.toggle("on",stageIndex===index));$("#top-progress").textContent=`哀 · 0${index+1} / 03`;if(index===2)setTimeout(()=>$("#breath-wrap").focus?.({preventScroll:true}),380)}$("#start").addEventListener("click",()=>changeScene(()=>{$("#intro").classList.add("hide");go(0)}));const keywordList=$("#keyword-list"),writeStep=$("#write-step"),sadText=$("#sad-text"),keywordButtons=$$(".keyword");let compactKeywordLayout=matchMedia("(max-width: 680px)").matches;function shuffled(values){const result=[...values];for(let index=result.length-1;index>0;index-=1){const swapIndex=Math.floor(Math.random()*(index+1));[result[index],result[swapIndex]]=[result[swapIndex],result[index]]}return result}function randomizeKeywordPositions(force=false){const compact=matchMedia("(max-width: 680px)").matches;if(!force&&compact===compactKeywordLayout)return;compactKeywordLayout=compact;const slots=compact?[[3,1],[49,7],[13,35],[52,46],[28,73]]:[[5,3],[45,10],[17,37],[58,46],[33,72]];const randomizedSlots=shuffled(slots);keywordButtons.forEach((button,index)=>{const slot=randomizedSlots[index],jitterX=(Math.random()-.5)*(compact?3:6),jitterY=(Math.random()-.5)*5;button.style.left=Math.max(1,slot[0]+jitterX)+"%";button.style.top=Math.max(0,slot[1]+jitterY)+"%"})}keywordButtons.forEach(button=>{button.style.setProperty("--breath-duration",(6.2+Math.random()*3.4).toFixed(2)+"s");button.style.setProperty("--breath-delay",(-Math.random()*7).toFixed(2)+"s");button.style.setProperty("--breath-low",(.2+Math.random()*.12).toFixed(2));button.style.setProperty("--breath-high",(.78+Math.random()*.16).toFixed(2));button.addEventListener("click",()=>selectKeyword(button.dataset.keyword,button))});randomizeKeywordPositions(true);addEventListener("resize",()=>randomizeKeywordPositions());function selectKeyword(keyword,button){selectedKeyword=keyword;unclearAttempts=0;keywordList.classList.add("has-selection");keywordButtons.forEach(item=>item.classList.toggle("selected",item===button));$("#selected-keyword").textContent=keyword;$("#write-question").textContent=prompts[keyword];writeStep.classList.add("visible");writeStep.setAttribute("aria-hidden","false");sadText.value="";$("#char-count").textContent="0 / 120";$("#input-feedback").textContent="";$("#make-rain").disabled=true;setTimeout(()=>sadText.focus(),380)}$("#keyword-back").addEventListener("click",()=>{keywordList.classList.remove("has-selection");keywordButtons.forEach(item=>item.classList.remove("selected"));writeStep.classList.remove("visible");writeStep.setAttribute("aria-hidden","true");sadText.value="";$("#input-feedback").textContent="";setTimeout(()=>$(".keyword").focus(),180)});sadText.addEventListener("input",event=>{const length=event.target.value.trim().length;$("#char-count").textContent=`${event.target.value.length} / 120`;$("#make-rain").disabled=length<1;$("#input-feedback").textContent=""});sadText.addEventListener("focus",()=>document.body.classList.add("keyboard-open"));sadText.addEventListener("blur",()=>document.body.classList.remove("keyboard-open"));function isUnclear(value){const compact=value.replace(/\s/g,"");return compact.length<4||/^[ㅋㅎㅠㅜ.,!?…~_-]+$/u.test(compact)||/(.)\1{3,}/u.test(compact)||/^(몰라|모름|아무거나|없어|없음|패스)$/u.test(compact)}$("#make-rain").addEventListener("click",()=>{let value=sadText.value.trim();if(isUnclear(value)&&unclearAttempts<1){unclearAttempts+=1;$("#input-feedback").textContent=`잘 적으려 하지 않아도 괜찮아요. ${prompts[selectedKeyword]}`;sadText.focus();return}if(isUnclear(value))value=`아직 말이 되지 않은 마음이 ${selectedKeyword} 곁에 머물러 있습니다.`;sourceText=value;seen=0;createInk();changeScene(()=>go(1))});function createInk(){const ink=$("#ink-text");ink.textContent=sourceText;ink.dataset.trace=sourceText;ink.dataset.seen="0";$("#memory").classList.remove("show");$("#ink-hint").textContent="문장을 천천히 눌러보세요.";$("#to-breathe").classList.remove("ready");$("#to-breathe").disabled=true}$("#ink-field").addEventListener("pointermove",event=>{if(Date.now()-lastWave<150)return;lastWave=Date.now();const field=$("#ink-field"),rect=field.getBoundingClientRect(),wave=document.createElement("i");wave.className="ripple";wave.style.left=event.clientX-rect.left-14+"px";wave.style.top=event.clientY-rect.top-14+"px";field.append(wave);setTimeout(()=>wave.remove(),1100)});$("#ink-text").addEventListener("click",()=>{if(seen>=3)return;seen+=1;$("#ink-text").dataset.seen=String(seen);$("#memory").classList.add("show");$("#ink-hint").textContent=seen<3?`문장이 조금 더 선명해졌습니다. 0${seen} — 03`:"이제 문장이 온전히 보입니다.";if(seen>=3){$("#to-breathe").classList.add("ready");$("#to-breathe").disabled=false}});$("#to-breathe").addEventListener("click",()=>{if(seen<3)return;changeScene(()=>{go(2);createBreathInk();$("#breath-character").decode().catch(()=>{})})});function createBreathInk(){$$(".breath-ink").forEach(element=>element.remove());const field=$("#breath-wrap"),pieces=sourceText.split(/\s+/).filter(Boolean),positions=[[5,22,-28,-14],[45,3,14,-30],[87,58,32,18],[12,72,-20,30],[84,18,28,-12],[3,52,-30,22],[66,76,8,32],[20,8,-13,-20]];positions.forEach((position,index)=>{const trace=document.createElement("i");trace.className="ink-trace breath-ink";trace.textContent=pieces[index%pieces.length]||sourceText;trace.style.left=position[0]+"%";trace.style.top=position[1]+"%";trace.style.setProperty("--drift-x",position[2]+"px");trace.style.setProperty("--drift-y",position[3]+"px");field.append(trace)})}function playWoodenTap(soft=false){try{audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext);if(audioContext.state==="suspended")audioContext.resume();const now=audioContext.currentTime,master=audioContext.createGain(),filter=audioContext.createBiquadFilter();filter.type="bandpass";filter.frequency.value=soft?390:470;filter.Q.value=4.8;master.gain.setValueAtTime(1e-4,now);master.gain.exponentialRampToValueAtTime(soft?.055:.08,now+.006);master.gain.exponentialRampToValueAtTime(1e-4,now+(soft?.19:.25));filter.connect(master).connect(audioContext.destination);[1,1.36].forEach((ratio,index)=>{const oscillator=audioContext.createOscillator(),gain=audioContext.createGain();oscillator.type=index?"sine":"triangle";oscillator.frequency.setValueAtTime((soft?350:430)*ratio,now);oscillator.frequency.exponentialRampToValueAtTime((soft?220:265)*ratio,now+.14);gain.gain.value=index?.25:1;oscillator.connect(gain).connect(filter);oscillator.start(now);oscillator.stop(now+.27)})}catch{}}function beginBreath(event){if(stage!==2||event.target?.closest?.("input,textarea,a,button,[contenteditable]"))return;if(event.type==="keydown")event.preventDefault();if(breathing||exhaling||breaths>=TOTAL_BREATHS)return;if(event.repeat||event.type==="pointerdown"&&event.button!==0)return;breathInput=event.type==="keydown"?event.code:event.pointerId;if(event.type==="pointerdown"){$("#breath-wrap").setPointerCapture(event.pointerId);$("#breath-wrap").focus({preventScroll:true})}breathing=true;pressStart=Date.now();playWoodenTap(false);const ring=$("#breath-ring"),wrap=$("#breath-wrap");ring.classList.remove("exhale");ring.classList.add("inhale");wrap.classList.add("inhaling");$("#breath-word").textContent="들이마셔요"}function endBreath(event){if(stage===2&&event.type==="keyup"&&!event.target?.closest?.("input,textarea,a,button,[contenteditable]"))event.preventDefault();if(!breathing)return;if(breathInput!==(event.type==="keyup"?event.code:event.pointerId))return;breathing=false;breathInput=null;const held=Date.now()-pressStart,ring=$("#breath-ring"),wrap=$("#breath-wrap");ring.classList.remove("inhale");ring.classList.add("exhale");wrap.classList.remove("inhaling");$("#breath-word").textContent="내쉬어요";exhaling=true;clearTimeout(breathTimer);breathTimer=setTimeout(()=>{exhaling=false;if(breaths<TOTAL_BREATHS)$("#breath-word").textContent="준비되면 다시 눌러주세요"},3700);if(held>=1600){playWoodenTap(true);breaths+=1;$("#breath-count").textContent=`0${breaths} — 04`;const traces=$$(".breath-ink");traces.slice(0,Math.ceil(traces.length*breaths/TOTAL_BREATHS)).forEach(trace=>trace.classList.add("fade"));if(breaths>=TOTAL_BREATHS){$("#breath-word").textContent="마지막 숨을 천천히 내쉬어요.";endingTimer=setTimeout(()=>changeScene(()=>$("#ending").classList.add("show")),3900)}}else $("#breath-word").textContent="괜찮아요. 편안하게 내쉬고 다시 해봐요."}function cancelBreath(event){if(!breathing||event?.pointerId!==undefined&&event.pointerId!==breathInput)return;breathing=false;breathInput=null;$("#breath-ring").classList.remove("inhale");$("#breath-wrap").classList.remove("inhaling");$("#breath-word").textContent="준비되면 다시 눌러주세요"}addEventListener("keydown",event=>{if(event.code==="Space"||event.key==="Enter")beginBreath(event)});addEventListener("keyup",event=>{if(event.code==="Space"||event.key==="Enter")endBreath(event)});$("#breath-wrap").addEventListener("pointerdown",beginBreath);addEventListener("pointerup",endBreath);addEventListener("pointercancel",cancelBreath);$("#breath-wrap").addEventListener("lostpointercapture",cancelBreath);addEventListener("blur",()=>cancelBreath());addEventListener("pagehide",()=>{cancelBreath();clearTimeout(breathTimer);clearTimeout(endingTimer);if(audioContext&&audioContext.state!=="closed")audioContext.close()});$("#again").addEventListener("click",()=>location.reload());function advanceSorrowStage(){if(transitionBusy||$("#ending").classList.contains("show"))return false;if(!$("#intro").classList.contains("hide"))$("#start").click();else if(stage===0){sourceText=sadText.value.trim();seen=0;createInk();changeScene(()=>go(1))}else if(stage===1){changeScene(()=>{go(2);createBreathInk()})}else if(stage===2){cancelBreath();clearTimeout(breathTimer);clearTimeout(endingTimer);exhaling=false;changeScene(()=>$("#ending").classList.add("show"))}else return false;return true}ExhibitionNavigation.onAdvance(advanceSorrowStage);</script>
+    <script>(()=>{if(window.top!==window.self)return;if(window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker"in navigator){navigator.serviceWorker.register(new URL("exhibition-font-cache.js",document.baseURI),{scope:new URL("./",document.baseURI).href,updateViaCache:"none"}).catch(()=>{})}const IDLE_LIMIT=5*60*1e3;const INTRO_URL=new URL("index.html",document.baseURI).href;let idleTimer;let lastPointerReset=0;function stopMedia(){document.querySelectorAll("audio, video").forEach(media=>{try{media.pause()}catch{}const stream=media.srcObject;if(stream&&typeof stream.getTracks==="function"){stream.getTracks().forEach(track=>track.stop())}})}function returnToIntro(){stopMedia();location.replace(INTRO_URL)}function resetIdleTimer(){clearTimeout(idleTimer);idleTimer=setTimeout(returnToIntro,IDLE_LIMIT)}function resetFromPointerMove(){const now=Date.now();if(now-lastPointerReset<500)return;lastPointerReset=now;resetIdleTimer()}["pointerdown","keydown","wheel","touchstart","input"].forEach(eventName=>{addEventListener(eventName,resetIdleTimer,{passive:true})});addEventListener("pointermove",resetFromPointerMove,{passive:true});addEventListener("pageshow",resetIdleTimer);addEventListener("pagehide",()=>clearTimeout(idleTimer));resetIdleTimer()})();</script>
+  </body>
+</html>

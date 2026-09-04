@@ -1,188 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>喜怒哀樂: Intro</title>
-    
-    <style>
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Thin.woff2') format('woff2');
-            font-weight: 100;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Light.woff2') format('woff2');
-            font-weight: 300;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
-            font-weight: 500;
-            font-style: normal;
-        }
+  <head>
+    <script>(()=>{if(!/^https?:$/.test(location.protocol)||!window.fetch)return;const base=new URL("./",document.baseURI);const pages={Home:"Home.html",Info:"Info.html",joy:"joy.html",anger:"anger.html",sorrow:"sorrow.html",pleasure:"pleasure.html"};const characters={joy:["joy.webp","joy-01.webp","joy-04.webp"],anger:["anger.webp","anger-03.webp","anger-04.webp"],sorrow:["sorrow.webp","sorrow-01.webp","sorrow-04.webp"],pleasure:["pleasure.webp","pleasure-01.webp","pleasure-04.webp"]};const current=location.pathname.split("/").pop().replace(/\.html$/,"")||"index";if(!["index","Home","Info"].includes(current))return;const queue=[],finished=new Set;const routes=new Map(Object.entries(pages).map(([name,path])=>[new URL(path,base).href,name]));let ready=false,running=false,stopped=false,timer=0,idle=0,hoverTimer=0,cancelActive,activeTask;const constrained=()=>navigator.connection?.saveData||/(^|-)2g$/.test(navigator.connection?.effectiveType||"");const available=()=>ready&&!stopped&&!document.hidden&&navigator.onLine!==false&&!constrained();function add(path,documentFile=false,first=false){const url=new URL(path,base).href;if(finished.has(url)||activeTask?.url===url)return;const existing=queue.findIndex(task=>task.url===url);if(existing>=0){if(!first)return;queue.splice(existing,1)}queue[first?"unshift":"push"]({url:url,documentFile:documentFile})}function addPage(name,first=false){if(!pages[name]||name===current)return;const assets=characters[name]||[];for(const asset of first?[...assets].reverse():assets)add("assets/characters/"+asset,false,first);add(pages[name],true,first)}function schedule(delay=350){if(!available()||running||timer||idle||!queue.length)return;timer=setTimeout(()=>{timer=0;if(window.requestIdleCallback)idle=requestIdleCallback(()=>{idle=0;pump()},{timeout:1500});else pump()},delay)}function warm(task){return new Promise(resolve=>{const controller=new AbortController;let link,settled=false;const complete=success=>{if(settled)return;settled=true;clearTimeout(timeout);if(link){link.onload=link.onerror=null;link.remove()}controller.abort();cancelActive=null;resolve(success)};const timeout=setTimeout(()=>complete(false),8e3);cancelActive=()=>complete(false);const probe=document.createElement("link");if(task.documentFile&&probe.relList?.supports?.("prefetch")){link=probe;link.rel="prefetch";link.as="document";link.href=task.url;link.fetchPriority="low";link.onload=()=>complete(true);link.onerror=()=>complete(false);document.head.append(link)}else{fetch(task.url,{credentials:"same-origin",priority:"low",signal:controller.signal}).then(async response=>{if(!response.ok||response.redirected)return false;await response.arrayBuffer();return true}).then(complete,()=>complete(false))}})}async function pump(){if(!available()||running||!queue.length)return;running=true;const task=queue.shift();activeTask=task;if(await warm(task))finished.add(task.url);activeTask=null;running=false;schedule()}function intent(event){clearTimeout(hoverTimer);const anchor=event.target.closest?.("a[href]");if(!anchor||constrained())return;const name=routes.get(anchor.href);if(!name)return;hoverTimer=setTimeout(()=>{addPage(name,true);schedule(0)},event.type==="pointerdown"?0:120)}function pause(){clearTimeout(timer);timer=0;clearTimeout(hoverTimer);if(idle){cancelIdleCallback(idle);idle=0}if(cancelActive){queue.unshift(activeTask);cancelActive()}}function start(){ready=true}document.addEventListener("pointerover",intent,{passive:true});document.addEventListener("focusin",intent);document.addEventListener("pointerdown",intent,{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?pause():schedule());window.addEventListener("offline",pause);window.addEventListener("online",()=>schedule());navigator.connection?.addEventListener("change",()=>constrained()?pause():schedule());window.addEventListener("pagehide",()=>{stopped=true;pause()});window.addEventListener("pageshow",()=>{stopped=false;schedule()});if(document.readyState==="complete")start();else window.addEventListener("load",start,{once:true})})();</script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>감정을 마주하다 — 희로애락</title>
+    <script>if(window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker"in navigator){navigator.serviceWorker.register("./exhibition-font-cache.js",{scope:"./",updateViaCache:"none"}).catch(()=>{})}</script>
+    <style>@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-1Thin.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-3Light.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-4Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-5Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-6SemiBold.woff2') format('woff2');font-weight:600;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-7Bold.woff2') format('woff2');font-weight:700 900;font-style:normal;font-display:swap;}@font-face{font-family:Inter;src:url('./assets/fonts/InterLatin-v20.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap;unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2191,
+          U+2193, U+2212;}</style>
 
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100%; 
-            overflow: hidden; 
-            background-color: #ffffff; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            font-family: 'Paperlogy', sans-serif; 
-            cursor: none; /* 기본 마우스 포인터 숨김 */
-        }
+    <style>body,
+      html{margin:0;padding:0;width:100%;height:100%;overflow:hidden;background-color:#ffffff;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Paperlogy', sans-serif;cursor:none;}#custom-cursor{position:fixed;width:6px;height:6px;background:#28231f;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%, -50%);transition:width 0.2s,
+          height 0.2s,
+          background-color 0.2s;}h1{font-size:32px;letter-spacing:12px;font-weight:300;margin:0;padding-left:12px;}.click-guide{position:absolute;bottom:60px;z-index:10;animation:breathe 3s infinite ease-in-out;user-select:none;}@keyframes breathe{0%,
+        100%{opacity:0.2;transform:translateY(0);}50%{opacity:0.7;transform:translateY(-2px);}}body.leaving .click-guide{opacity:0;animation:none;transition:opacity 0.2s ease;}body.leaving #custom-cursor{width:24px;height:24px;background:rgba(40, 35, 31, 0.08);}@media (prefers-reduced-motion: reduce){*,
+        *::before,
+        *::after{animation:none !important;transition-duration:0.01ms !important;}}@media (pointer: coarse), (max-width: 700px){body,
+        html{cursor:auto;}#custom-cursor{display:none;}h1{font-size:clamp(27px, 8vw, 34px);letter-spacing:0.22em;padding-left:0.22em;}.click-guide{bottom:max(30px, env(safe-area-inset-bottom));letter-spacing:0.12em;}}body,
+      html{display:block;background:#fff;color:#101010;}.intro-stage{position:relative;width:100%;height:100dvh;min-height:520px;overflow:hidden;background:#fff;}.click-guide{left:50%;bottom:clamp(28px, 4.5vh, 48px);transform:translateX(-50%);font-size:10px;font-weight:300;letter-spacing:0.04em;animation:none;white-space:nowrap;}@media (pointer: coarse), (max-width: 700px){.click-guide{bottom:max(24px, env(safe-area-inset-bottom));font-size:10px;}}.home-preview{position:absolute;z-index:1;inset:0;width:100%;height:100%;border:0;background:#fff;pointer-events:none;}.flashlight-veil{position:absolute;z-index:5;inset:-2px;background:radial-gradient(
+          circle at 36% 42%,
+          #1a1a1a 0,
+          #101010 42%,
+          #080808 100%
+        );background-size:150% 150%;pointer-events:none;opacity:1;animation:quiet-dark 16s ease-in-out infinite alternate;transition:opacity 0.58s cubic-bezier(0.16, 1, 0.3, 1);}body.flash-ready .flashlight-veil{-webkit-mask-image:radial-gradient(
+          circle var(--flash-radius, 0px) at var(--flash-x, 50%)
+            var(--flash-y, 50%),
+          transparent 0 68%,
+          rgba(0, 0, 0, 0.38) 84%,
+          #000 100%
+        );mask-image:radial-gradient(
+          circle var(--flash-radius, 0px) at var(--flash-x, 50%)
+            var(--flash-y, 50%),
+          transparent 0 68%,
+          rgba(0, 0, 0, 0.38) 84%,
+          #000 100%
+        );}.flashlight-dot{position:absolute;z-index:7;left:50%;top:50%;width:4px;height:4px;border-radius:50%;background:#f4f4f2;transform:translate(-50%, -50%);pointer-events:none;transition:opacity 0.3s ease,
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);animation:dot-pulse 3.4s ease-in-out infinite;}.intro-emotions{position:absolute;z-index:8;left:50%;top:50%;display:flex;gap:0.12em;margin:0;transform:translate(-50%, -50%);font-family:'Paperlogy', sans-serif;font-size:clamp(26px, 3vw, 44px);font-weight:400;letter-spacing:-0.08em;white-space:nowrap;pointer-events:none;transition:opacity 0.42s ease,
+          filter 0.42s ease;}.intro-emotions span:nth-child(1){color:#f2c230;}.intro-emotions span:nth-child(2){color:#ef4b3d;}.intro-emotions span:nth-child(3){color:#4d86c6;}.intro-emotions span:nth-child(4){color:#4ba86a;}body.flash-ready .intro-emotions{opacity:0;filter:blur(2px);}body.flash-ready .flashlight-dot{opacity:0;transform:translate(-50%, -50%) scale(0.2);animation:none;}@keyframes quiet-dark{0%{background-position:18% 28%;}50%{background-position:55% 52%;}100%{background-position:84% 70%;}}@keyframes dot-pulse{0%,
+        76%,
+        100%{transform:translate(-50%, -50%) scale(1);opacity:0.95;}86%{transform:translate(-50%, -50%) scale(2.2);opacity:0.22;}}body.leaving .flashlight-veil{opacity:0;}body.leaving .flashlight-dot{opacity:0;}body.leaving .intro-emotions{opacity:0;}@media (prefers-reduced-motion: reduce){.flashlight-veil{animation:none;}}.click-guide{z-index:8;color:rgba(255, 255, 255, 0.5);}body.flash-ready .click-guide{opacity:0;}@media (pointer: coarse){.flashlight-dot{width:7px;height:7px;}}@media (max-width: 700px){html,
+        body,
+        .intro-stage{width:100%;max-width:100%;overflow:hidden;}.intro-emotions{max-width:calc(100vw - 36px);font-size:clamp(25px, 8vw, 34px);}.click-guide{max-width:calc(100vw - 36px);overflow:hidden;text-overflow:ellipsis;}}@media (max-width: 360px){.intro-emotions{font-size:25px;}.click-guide{font-size:9px;letter-spacing:0.06em;}}</style>
+    <script src="exhibition-navigation.js"></script>
+  </head>
+  <body>
+    <div id="custom-cursor" aria-hidden="true"></div>
 
-        /* 💡 인포 화면과 완벽히 호환되는 미니멀 점 커서 */
-        #custom-cursor {
-            position: fixed; 
-            width: 6px; 
-            height: 6px; 
-            background: #e2629b; /* 인포 화면의 시그니처 핑크 포인트 컬러 반영 */
-            border-radius: 50%; 
-            pointer-events: none; 
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-        
-        /* 몽환적인 감정의 일렁임 (Info.html 컬러 스키마 반영) */
-        #canvas-bg { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 1; 
-            filter: blur(80px) saturate(1.2); 
-            opacity: 0.5; /* 너무 강하지 않고 은은하게 고급스러운 톤 연출 */
-            transition: filter 0.6s ease, opacity 0.6s ease; 
-        }
-        
-        /* 중앙 텍스트 레이어 */
-        .ui-layer { 
-            position: relative; 
-            z-index: 10; 
-            text-align: center; 
-            color: #444444; 
-            pointer-events: none; 
-            user-select: none;
-        }
-        
-        h1 { 
-            font-size: 32px; 
-            letter-spacing: 12px; 
-            font-weight: 300; 
-            margin: 0; 
-            padding-left: 12px;
-        }
+    <main class="intro-stage" id="introStage">
+      <iframe
+        class="home-preview"
+        src="Home.html?intro-preview=1"
+        title="감정 선택 화면 미리보기"
+        tabindex="-1"
+        aria-hidden="true"
+      ></iframe>
+      <div class="flashlight-veil" id="flashlightVeil" aria-hidden="true"></div>
+      <div class="flashlight-dot" aria-hidden="true"></div>
+      <h1 class="intro-emotions" aria-label="희로애락"
+        ><span>喜</span><span>怒</span><span>哀</span><span>樂</span></h1
+      >
+      <p class="click-guide">마우스로 화면을 비추고 클릭하여 시작하세요.</p>
+    </main>
 
-        /* Info.html의 오리지널 감정별 상징색 완벽 매칭 */
-        .logo-hee { color: #e9916d; } /* 喜 - 오렌지 */
-        .logo-no { color: #df4d4d; }  /* 怒 - 레드 */
-        .logo-ae { color: #6b8bb4; }  /* 哀 - 블루 */
-        .logo-rak { color: #6fa076; } /* 樂 - 그린 */
-        
-        /* 하단 안내 가이드 텍스트 */
-        .click-guide { 
-            position: absolute; 
-            bottom: 60px; 
-            font-size: 10px; 
-            letter-spacing: 2px; 
-            color: #999999; 
-            z-index: 10; 
-            animation: breathe 3s infinite ease-in-out; 
-            font-weight: 300; 
-            user-select: none;
-        }
-        @keyframes breathe { 
-            0%, 100% { opacity: 0.2; transform: translateY(0); } 
-            50% { opacity: 0.7; transform: translateY(-2px); } 
-        }
-    </style>
-</head>
-<body>
-
-    <div id="custom-cursor"></div>
-    <div id="canvas-bg"></div>
-
-    <div class="ui-layer">
-        <h1>
-            <span class="logo-hee">喜</span><span class="logo-no">怒</span><span class="logo-ae">哀</span><span class="logo-rak">樂</span>
-        </h1>
-        </div>
-
-    <div class="click-guide">화면을 클릭하여 진입하세요</div>
-
-    <script>
-        const bg = document.getElementById('canvas-bg');
-        const cursor = document.getElementById('custom-cursor');
-        
-        let mouseX = 50, mouseY = 50, curX = 50, curY = 50;
-        let time = 0;
-
-        // 마우스의 움직임에 따라 커서 위치 동기화 및 부드러운 위치값 연산
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-
-            mouseX = (e.clientX / window.innerWidth) * 100;
-            mouseY = (e.clientY / window.innerHeight) * 100;
-        });
-
-        // 클릭 액션 시 Info.html로 자연스럽게 페이드인 진입 효과
-        document.addEventListener('click', () => {
-            cursor.style.width = '30px';
-            cursor.style.height = '30px';
-            cursor.style.backgroundColor = 'rgba(222, 77, 77, 0.2)';
-
-            bg.style.filter = "blur(10px) saturate(1.8)";
-            bg.style.opacity = "0.9";
-            
-            setTimeout(() => {
-                window.location.href = "Info.html";
-            }, 500);
-        });
-
-        // 유기적이고 몽환적으로 움직이는 사색 그라디언트 알고리즘
-        function animate() {
-            time += 0.0025; 
-            
-            // 마우스 움직임 관성 보간 처리
-            curX += (mouseX - curX) * 0.03; 
-            curY += (mouseY - curY) * 0.03;
-
-            // 자연스러운 흐름을 유도하기 위한 수학적 삼각함수 궤적 연산
-            const autoX1 = curX + Math.sin(time * 1.0) * 12 + Math.cos(time * 0.6) * 8;
-            const autoY1 = curY + Math.cos(time * 0.9) * 12 + Math.sin(time * 0.4) * 6;
-            
-            const autoX2 = (100 - curX) + Math.cos(time * 0.7) * 10 + Math.sin(time * 1.2) * 8;
-            const autoY2 = (100 - curY) + Math.sin(time * 1.0) * 10 + Math.cos(time * 0.5) * 6;
-
-            const autoX3 = curX + Math.sin(time * 0.4) * 15;
-            const autoY3 = (100 - curY) + Math.cos(time * 1.1) * 12;
-
-            const autoX4 = 50 + Math.cos(time * 0.5) * 20;
-            const autoY4 = 50 + Math.sin(time * 0.5) * 20;
-            
-            // Info.html의 완벽한 색상값 대입 (RGB 환산 적용)
-            bg.style.background = `
-                radial-gradient(circle at ${autoX1}% ${autoY1}%, rgba(233, 145, 109, 0.4), transparent 60%), 
-                radial-gradient(circle at ${autoX2}% ${autoY2}%, rgba(223, 77, 77, 0.35), transparent 60%), 
-                radial-gradient(circle at ${autoX3}% ${autoY3}%, rgba(107, 139, 180, 0.4), transparent 60%), 
-                radial-gradient(circle at ${autoX4}% ${autoY4}%, rgba(111, 160, 118, 0.3), transparent 70%)
-            `;
-            
-            requestAnimationFrame(animate);
-        }
-        animate();
-    </script>
-</body>
+    <script>const cursor=document.getElementById("custom-cursor");document.addEventListener("mousemove",event=>{cursor.style.left=event.clientX+"px";cursor.style.top=event.clientY+"px"});let transitioning=false;const prefersReducedMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;function enterInfo(){if(transitioning)return;transitioning=true;document.body.classList.add("leaving");setTimeout(()=>{try{sessionStorage.setItem("heerorak-from-intro","1")}catch{}window.location.href="Info.html"},prefersReducedMotion?60:800)}ExhibitionNavigation.onAdvance(()=>{if(transitioning)return false;enterInfo();return true});document.addEventListener("click",()=>{if(matchMedia("(pointer: coarse)").matches&&!document.body.classList.contains("touch-ready")){document.body.classList.add("touch-ready");return}enterInfo()});document.addEventListener("keydown",event=>{if(event.code!=="Space"&&event.code!=="Enter")return;event.preventDefault();enterInfo()});</script>
+    <script>let flashTargetX=innerWidth/2;let flashTargetY=innerHeight/2;let flashCurrentX=flashTargetX;let flashCurrentY=flashTargetY;let flashTargetRadius=0;let flashCurrentRadius=0;let flashLastX=flashTargetX;let flashLastY=flashTargetY;let flashLastTime=performance.now();let flashIdleTimer;let flashlightFrame=0;function startFlashlightRender(){if(!flashlightFrame&&!document.hidden)flashlightFrame=requestAnimationFrame(renderFlashlight)}function revealHome(event){const now=performance.now();const elapsed=Math.max(16,now-flashLastTime);const distance=Math.hypot(event.clientX-flashLastX,event.clientY-flashLastY);const speed=distance/elapsed*1e3;flashTargetX=event.clientX;flashTargetY=event.clientY;flashTargetRadius=Math.min(170,105+speed*.035);flashLastX=event.clientX;flashLastY=event.clientY;flashLastTime=now;document.body.classList.add("flash-ready");startFlashlightRender();clearTimeout(flashIdleTimer);flashIdleTimer=setTimeout(()=>{flashTargetRadius=0;startFlashlightRender()},1350)}addEventListener("pointermove",revealHome,{passive:true});addEventListener("pointerdown",revealHome,{passive:true});addEventListener("pointerleave",()=>{flashTargetRadius=0});function renderFlashlight(){flashlightFrame=0;if(document.hidden)return;flashCurrentX+=(flashTargetX-flashCurrentX)*.18;flashCurrentY+=(flashTargetY-flashCurrentY)*.18;flashCurrentRadius+=(flashTargetRadius-flashCurrentRadius)*(flashTargetRadius>flashCurrentRadius?.16:.075);document.documentElement.style.setProperty("--flash-x",`${flashCurrentX.toFixed(2)}px`);document.documentElement.style.setProperty("--flash-y",`${flashCurrentY.toFixed(2)}px`);document.documentElement.style.setProperty("--flash-radius",`${Math.max(0,flashCurrentRadius).toFixed(2)}px`);if(flashTargetRadius===0&&flashCurrentRadius<.7&&!document.body.classList.contains("leaving")){document.body.classList.remove("flash-ready");return}flashlightFrame=requestAnimationFrame(renderFlashlight)}addEventListener("visibilitychange",()=>{if(!document.hidden&&(flashTargetRadius>0||flashCurrentRadius>=.7))startFlashlightRender()});</script>
+  </body>
 </html>

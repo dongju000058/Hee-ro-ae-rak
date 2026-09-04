@@ -1,276 +1,214 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>喜怒哀樂: 홈</title>
-    
-    <style>
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Thin.woff2') format('woff2');
-            font-weight: 100;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Light.woff2') format('woff2');
-            font-weight: 300;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
-            font-weight: 500;
-            font-style: normal;
-        }
+  <head>
+    <script>(()=>{if(!/^https?:$/.test(location.protocol)||!window.fetch)return;const base=new URL("./",document.baseURI);const pages={Home:"Home.html",Info:"Info.html",joy:"joy.html",anger:"anger.html",sorrow:"sorrow.html",pleasure:"pleasure.html"};const characters={joy:["joy.webp","joy-01.webp","joy-04.webp"],anger:["anger.webp","anger-03.webp","anger-04.webp"],sorrow:["sorrow.webp","sorrow-01.webp","sorrow-04.webp"],pleasure:["pleasure.webp","pleasure-01.webp","pleasure-04.webp"]};const current=location.pathname.split("/").pop().replace(/\.html$/,"")||"index";if(!["index","Home","Info"].includes(current))return;const queue=[],finished=new Set;const routes=new Map(Object.entries(pages).map(([name,path])=>[new URL(path,base).href,name]));let ready=false,running=false,stopped=false,timer=0,idle=0,hoverTimer=0,cancelActive,activeTask;const constrained=()=>navigator.connection?.saveData||/(^|-)2g$/.test(navigator.connection?.effectiveType||"");const available=()=>ready&&!stopped&&!document.hidden&&navigator.onLine!==false&&!constrained();function add(path,documentFile=false,first=false){const url=new URL(path,base).href;if(finished.has(url)||activeTask?.url===url)return;const existing=queue.findIndex(task=>task.url===url);if(existing>=0){if(!first)return;queue.splice(existing,1)}queue[first?"unshift":"push"]({url:url,documentFile:documentFile})}function addPage(name,first=false){if(!pages[name]||name===current)return;const assets=characters[name]||[];for(const asset of first?[...assets].reverse():assets)add("assets/characters/"+asset,false,first);add(pages[name],true,first)}function schedule(delay=350){if(!available()||running||timer||idle||!queue.length)return;timer=setTimeout(()=>{timer=0;if(window.requestIdleCallback)idle=requestIdleCallback(()=>{idle=0;pump()},{timeout:1500});else pump()},delay)}function warm(task){return new Promise(resolve=>{const controller=new AbortController;let link,settled=false;const complete=success=>{if(settled)return;settled=true;clearTimeout(timeout);if(link){link.onload=link.onerror=null;link.remove()}controller.abort();cancelActive=null;resolve(success)};const timeout=setTimeout(()=>complete(false),8e3);cancelActive=()=>complete(false);const probe=document.createElement("link");if(task.documentFile&&probe.relList?.supports?.("prefetch")){link=probe;link.rel="prefetch";link.as="document";link.href=task.url;link.fetchPriority="low";link.onload=()=>complete(true);link.onerror=()=>complete(false);document.head.append(link)}else{fetch(task.url,{credentials:"same-origin",priority:"low",signal:controller.signal}).then(async response=>{if(!response.ok||response.redirected)return false;await response.arrayBuffer();return true}).then(complete,()=>complete(false))}})}async function pump(){if(!available()||running||!queue.length)return;running=true;const task=queue.shift();activeTask=task;if(await warm(task))finished.add(task.url);activeTask=null;running=false;schedule()}function intent(event){clearTimeout(hoverTimer);const anchor=event.target.closest?.("a[href]");if(!anchor||constrained())return;const name=routes.get(anchor.href);if(!name)return;hoverTimer=setTimeout(()=>{addPage(name,true);schedule(0)},event.type==="pointerdown"?0:120)}function pause(){clearTimeout(timer);timer=0;clearTimeout(hoverTimer);if(idle){cancelIdleCallback(idle);idle=0}if(cancelActive){queue.unshift(activeTask);cancelActive()}}function start(){ready=true}document.addEventListener("pointerover",intent,{passive:true});document.addEventListener("focusin",intent);document.addEventListener("pointerdown",intent,{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?pause():schedule());window.addEventListener("offline",pause);window.addEventListener("online",()=>schedule());navigator.connection?.addEventListener("change",()=>constrained()?pause():schedule());window.addEventListener("pagehide",()=>{stopped=true;pause()});window.addEventListener("pageshow",()=>{stopped=false;schedule()});if(document.readyState==="complete")start();else window.addEventListener("load",start,{once:true})})();</script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>감정을 마주하다 — 희로애락</title>
+    <style>@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-3Light.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-4Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-5Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}</style>
+    <style>:root{--paper:#fff;--ink:#101010;--muted:#858582;--hee:#f2c230;--no:#ef4b3d;--ae:#4d86c6;--rak:#4ba86a;--cursor:#101010;}*{box-sizing:border-box;}html,
+      body{margin:0;width:100%;height:100%;background:var(--paper);color:var(--ink);}body{overflow:hidden;font-family:Paperlogy, sans-serif;opacity:0;transition:opacity 0.5s ease,
+          filter 0.45s ease;}body.ready{opacity:1;}body.leaving{opacity:0;filter:blur(5px);}a{color:inherit;}.stage{position:relative;width:100%;height:100dvh;min-height:640px;overflow:hidden;background:#fff;isolation:isolate;}.topbar{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:clamp(24px, 3.2vw, 48px) clamp(24px, 3.7vw, 58px);}.brand,
+      .info-link{position:relative;text-decoration:none;font-size:12px;font-weight:500;letter-spacing:-0.03em;}.info-link{padding:8px 0;color:#555;font-size:11px;font-weight:300;}.info-link::after{content:'';position:absolute;left:0;right:0;bottom:2px;height:1px;background:currentColor;transform:scaleX(0.18);transform-origin:right;transition:transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);}.info-link:hover::after,
+      .info-link:focus-visible::after{transform:scaleX(1);}.type-field{position:absolute;z-index:2;inset:clamp(106px, 13vh, 142px) clamp(22px, 3.6vw, 58px)
+          clamp(86px, 10vh, 112px);display:flex;flex-direction:column;justify-content:center;gap:clamp(12px, 2.2vh, 26px);}.portal{position:relative;z-index:4;display:block;flex:0 0 clamp(118px, 13.2vw, 216px);width:clamp(118px, 13.2vw, 216px);aspect-ratio:1.62;text-decoration:none;transition:opacity 0.35s ease;outline:none;}.stage.has-active .portal:not(.is-active){opacity:0.12;}.selection-copy{position:absolute;z-index:20;left:clamp(24px, 3.7vw, 58px);right:clamp(24px, 3.7vw, 58px);bottom:clamp(25px, 3.6vh, 44px);display:flex;align-items:flex-end;justify-content:space-between;pointer-events:none;}.selection-title,
+      .selection-detail{margin:0;transition:opacity 0.2s ease,
+          transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);}.selection-title{font-size:12px;font-weight:500;letter-spacing:-0.03em;}.selection-detail{max-width:390px;color:var(--muted);font-size:11px;font-weight:300;line-height:1.55;text-align:right;word-break:keep-all;}.selection-copy.is-changing .selection-title,
+      .selection-copy.is-changing .selection-detail{opacity:0;transform:translateY(5px);}.experience-preview{position:absolute;inset:0;z-index:25;display:grid;grid-template-columns:minmax(180px, 0.8fr) minmax(280px, 1fr);align-items:center;gap:clamp(34px, 7vw, 112px);padding:clamp(90px, 12vh, 138px) clamp(28px, 9vw, 148px)
+          clamp(44px, 7vh, 80px);color:#fff;background:rgba(10, 10, 10, 0.91);opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.28s ease,
+          visibility 0s linear 0.28s;}.stage.has-active .experience-preview{opacity:1;visibility:visible;transition-delay:0s;}.stage.has-active .brand,
+      .stage.has-active .info-link{z-index:31;color:#fff;}.experience-character{display:block;width:min(100%, 380px);max-height:min(54vh, 430px);margin:0 auto;object-fit:contain;opacity:0;transform:translateY(18px) rotate(-2deg);transition:opacity 0.24s ease 0.05s,
+          transform 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;}.stage.has-active .experience-character{opacity:1;transform:translateY(0) rotate(-2deg);}.stage[data-active='no'] .experience-character{transform:translateY(0) rotate(4deg);}.stage[data-active='ae'] .experience-character{transform:translateY(0) rotate(-3deg);}.stage[data-active='rak'] .experience-character{transform:translateY(0) rotate(7deg);}.experience-preview-copy{max-width:570px;opacity:0;transform:translateY(18px);transition:opacity 0.24s ease 0.1s,
+          transform 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;}.stage.has-active .experience-preview-copy{opacity:1;transform:translateY(0);}.experience-kicker{margin:0 0 18px;color:var(--active-color, #fff);font-size:13px;font-weight:500;letter-spacing:-0.02em;}.experience-preview h2{margin:0;font-size:clamp(42px, 5.5vw, 84px);font-weight:500;line-height:0.98;letter-spacing:-0.075em;word-break:keep-all;}.experience-preview p:not(.experience-kicker){max-width:520px;margin:clamp(25px, 4vh, 42px) 0 0;color:rgba(255, 255, 255, 0.72);font-size:clamp(15px, 1.15vw, 19px);font-weight:300;line-height:1.65;letter-spacing:-0.035em;word-break:keep-all;}.experience-enter{display:none;width:max-content;margin-top:34px;padding:10px 0 8px;color:#fff;border-bottom:1px solid currentColor;font-size:14px;font-weight:500;text-decoration:none;pointer-events:auto;}.cursor{display:none;}@media (pointer: fine){html,
+        body,
+        a{cursor:none;}.cursor{display:block;position:fixed;left:0;top:0;z-index:100;width:7px;height:7px;border-radius:50%;background:var(--cursor);pointer-events:none;transform:translate(-50%, -50%);transition:width 0.2s,
+            height 0.2s,
+            background 0.2s,
+            border 0.2s;}.cursor.hover{width:42px;height:42px;background:rgba(255, 255, 255, 0.35);border:1px solid var(--cursor);backdrop-filter:invert(1);}}@media (max-width: 1020px){.portal{flex-basis:130px;width:130px;}}@media (max-width: 900px){body{overflow:hidden;}.stage{height:100svh;min-height:520px;}.type-field{inset:clamp(84px, 13vh, 118px) 6px clamp(86px, 13vh, 108px);justify-content:center;gap:clamp(10px, 2.4vh, 22px);}.portal{flex:0 0 min(21vw, 180px);width:min(21vw, 180px);max-width:none;}.selection-copy{left:18px;right:18px;bottom:22px;}.selection-detail{max-width:280px;}.experience-preview{grid-template-columns:minmax(130px, 0.72fr) minmax(220px, 1fr);gap:clamp(22px, 6vw, 54px);padding-right:clamp(26px, 7vw, 66px);padding-left:clamp(26px, 7vw, 66px);}}@media (pointer: coarse){.portal{min-width:44px;min-height:44px;touch-action:manipulation;}.info-link,
+        .brand{min-height:44px;display:flex;align-items:center;}.experience-enter{display:block;min-height:44px;}}@media (max-width: 430px){.stage{min-height:520px;height:100svh;padding-bottom:0;}.topbar{padding:16px 18px;}.type-field{inset:76px 4px 104px;gap:clamp(8px, 2.2vh, 14px);}.selection-copy{left:18px;right:18px;bottom:max(18px, env(safe-area-inset-bottom));display:block;}.selection-title{font-size:11px;}.selection-detail{margin-top:6px;max-width:290px;text-align:left;}.experience-preview{grid-template-columns:1fr;align-content:center;gap:20px;padding:78px 24px max(28px, env(safe-area-inset-bottom));}.experience-character{width:min(48vw, 190px);max-height:29vh;margin-left:0;}.experience-kicker{margin-bottom:10px;font-size:11px;}.experience-preview h2{max-width:310px;font-size:clamp(36px, 11vw, 48px);}.experience-preview p:not(.experience-kicker){margin-top:16px;font-size:13px;line-height:1.6;}.experience-enter{margin-top:20px;font-size:13px;}}@media (max-height: 540px) and (orientation: landscape){.stage{height:100svh;min-height:0;}.topbar{padding-top:12px;padding-bottom:12px;}.selection-copy{bottom:12px;}.selection-detail{max-width:340px;font-size:10px;}}@media (prefers-reduced-motion: reduce){*,
+        *::before,
+        *::after{animation:none !important;transition-duration:0.01ms !important;}}.trace-composition.type-field{position:absolute;z-index:2;inset:auto;left:50%;top:50%;width:1600px;height:900px;transform:translate(-50%, -50%) scale(var(--composition-scale, 1));transform-origin:center;will-change:transform;}.trace-title{position:absolute;z-index:8;inset:0;margin:0;pointer-events:none;}.trace-line{white-space:nowrap;}.trace-line-one{left:27%;top:20%;}.trace-line-two{right:20%;top:39%;}.emotion-trace.portal{z-index:4;width:auto;text-decoration:none;outline:none;transition:opacity 0.38s ease,
+          transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.45s ease;will-change:transform;}.stage.has-active .emotion-trace:not(.is-active){opacity:0.12;}.emotion-trace:focus-visible{outline:2px solid var(--ink);outline-offset:6px;}.emotion-trace::after{content:'';position:absolute;inset:-35%;z-index:7;pointer-events:none;opacity:0.1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");mix-blend-mode:soft-light;transform:rotate(8deg);}.emotion-trace.portal.trace-hee{overflow:hidden;background:var(--hee);}.trace-hee.is-active{z-index:10;}.trace-joy-strip{position:absolute;z-index:2;background:#fff;transform:rotate(-1deg);transition:transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);}.trace-joy-cell{position:relative;overflow:hidden;background:rgba(242, 194, 48, 0.2);transition:transform 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+          background 0.35s ease;}.trace-joy-cell:nth-child(2){background:rgba(242, 194, 48, 0.34);}.trace-joy-cell:nth-child(3){background:rgba(242, 194, 48, 0.14);}.trace-joy-cell:nth-child(4){background:rgba(242, 194, 48, 0.28);}.trace-joy-face{position:absolute;left:50%;aspect-ratio:1;border-radius:50%;background:#3f2922;transform:translateX(-50%);opacity:0.9;transition:transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);}.trace-joy-face::after{content:'';position:absolute;left:27%;right:27%;bottom:18%;height:12%;border-bottom:1px solid #fff;border-radius:0 0 50% 50%;}.trace-joy-body{position:absolute;border-radius:50% 50% 0 0;background:#3f2922;opacity:0.86;}.trace-hee.is-active .trace-joy-strip{transform:rotate(0) scale(1.025);}.trace-hee.is-active .trace-joy-cell:nth-child(2) .trace-joy-face{transform:translateX(-58%) rotate(-7deg);}.trace-hee.is-active .trace-joy-cell:nth-child(3) .trace-joy-face{transform:translateX(-42%) rotate(6deg);}.trace-joy-flash{position:absolute;inset:0;z-index:6;background:#fff;opacity:0;pointer-events:none;}.trace-hee.is-active .trace-joy-flash{animation:traceFlash 0.72s ease-out 1;}@keyframes traceFlash{0%,
+        18%{opacity:0;}24%{opacity:0.72;}42%,
+        100%{opacity:0;}}.emotion-trace.portal.trace-no{overflow:hidden;background:var(--no);clip-path:polygon(
+          0 9%,
+          9% 0,
+          21% 7%,
+          34% 0,
+          47% 8%,
+          60% 1%,
+          74% 7%,
+          87% 0,
+          100% 11%,
+          96% 89%,
+          84% 100%,
+          70% 91%,
+          56% 100%,
+          42% 92%,
+          28% 100%,
+          13% 91%,
+          0 96%
+        );}.trace-no.is-active{z-index:10;animation:angerImpact 0.48s cubic-bezier(0.2, 0.9, 0.2, 1) 1;}@keyframes angerImpact{0%,
+        100%{transform:translate(0);}25%{transform:translate(-5px, 2px) rotate(-1deg);}52%{transform:translate(6px, -2px) rotate(1deg);}75%{transform:translate(-2px, 1px);}}.trace-anger-file{position:absolute;z-index:3;left:50%;top:42%;width:31%;height:54%;transform:translate(-50%, -50%);background:#fff;clip-path:polygon(0 0, 72% 0, 100% 24%, 100% 100%, 0 100%);transition:transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);}.trace-anger-file::before{content:'';position:absolute;right:0;top:0;width:28%;height:24%;background:rgba(239, 75, 61, 0.42);clip-path:polygon(0 0, 0 100%, 100% 100%);}.trace-cut{position:absolute;left:16%;right:16%;height:2px;background:var(--no);transition:transform 0.46s cubic-bezier(0.2, 0.9, 0.2, 1);}.trace-cut:nth-child(1){top:34%;}.trace-cut:nth-child(2){top:50%;}.trace-cut:nth-child(3){top:66%;}.trace-shreds{position:absolute;z-index:2;left:39%;right:39%;top:61%;bottom:8%;display:flex;gap:3px;}.trace-shreds i{flex:1;background:#fff;transform-origin:top;transition:transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.45s ease;}.trace-no.is-active .trace-anger-file{transform:translate(-50%, -62%) rotate(-2deg);}.trace-no.is-active .trace-cut:nth-child(1){transform:translateX(-42%) rotate(6deg);}.trace-no.is-active .trace-cut:nth-child(2){transform:translateX(38%) rotate(-5deg);}.trace-no.is-active .trace-cut:nth-child(3){transform:translateX(-28%) rotate(7deg);}.trace-no.is-active .trace-shreds i:nth-child(odd){transform:translate(-3px, 52%) rotate(7deg);}.trace-no.is-active .trace-shreds i:nth-child(even){transform:translate(3px, 78%) rotate(-6deg);opacity:0.68;}.emotion-trace.portal.trace-ae{border-radius:50%;color:var(--ae);background:radial-gradient(
+          circle,
+          rgba(77, 134, 198, 0.22) 0 18%,
+          transparent 19% 100%
+        );}.trace-ae.is-active{z-index:10;}.trace-breath-ring{position:absolute;border:1px solid currentColor;border-radius:50%;opacity:0.38;animation:traceBreathe 5.2s ease-in-out infinite;animation-delay:var(--delay);transition:opacity 0.6s ease;}.trace-breath-ring:nth-child(1){inset:5%;--delay:-1.2s;}.trace-breath-ring:nth-child(2){inset:22%;--delay:-2.7s;}.trace-breath-ring:nth-child(3){inset:38%;--delay:-4s;}.trace-ae.is-active .trace-breath-ring{animation-duration:2.65s;}@keyframes traceBreathe{0%,
+        100%{transform:scale(0.88);opacity:0.16;}50%{transform:scale(1.08);opacity:0.62;}}.emotion-trace.portal.trace-rak{color:var(--rak);overflow:hidden;}.trace-rak.is-active{z-index:10;}.trace-rak::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:currentColor;opacity:0.48;}.trace-wave{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;gap:2.5%;}.trace-wave i{width:2.1%;height:var(--h);background:currentColor;transform-origin:center;animation:traceRhythm var(--speed, 1.7s) cubic-bezier(0.45, 0, 0.2, 1)
+          infinite;animation-delay:var(--d);}.trace-wave i:nth-child(1){--h:22%;--d:-0.18s;--speed:1.48s;}.trace-wave i:nth-child(2){--h:46%;--d:-0.73s;--speed:1.82s;}.trace-wave i:nth-child(3){--h:72%;--d:-1.12s;--speed:1.6s;}.trace-wave i:nth-child(4){--h:38%;--d:-0.42s;--speed:1.94s;}.trace-wave i:nth-child(5){--h:94%;--d:-1.38s;--speed:1.52s;}.trace-wave i:nth-child(6){--h:58%;--d:-0.24s;--speed:1.76s;}.trace-wave i:nth-child(7){--h:82%;--d:-0.96s;--speed:1.42s;}.trace-wave i:nth-child(8){--h:34%;--d:-1.54s;--speed:1.88s;}.trace-wave i:nth-child(9){--h:66%;--d:-0.6s;--speed:1.58s;}.trace-wave i:nth-child(10){--h:42%;--d:-1.28s;--speed:1.96s;}.trace-wave i:nth-child(11){--h:76%;--d:-0.36s;--speed:1.46s;}.trace-wave i:nth-child(12){--h:52%;--d:-1.68s;--speed:1.7s;}.trace-wave i:nth-child(13){--h:26%;--d:-0.82s;--speed:1.9s;}.trace-rak.is-active .trace-wave i{animation-duration:var(--active-speed, 0.52s);}.trace-rak.is-active .trace-wave i:nth-child(3n + 1){--active-speed:0.43s;}.trace-rak.is-active .trace-wave i:nth-child(3n + 2){--active-speed:0.58s;}.trace-rak.is-active .trace-wave i:nth-child(3n){--active-speed:0.49s;}.trace-beat-dot{position:absolute;z-index:4;left:2%;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:currentColor;opacity:0;pointer-events:none;}.trace-rak.is-active .trace-beat-dot{animation:traceBeatTravel 1.15s cubic-bezier(0.3, 0, 0.25, 1) infinite;}@keyframes traceRhythm{0%,
+        100%{transform:scaleY(0.3);}28%{transform:scaleY(0.74);}58%{transform:scaleY(1.12);}78%{transform:scaleY(0.52);}}@keyframes traceBeatTravel{0%{left:2%;opacity:0;transform:scale(0.65);}12%{opacity:0.9;}72%{opacity:0.9;transform:scale(1.15);}100%{left:96%;opacity:0;transform:scale(0.65);}}@media (max-width: 900px){.emotion-trace.portal:hover,
+        .emotion-trace.portal:focus-visible,
+        .emotion-trace.portal.is-active{transform-origin:center;}}@media (max-width: 430px){.selection-copy{bottom:max(16px, env(safe-area-inset-bottom));}}@media (pointer: coarse){.emotion-trace.portal{min-height:44px;touch-action:manipulation;}.emotion-trace::after{opacity:0.06;}}@media (prefers-reduced-motion: reduce){.trace-breath-ring,
+        .trace-wave i{animation:none !important;}.emotion-trace{transform:none !important;}}.trace-composition.type-field{display:block;}.trace-title{left:50%;top:50%;right:auto;bottom:auto;width:1240px;height:auto;transform:translate(-50%, -50%);display:flex;flex-direction:column;align-items:center;gap:24px;}.trace-line{position:relative;left:auto;right:auto;top:auto;display:flex;align-items:center;justify-content:center;gap:18px;transform:none;}.trace-line-two{margin-left:38px;}.title-word{display:inline-block;font-size:150px;font-weight:500;line-height:0.74;letter-spacing:-0.105em;transition:opacity 0.38s ease,
+          transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.55s ease;}.stage.has-active .title-word{opacity:0.56;}.emotion-unit{position:relative;display:block;flex:0 0 auto;}.unit-hee{width:176px;height:106px;}.unit-no{width:108px;height:114px;}.unit-ae{width:112px;height:112px;}.unit-rak{width:224px;height:88px;}.emotion-trace.portal{position:relative;left:auto;right:auto;top:auto;bottom:auto;display:block;flex:none;margin:0;aspect-ratio:auto;overflow:hidden;transform-origin:center;pointer-events:auto;}.emotion-trace.portal.trace-hee{left:auto;top:auto;width:176px;height:106px;min-width:0;min-height:0;clip-path:polygon(2% 3%, 98% 0, 100% 96%, 0 100%);transform:rotate(-2deg);}.emotion-trace.portal.trace-no{left:auto;right:auto;top:auto;width:108px;height:114px;min-width:0;min-height:0;transform:rotate(3deg);}.emotion-trace.portal.trace-ae{left:auto;top:auto;width:112px;height:112px;min-width:0;min-height:0;aspect-ratio:1;transform:rotate(-3deg);}.emotion-trace.portal.trace-rak{left:auto;right:auto;top:auto;width:224px;height:88px;min-width:0;min-height:0;transform:rotate(1deg);}.trace-tag{position:absolute;z-index:14;display:flex;align-items:baseline;gap:7px;color:var(--ink);font-size:14px;font-weight:500;line-height:1;letter-spacing:-0.035em;white-space:nowrap;pointer-events:none;transition:color 0.3s ease,
+          transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.3s ease;}.trace-tag b{font-size:12px;font-weight:300;}.unit-hee .trace-tag,
+      .unit-no .trace-tag{left:0;top:-25px;}.unit-no .trace-tag{left:auto;right:0;}.unit-ae .trace-tag,
+      .unit-rak .trace-tag{left:0;top:calc(100% + 10px);}.unit-rak .trace-tag{left:auto;right:0;}.unit-hee .trace-tag b{color:var(--hee);}.unit-no .trace-tag b{color:var(--no);}.unit-ae .trace-tag b{color:var(--ae);}.unit-rak .trace-tag b{color:var(--rak);}.emotion-unit:has(.emotion-trace:hover) .trace-tag,
+      .emotion-unit:has(.emotion-trace:focus-visible) .trace-tag,
+      .emotion-unit:has(.emotion-trace.is-active) .trace-tag{transform:translateY(-3px);}.trace-composition:has(.emotion-trace:hover) .title-word{opacity:0.56;}.trace-composition:has(.emotion-trace:hover) .emotion-trace:not(:hover){opacity:0.16;}@media (pointer: fine){body:has(.emotion-trace:hover) .cursor{width:42px;height:42px;background:rgba(255, 255, 255, 0.35);border:1px solid var(--cursor);backdrop-filter:invert(1);}}.trace-hee.is-active{transform:rotate(0) scale(1.1);}.trace-no.is-active{transform:rotate(0) scale(1.1);}.trace-ae.is-active{transform:rotate(0) scale(1.1);}.trace-rak.is-active{transform:rotate(0) scale(1.08);}.trace-joy-strip{inset:8% 7%;display:grid;grid-template-rows:1fr;grid-template-columns:repeat(4, 1fr);gap:4px;padding:5px;}.trace-joy-face{top:16%;width:42%;}.trace-joy-body{left:18%;right:18%;bottom:-12%;height:58%;}.trace-hee.is-active .trace-joy-cell:nth-child(1){transform:translateY(-6%);}.trace-hee.is-active .trace-joy-cell:nth-child(2){transform:translateY(5%);}.trace-hee.is-active .trace-joy-cell:nth-child(3){transform:translateY(-3%);}.trace-hee.is-active .trace-joy-cell:nth-child(4){transform:translateY(4%);}.trace-ae .trace-breath-ring:nth-child(1){inset:3%;}.trace-ae .trace-breath-ring:nth-child(2){inset:21%;}.trace-ae .trace-breath-ring:nth-child(3){inset:39%;}@media (max-width: 900px){.trace-title{width:1240px;gap:24px;}.trace-line{gap:18px;}.title-word{font-size:150px;}}@media (max-width: 430px){html,
+        body,
+        .stage{width:100%;max-width:100%;overflow:hidden;}.topbar{gap:16px;}.brand,
+        .info-link{max-width:44vw;white-space:nowrap;}.trace-title,
+        .trace-line{white-space:nowrap;}.selection-copy{max-width:calc(100vw - 36px);}.selection-title{white-space:nowrap;}.selection-detail{max-width:100%;font-size:9.5px;line-height:1.5;word-break:keep-all;}.trace-tag{white-space:nowrap;}}@media (max-width: 350px){.topbar{padding-left:14px;padding-right:14px;}.selection-copy{left:14px;right:14px;max-width:calc(100vw - 28px);}.selection-detail{font-size:9px;}}</style>
+    <script src="exhibition-navigation.js"></script>
+  </head>
+  <body>
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <main class="stage" id="stage">
+      <header class="topbar"
+        ><a class="brand" href="index.html">희로애락</a
+        ><a class="info-link" href="Info.html">작품 소개 →</a></header
+      >
 
-        /* 기본 초기화 및 부드러운 배경 전환 */
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0;
-        }
-        body, html { 
-            width: 100%; 
-            height: 100%; 
-            background-color: #ffffff; 
-            font-family: 'Paperlogy', sans-serif; 
-            overflow: hidden; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            cursor: none; /* 기본 커서 숨김 */
-            /* 배경이 바뀔 때 안개처럼 부드럽게 번지는 효과 */
-            transition: background 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-        }
+      <section
+        class="type-field trace-composition"
+        aria-label="경험할 감정을 선택하세요"
+      >
+        <h1 class="trace-title" aria-label="감정을 마주하다.">
+          <span class="trace-line trace-line-one">
+            <span class="title-word">감정을</span>
+            <span class="emotion-unit unit-hee">
+              <a
+                class="portal emotion-trace trace-hee"
+                href="joy.html"
+                data-emotion="hee"
+                aria-label="기쁨을 포착하다"
+              >
+                <span class="trace-joy-strip" aria-hidden="true">
+                  <i class="trace-joy-cell"
+                    ><b class="trace-joy-face"></b><b class="trace-joy-body"></b
+                  ></i>
+                  <i class="trace-joy-cell"
+                    ><b class="trace-joy-face"></b><b class="trace-joy-body"></b
+                  ></i>
+                  <i class="trace-joy-cell"
+                    ><b class="trace-joy-face"></b><b class="trace-joy-body"></b
+                  ></i>
+                  <i class="trace-joy-cell"
+                    ><b class="trace-joy-face"></b><b class="trace-joy-body"></b
+                  ></i>
+                </span>
+                <i class="trace-joy-flash" aria-hidden="true"></i>
+              </a>
+              <span class="trace-tag" aria-hidden="true">희 <b>喜</b></span>
+            </span>
+            <span class="title-word">마주</span>
+            <span class="emotion-unit unit-no">
+              <a
+                class="portal emotion-trace trace-no"
+                href="anger.html"
+                data-emotion="no"
+                aria-label="분노를 통과하다"
+              >
+                <span class="trace-anger-file" aria-hidden="true"
+                  ><i class="trace-cut"></i><i class="trace-cut"></i
+                  ><i class="trace-cut"></i
+                ></span>
+                <span class="trace-shreds" aria-hidden="true"
+                  ><i></i><i></i><i></i><i></i><i></i><i></i
+                ></span>
+              </a>
+              <span class="trace-tag" aria-hidden="true">로 <b>怒</b></span>
+            </span>
+          </span>
+          <span class="trace-line trace-line-two">
+            <span class="title-word">하</span>
+            <span class="emotion-unit unit-ae">
+              <a
+                class="portal emotion-trace trace-ae"
+                href="sorrow.html"
+                data-emotion="ae"
+                aria-label="슬픔 곁에 머물다"
+              >
+                <span class="trace-breath-ring" aria-hidden="true"></span
+                ><span class="trace-breath-ring" aria-hidden="true"></span
+                ><span class="trace-breath-ring" aria-hidden="true"></span>
+              </a>
+              <span class="trace-tag" aria-hidden="true">애 <b>哀</b></span>
+            </span>
+            <span class="title-word">다.</span>
+            <span class="emotion-unit unit-rak">
+              <a
+                class="portal emotion-trace trace-rak"
+                href="pleasure.html"
+                data-emotion="rak"
+                aria-label="즐거움을 증폭하다"
+              >
+                <span class="trace-wave" aria-hidden="true"
+                  ><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i
+                  ><i></i><i></i><i></i><i></i><i></i
+                ></span>
+                <i class="trace-beat-dot" aria-hidden="true"></i>
+              </a>
+              <span class="trace-tag" aria-hidden="true">락 <b>樂</b></span>
+            </span>
+          </span>
+        </h1>
+      </section>
 
-        /* 🎯 디자인 통일성을 맞춘 핀포인트 점 커서 + 호버 링 */
-        #custom-cursor {
-            position: fixed; 
-            width: 6px; 
-            height: 6px; 
-            background: #e2629b; /* 시그니처 핑크 컬러 */
-            border-radius: 50%; 
-            pointer-events: none; 
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                        height 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                        background-color 0.3s, border 0.3s;
-        }
-        /* 버튼이나 링크에 올라갔을 때의 확장 스타일 클래스 */
-        #custom-cursor.hovered {
-            width: 32px;
-            height: 32px;
-            background: transparent;
-            border: 1px solid #e2629b;
-        }
-
-        /* 메인 레이아웃 컨테이너 */
-        .main-container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 0 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 60px;
-            z-index: 10;
-        }
-
-        /* 네 가지 감정 그리드 레이아웃 */
-        .emotion-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            width: 100%;
-        }
-
-        /* 각 감정 아이템 스타일 (정갈한 선 디테일) */
-        .emotion-card {
-            border-left: 1px solid #e5e5e5;
-            padding-left: 20px;
-            padding-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-decoration: none;
-            color: inherit;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
-        }
-
-        /* 카드 상단 번호 및 태그 */
-        .emotion-card .tag {
-            font-size: 11px;
-            font-weight: 500;
-            color: #999999;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        /* 거대하고 투명한 한자 타이틀 */
-        .emotion-card .hanja {
-            font-size: 64px;
-            font-weight: 100;
-            color: #ccc;
-            line-height: 1;
-            margin-bottom: 15px;
-            transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        /* 한글 이름 */
-        .emotion-card .name {
-            font-size: 14px;
-            font-weight: 300;
-            color: #555555;
-            letter-spacing: 0.5px;
-        }
-
-        /* 💡 각 감정별 호버 시 무드 액션 (텍스트 색상 변화) */
-        .emotion-card:hover .hanja {
-            transform: translateY(-5px);
-        }
-        
-        .card-hee:hover .hanja { color: #e9916d; } /* 喜 - 오렌지 */
-        .card-no:hover .hanja { color: #df4d4d; }  /* 怒 - 레드 */
-        .card-ae:hover .hanja { color: #6b8bb4; }  /* 哀 - 블루 */
-        .card-rak:hover .hanja { color: #6fa076; } /* 樂 - 그린 */
-
-        .emotion-card:hover {
-            border-color: #999999;
-        }
-
-        /* 반응형 모바일/태블릿 대응 */
-        @media (max-width: 900px) {
-            .emotion-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 40px 20px;
-            }
-        }
-        @media (max-width: 500px) {
-            .emotion-grid {
-                grid-template-columns: 1fr;
-            }
-            .main-container {
-                padding: 0 25px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="custom-cursor"></div>
-
-    <div class="main-container">
-        <div class="emotion-grid">
-            
-            <a href="Joy.html" class="emotion-card card-hee" data-bg="rgba(233, 145, 109, 0.08)">
-                <span class="tag">01 / JOY</span>
-                <span class="hanja">喜</span>
-                <span class="name">기쁨의 기록</span>
-            </a>
-
-            <a href="Anger.html" class="emotion-card card-no" data-bg="rgba(223, 77, 77, 0.06)">
-                <span class="tag">02 / ANGER</span>
-                <span class="hanja">怒</span>
-                <span class="name">분노의 해소</span>
-            </a>
-
-            <a href="Sorrow.html" class="emotion-card card-ae" data-bg="rgba(107, 139, 180, 0.08)">
-                <span class="tag">03 / SORROW</span>
-                <span class="hanja">哀</span>
-                <span class="name">슬픔의 위로</span>
-            </a>
-
-            <a href="Pleasure.html" class="emotion-card card-rak" data-bg="rgba(111, 160, 118, 0.07)">
-                <span class="tag">04 / PLEASURE</span>
-                <span class="hanja">樂</span>
-                <span class="name">즐거움의 발산</span>
-            </a>
-
+      <section
+        class="experience-preview"
+        id="experiencePreview"
+        aria-hidden="true"
+        aria-label="선택한 감정 경험 안내"
+      >
+        <img
+          class="experience-character"
+          id="experienceCharacter"
+          width="384"
+          height="384"
+          alt=""
+          decoding="async"
+        />
+        <div class="experience-preview-copy">
+          <p class="experience-kicker" id="experienceKicker">희 · 기쁨</p>
+          <h2 id="experienceTitle">기쁨을 포착하다</h2>
+          <p id="experienceDetail"
+            >기쁨에 이름을 붙이고, 네 컷과 GIF로 남겨보세요.</p
+          >
+          <a class="experience-enter" id="experienceEnter" href="joy.html"
+            >들어가기 ↗</a
+          >
         </div>
-    </div>
+      </section>
 
-    <script>
-        const cursor = document.getElementById('custom-cursor');
-        const body = document.body;
-        const cards = document.querySelectorAll('.emotion-card');
+      <div class="selection-copy" id="selectionCopy" aria-live="polite">
+        <p class="selection-title" id="selectionTitle"
+          >하나의 감정을 선택하세요.</p
+        >
+        <p class="selection-detail" id="selectionDetail"
+          >그래픽에 마우스를 올리면 경험 방법이 나타납니다.</p
+        >
+      </div>
+    </main>
 
-        // 1. 마우스 움직임에 따른 포인터 트래킹
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // 2. 카드 호버 인터랙션 (커서 링 확장 및 감정별 안개 배경색 연출)
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                cursor.classList.add('hovered');
-                
-                // 각 카드 고유의 부드러운 배경색 가져오기
-                const targetBg = card.getAttribute('data-bg');
-                body.style.backgroundColor = targetBg;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hovered');
-                // 마우스가 벗어나면 다시 깨끗한 흰색 갤러리 톤으로 복구
-                body.style.backgroundColor = '#ffffff';
-            });
-
-            // 3. 클릭 시 화면이 페이드아웃 되면서 부드럽게 페이지 이동하는 고급 감성 로직
-            card.addEventListener('click', (e) => {
-                e.preventDefault(); // 즉시 이동하는 기본 기능 방지
-                const targetUrl = card.getAttribute('href');
-
-                // 순간적으로 커서 링을 조이고 화면을 흐리게 페이드아웃
-                cursor.style.width = '0px';
-                cursor.style.height = '0px';
-                body.style.opacity = '0';
-
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 400); // 0.4초 후 부드럽게 이동
-            });
-        });
-
-        // =======================================================
-        // ⏳ 전시장용 보완: 5분 무활동 자동 인트로(index.html) 리셋 시스템
-        // =======================================================
-        (function() {
-            const RESET_TIMEOUT = 5 * 60 * 1000; // 5분 타임아웃 시간 (5분 * 60초 * 1000ms)
-            const INTRO_PAGE_URL = "index.html";  // 되돌아갈 메인 인트로 주소
-            let inactivityTimer = null;
-
-            function resetInactivityTimer() {
-                if (inactivityTimer) {
-                    clearTimeout(inactivityTimer);
-                }
-                
-                inactivityTimer = setTimeout(() => {
-                    // 홈 화면의 우아한 페이드아웃 느낌을 유지하며 리셋 페이지로 이동
-                    cursor.style.width = '0px';
-                    cursor.style.height = '0px';
-                    body.style.opacity = '0';
-                    
-                    setTimeout(() => {
-                        window.location.href = INTRO_PAGE_URL;
-                    }, 400);
-                }, RESET_TIMEOUT);
-            }
-
-            // 관람객 조작 감지 이벤트 리스트 (마우스 이동, 클릭, 드래그, 터치 인터랙션 포함)
-            const interactionEvents = ['mousemove', 'mousedown', 'mouseup', 'click', 'keydown', 'keypress', 'touchstart', 'touchmove'];
-
-            interactionEvents.forEach(eventType => {
-                window.addEventListener(eventType, resetInactivityTimer, { passive: true });
-            });
-
-            // 화면 초기 구동 시점부터 리셋 타이머 작동
-            resetInactivityTimer();
-        })();
-    </script>
-
-</body>
+    <script>const stage=document.getElementById("stage"),cursor=document.getElementById("cursor"),selectionCopy=document.getElementById("selectionCopy"),selectionTitle=document.getElementById("selectionTitle"),selectionDetail=document.getElementById("selectionDetail"),experiencePreview=document.getElementById("experiencePreview"),experienceCharacter=document.getElementById("experienceCharacter"),experienceKicker=document.getElementById("experienceKicker"),experienceTitle=document.getElementById("experienceTitle"),experienceDetail=document.getElementById("experienceDetail"),experienceEnter=document.getElementById("experienceEnter"),portals=[...document.querySelectorAll(".portal")];const states={hee:{title:"희 · 기쁨",heading:"기쁨을 포착하다",detail:"기쁨에 이름을 붙이고 여덟 장을 촬영한 뒤, 네 장을 골라 네 컷과 GIF로 남겨보세요.",color:"#f2c230",image:"assets/characters/joy.webp",href:"joy.html"},no:{title:"로 · 분노",heading:"분노를 통과하다",detail:"달아나는 캐릭터를 붙잡고 마음에 걸린 말을 꺼낸 뒤, 하나의 파일로 만들어 파쇄해보세요.",color:"#ef4b3d",image:"assets/characters/anger.webp",href:"anger.html"},ae:{title:"애 · 슬픔",heading:"슬픔 곁에 머물다",detail:"마음에 머무는 문장을 꺼내 바라보고, 캐릭터와 네 번의 호흡을 함께하며 천천히 흘려보내세요.",color:"#4d86c6",image:"assets/characters/sorrow.webp",href:"sorrow.html"},rak:{title:"락 · 즐거움",heading:"즐거움을 증폭하다",detail:"음악에 맞춰 자유롭게 움직이고, 음악이 멈추는 다섯 순간의 모습을 카메라로 남겨보세요.",color:"#4ba86a",image:"assets/characters/pleasure.webp",href:"pleasure.html"}};const coarsePointer=matchMedia("(pointer: coarse)");let copyTimer;function fitComposition(){const viewportWidth=window.visualViewport?.width||innerWidth;const viewportHeight=window.visualViewport?.height||innerHeight;const horizontalMargin=viewportWidth<600?24:72;const verticalMargin=viewportHeight<700?150:180;const scale=Math.max(.18,Math.min((viewportWidth-horizontalMargin)/1600,(viewportHeight-verticalMargin)/900));stage.style.setProperty("--composition-scale",scale.toFixed(4))}fitComposition();addEventListener("resize",fitComposition,{passive:true});window.visualViewport?.addEventListener("resize",fitComposition,{passive:true});requestAnimationFrame(()=>document.body.classList.add("ready"));function activate(portal){const state=states[portal.dataset.emotion];stage.classList.add("has-active");stage.dataset.active=portal.dataset.emotion;portals.forEach(item=>item.classList.toggle("is-active",item===portal));document.documentElement.style.setProperty("--cursor",state.color);stage.style.setProperty("--active-color",state.color);experienceCharacter.src=state.image;experienceKicker.textContent=state.title;experienceTitle.textContent=state.heading;experienceDetail.textContent=state.detail;experienceEnter.href=state.href;experiencePreview.setAttribute("aria-hidden","false");selectionCopy.classList.add("is-changing");clearTimeout(copyTimer);copyTimer=setTimeout(()=>{selectionTitle.textContent=state.title;selectionDetail.textContent=state.detail;selectionCopy.classList.remove("is-changing")},120)}function reset(){stage.classList.remove("has-active");delete stage.dataset.active;portals.forEach(item=>item.classList.remove("is-active"));document.documentElement.style.setProperty("--cursor","#101010");stage.style.removeProperty("--active-color");experiencePreview.setAttribute("aria-hidden","true");selectionCopy.classList.add("is-changing");clearTimeout(copyTimer);copyTimer=setTimeout(()=>{selectionTitle.textContent="하나의 감정을 선택하세요.";selectionDetail.textContent="그래픽에 마우스를 올리면 경험 방법이 나타납니다.";selectionCopy.classList.remove("is-changing")},120)}function leaveTo(href){document.body.classList.add("leaving");setTimeout(()=>location.href=href,420)}addEventListener("pointermove",event=>{cursor.style.left=event.clientX+"px";cursor.style.top=event.clientY+"px"});portals.forEach(portal=>{portal.addEventListener("pointerenter",()=>{activate(portal);cursor.classList.add("hover")});portal.addEventListener("pointerleave",()=>{if(!coarsePointer.matches)reset();cursor.classList.remove("hover")});portal.addEventListener("focus",()=>activate(portal));portal.addEventListener("blur",reset);portal.addEventListener("click",event=>{if(event.metaKey||event.ctrlKey||event.shiftKey)return;event.preventDefault();if(coarsePointer.matches){activate(portal);return}leaveTo(portal.href)})});experienceEnter.addEventListener("click",event=>{if(event.metaKey||event.ctrlKey||event.shiftKey)return;event.preventDefault();leaveTo(experienceEnter.href)});ExhibitionNavigation.onAdvance(()=>{if(!stage.classList.contains("has-active"))return false;experienceEnter.click();return true});stage.addEventListener("pointerdown",event=>{if(coarsePointer.matches&&stage.classList.contains("has-active")&&!event.target.closest(".portal,.experience-enter"))reset()});addEventListener("keydown",event=>{if(event.key==="Escape"&&stage.classList.contains("has-active"))reset()});document.querySelectorAll(".brand,.info-link").forEach(link=>{link.addEventListener("pointerenter",()=>cursor.classList.add("hover"));link.addEventListener("pointerleave",()=>cursor.classList.remove("hover"));link.addEventListener("click",event=>{if(event.metaKey||event.ctrlKey||event.shiftKey)return;event.preventDefault();leaveTo(link.href)})});</script>
+    <script>(()=>{if(window.top!==window.self)return;if(window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker"in navigator){navigator.serviceWorker.register(new URL("exhibition-font-cache.js",document.baseURI),{scope:new URL("./",document.baseURI).href,updateViaCache:"none"}).catch(()=>{})}const IDLE_LIMIT=5*60*1e3;const INTRO_URL=new URL("index.html",document.baseURI).href;let idleTimer;let lastPointerReset=0;function stopMedia(){document.querySelectorAll("audio, video").forEach(media=>{try{media.pause()}catch{}const stream=media.srcObject;if(stream&&typeof stream.getTracks==="function"){stream.getTracks().forEach(track=>track.stop())}})}function returnToIntro(){stopMedia();location.replace(INTRO_URL)}function resetIdleTimer(){clearTimeout(idleTimer);idleTimer=setTimeout(returnToIntro,IDLE_LIMIT)}function resetFromPointerMove(){const now=Date.now();if(now-lastPointerReset<500)return;lastPointerReset=now;resetIdleTimer()}["pointerdown","keydown","wheel","touchstart","input"].forEach(eventName=>{addEventListener(eventName,resetIdleTimer,{passive:true})});addEventListener("pointermove",resetFromPointerMove,{passive:true});addEventListener("pageshow",resetIdleTimer);addEventListener("pagehide",()=>clearTimeout(idleTimer));resetIdleTimer()})();</script>
+  </body>
 </html>

@@ -1,240 +1,262 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>우리 삶의 네가지 무대</title>
-    
-    <style>
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Thin.woff2') format('woff2');
-            font-weight: 100;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Light.woff2') format('woff2');
-            font-weight: 300;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Medium.woff2') format('woff2');
-            font-weight: 500;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Paperlogy';
-            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/Paperlogy-Bold.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-        }
-
-        /* 기본 스타일 초기화 및 스크롤 스냅 설정 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html, body {
-            height: 100%;
-            font-family: 'Paperlogy', sans-serif;
-            color: #333333;
-            background-color: #ffffff;
-            line-height: 1.6;
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
-            cursor: none; /* 💡 기본 마우스 포인터 숨김 */
-        }
-
-        /* 💡 Intro.html과 동일한 미니멀 점 커서 스타일 구현 */
-        #custom-cursor {
-            position: fixed; 
-            width: 6px; 
-            height: 6px; 
-            background: #e2629b; /* 시그니처 핑크 색상 */
-            border-radius: 50%; 
-            pointer-events: none; 
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s;
-        }
-
-        /* 전체 화면 세로 정렬을 위한 컨테이너 */
-        .container {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* 각 섹션을 전체 화면(100vh) 크기로 지정 */
-        .section {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            padding-left: calc(50% - 400px); 
-            padding-right: 20px;
-            scroll-snap-align: start; 
-            position: relative;
-        }
-
-        /* 내부 콘텐츠 영역 (왼쪽 선 디테일 유지) */
-        .section-content {
-            border-left: 1px solid #e0e0e0;
-            padding-left: 20px;
-        }
-
-        /* 상단 소제목 */
-        .section-tag {
-            font-size: 11px;
-            font-weight: 500;
-            color: #999999;
-            letter-spacing: 1px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-        }
-
-        /* 대제목 스타일 */
-        .section-title {
-            font-size: 28px;
-            font-weight: 300;
-            color: #444444;
-            margin-bottom: 30px;
-            line-height: 1.4;
-        }
-
-        /* 본문 텍스트 스타일 */
-        .section-desc {
-            font-size: 13px;
-            color: #777777;
-            font-weight: 300;
-            word-break: keep-all;
-        }
-        .section-desc p {
-            margin-bottom: 12px;
-        }
-
-        /* 01 섹션의 희노애락 컬러 포인트 */
-        .hee { color: #e9916d; font-weight: 500; } 
-        .no { color: #df4d4d; font-weight: 500; }  
-        .ae { color: #6b8bb4; font-weight: 500; }  
-        .rak { color: #6fa076; font-weight: 500; } 
-
-        /* 02, 03 섹션의 핑크색 포인트 컬러 */
-        .point-pink {
-            color: #e2629b;
-            font-weight: 500;
-        }
-
-        /* 02 섹션 본문 내 강조 텍스트 */
-        .bold-text {
-            font-weight: 500;
-            color: #222222;
-        }
-
-        /* 03 섹션의 버튼 스타일 */
-        .cta-button {
-            display: inline-block;
-            background-color: #e2629b;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            padding: 12px 35px;
-            margin-top: 25px;
-            border-radius: 0px; 
-            transition: background-color 0.3s ease;
-            text-transform: uppercase;
-        }
-        .cta-button:hover {
-            background-color: #cb4f87;
-        }
-
-        /* 반응형 여백 조정 */
-        @media (max-width: 840px) {
-            .section {
-                padding-left: 40px;
-                padding-right: 40px;
-            }
-            .section-title {
-                font-size: 24px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <div id="custom-cursor"></div>
-
-    <div class="container">
-
-        <section class="section">
-            <div class="section-content">
-                <div class="section-tag">01 / INTRODUCTION</div>
-                <h1 class="section-title">
-                    우리 삶의 네가지 무대,<br>
-                    <span class="hee">喜</span> <span class="no">怒</span> <span class="ae">哀</span> <span class="rak">樂</span>
-                </h1>
-                <div class="section-desc">
-                    <p>이 웹사이트는 인간이 느끼는 가장 본질적인 네 가지 감정인 희,로,애,락을<br>디지털 공간에서 해소하고 기록하는 경험을 제공하는 공간입니다.</p>
-                    <p>당신의 감정을 인터랙션으로 경험해보세요.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-content">
-                <div class="section-tag">02 / EMOTION & INTERACTION</div>
-                <h2 class="section-title">
-                    감정을 표현하는<br>
-                    <span class="point-pink">네가지 방식</span>
-                </h2>
-                <div class="section-desc">
-                    <p>미소를 지어 <span class="bold-text">기쁨</span>을 기록하고 추억하고, 키보드를 연타하여 마음속의 <span class="bold-text">분노</span>를 통쾌하게 터뜨려보세요.</p>
-                    <p>심호흡을 함께하며 <span class="bold-text">슬픔</span>을 위로하고, 경쾌한 클래식 음악을 연주하며 <span class="bold-text">즐거움</span>의 에너지를 발산 할 것입니다.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-content">
-                <div class="section-tag">03 / EXPERIENCE</div>
-                <h2 class="section-title">
-                    당신의 감정을<br>
-                    <span class="point-pink">경험해보세요</span>
-                </h2>
-                <a href="Home.html" class="cta-button">Strat Experience</a>
-            </div>
-        </section>
-
-    </div>
-
-    <script>
-        const cursor = document.getElementById('custom-cursor');
-        
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // 링크나 버튼에 마우스를 올렸을 때 커서가 살짝 커지는 인터랙션 추가
-        const interactiveElements = document.querySelectorAll('a, .cta-button');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.width = '12px';
-                cursor.style.height = '12px';
-                cursor.style.backgroundColor = '#cb4f87';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.width = '6px';
-                cursor.style.height = '6px';
-                cursor.style.backgroundColor = '#e2629b';
-            });
-        });
-    </script>
-
-</body>
+  <head>
+    <script>(()=>{if(!/^https?:$/.test(location.protocol)||!window.fetch)return;const base=new URL("./",document.baseURI);const pages={Home:"Home.html",Info:"Info.html",joy:"joy.html",anger:"anger.html",sorrow:"sorrow.html",pleasure:"pleasure.html"};const characters={joy:["joy.webp","joy-01.webp","joy-04.webp"],anger:["anger.webp","anger-03.webp","anger-04.webp"],sorrow:["sorrow.webp","sorrow-01.webp","sorrow-04.webp"],pleasure:["pleasure.webp","pleasure-01.webp","pleasure-04.webp"]};const current=location.pathname.split("/").pop().replace(/\.html$/,"")||"index";if(!["index","Home","Info"].includes(current))return;const queue=[],finished=new Set;const routes=new Map(Object.entries(pages).map(([name,path])=>[new URL(path,base).href,name]));let ready=false,running=false,stopped=false,timer=0,idle=0,hoverTimer=0,cancelActive,activeTask;const constrained=()=>navigator.connection?.saveData||/(^|-)2g$/.test(navigator.connection?.effectiveType||"");const available=()=>ready&&!stopped&&!document.hidden&&navigator.onLine!==false&&!constrained();function add(path,documentFile=false,first=false){const url=new URL(path,base).href;if(finished.has(url)||activeTask?.url===url)return;const existing=queue.findIndex(task=>task.url===url);if(existing>=0){if(!first)return;queue.splice(existing,1)}queue[first?"unshift":"push"]({url:url,documentFile:documentFile})}function addPage(name,first=false){if(!pages[name]||name===current)return;const assets=characters[name]||[];for(const asset of first?[...assets].reverse():assets)add("assets/characters/"+asset,false,first);add(pages[name],true,first)}function schedule(delay=350){if(!available()||running||timer||idle||!queue.length)return;timer=setTimeout(()=>{timer=0;if(window.requestIdleCallback)idle=requestIdleCallback(()=>{idle=0;pump()},{timeout:1500});else pump()},delay)}function warm(task){return new Promise(resolve=>{const controller=new AbortController;let link,settled=false;const complete=success=>{if(settled)return;settled=true;clearTimeout(timeout);if(link){link.onload=link.onerror=null;link.remove()}controller.abort();cancelActive=null;resolve(success)};const timeout=setTimeout(()=>complete(false),8e3);cancelActive=()=>complete(false);const probe=document.createElement("link");if(task.documentFile&&probe.relList?.supports?.("prefetch")){link=probe;link.rel="prefetch";link.as="document";link.href=task.url;link.fetchPriority="low";link.onload=()=>complete(true);link.onerror=()=>complete(false);document.head.append(link)}else{fetch(task.url,{credentials:"same-origin",priority:"low",signal:controller.signal}).then(async response=>{if(!response.ok||response.redirected)return false;await response.arrayBuffer();return true}).then(complete,()=>complete(false))}})}async function pump(){if(!available()||running||!queue.length)return;running=true;const task=queue.shift();activeTask=task;if(await warm(task))finished.add(task.url);activeTask=null;running=false;schedule()}function intent(event){clearTimeout(hoverTimer);const anchor=event.target.closest?.("a[href]");if(!anchor||constrained())return;const name=routes.get(anchor.href);if(!name)return;hoverTimer=setTimeout(()=>{addPage(name,true);schedule(0)},event.type==="pointerdown"?0:120)}function pause(){clearTimeout(timer);timer=0;clearTimeout(hoverTimer);if(idle){cancelIdleCallback(idle);idle=0}if(cancelActive){queue.unshift(activeTask);cancelActive()}}function start(){ready=true}document.addEventListener("pointerover",intent,{passive:true});document.addEventListener("focusin",intent);document.addEventListener("pointerdown",intent,{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?pause():schedule());window.addEventListener("offline",pause);window.addEventListener("online",()=>schedule());navigator.connection?.addEventListener("change",()=>constrained()?pause():schedule());window.addEventListener("pagehide",()=>{stopped=true;pause()});window.addEventListener("pageshow",()=>{stopped=false;schedule()});if(document.readyState==="complete")start();else window.addEventListener("load",start,{once:true})})();</script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <title>작품 소개 — 감정을 마주하다</title>
+    <style>@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-1Thin.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-3Light.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap;}@font-face{font-family:Paperlogy;src:url('./assets/fonts/Paperlogy-5Medium.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap;}</style>
+    <script>try{if(sessionStorage.getItem("heerorak-from-intro")==="1")document.documentElement.classList.add("from-intro")}catch{}</script>
+    <style>:root{--paper:#ffffff;--ink:#28231f;--muted:#756d66;--line:rgba(40, 35, 31, 0.16);--hee:#f2c230;--no:#ef4b3d;--ae:#4d86c6;--rak:#4ba86a;}*{box-sizing:border-box;}html{scroll-behavior:smooth;scroll-snap-type:y mandatory;overscroll-behavior-y:none;background:var(--paper);scrollbar-width:none;-ms-overflow-style:none;}body{margin:0;font-family:Paperlogy, sans-serif;color:var(--ink);background:var(--paper);font-weight:300;transition:opacity 0.5s,
+          filter 0.5s;scrollbar-width:none;-ms-overflow-style:none;}html::-webkit-scrollbar,
+      body::-webkit-scrollbar{display:none;width:0;height:0;}html.from-intro body{opacity:0;filter:blur(4px);}body.leaving{opacity:0;filter:blur(7px);}a{font:inherit;}.scroll-hint{position:fixed;left:50%;bottom:22px;z-index:90;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:10px;font-weight:300;letter-spacing:0.06em;pointer-events:none;transform:translateX(-50%);opacity:0.72;transition:opacity 0.4s ease,
+          transform 0.4s ease;}.scroll-hint i{font-style:normal;font-size:12px;animation:scroll-hint-drift 1.5s ease-in-out infinite;}.scroll-hint.hidden{opacity:0;transform:translate(-50%, 8px);}@keyframes scroll-hint-drift{0%,
+        100%{transform:translateY(-2px);}50%{transform:translateY(3px);}}main{position:relative;z-index:2;}main > section{scroll-snap-align:start;scroll-snap-stop:always;}.hero{min-height:100vh;padding:80px max(7vw, 34px);display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--line);}.hero-label{margin:0 0 34px;font-size:11px;letter-spacing:0.14em;color:var(--muted);}.hero-copy{display:block;}.hero-copy h1{margin:0;font-size:clamp(30px, 4.3vw, 72px);font-weight:300;line-height:0.94;letter-spacing:-0.065em;word-break:keep-all;text-align:left;}.hero-copy h1 span{display:block;white-space:nowrap;}.hero-copy h1 strong{font-weight:500;}.hero-copy > p{max-width:520px;margin:54px 0 0;color:var(--muted);font-size:clamp(13px, 0.85vw, 16px);line-height:1.85;word-break:keep-all;text-align:left;}.four{display:inline-flex;gap:12px;margin-top:30px;font-size:clamp(34px, 4vw, 48px);}.four b{font-weight:300;transition:transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);}.four b:hover{transform:translateY(-5px);}.four b:nth-child(1){color:var(--hee);}.four b:nth-child(2){color:var(--no);}.four b:nth-child(3){color:var(--ae);}.four b:nth-child(4){color:var(--rak);}.section{min-height:100vh;padding:72px max(7vw, 34px);display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid var(--line);}.section-head{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:30px;}.section-tag{margin:0;font-size:10px;letter-spacing:0.1em;color:var(--muted);}.section-head h2{margin:0;font-size:clamp(25px, 2.3vw, 34px);font-weight:300;line-height:1.24;letter-spacing:-0.04em;text-align:left;}.section-head h2 strong{font-weight:500;}.emotion-section{padding-top:50px;padding-bottom:50px;}.emotion-section .section-head{margin-bottom:14px;}.map{display:flex;flex-direction:column;border:0;}.item{--color:#777;display:flex;width:min(84%, 900px);gap:clamp(28px, 5vw, 64px);align-items:center;min-height:118px;padding:10px 0;border:0;background:none;transition:opacity 0.1s ease-out;}.item:nth-child(odd){margin-right:auto;text-align:left;}.item:nth-child(even){margin-left:auto;padding-right:10px;flex-direction:row-reverse;text-align:right;}.map:has(.item:hover) .item:not(:hover){opacity:0.2;}.item-mark{position:relative;flex:0 0 104px;}.item small{display:block;margin-bottom:4px;font-size:9px;letter-spacing:0.06em;color:var(--muted);}.emotion-character{display:block;width:96px;height:96px;object-fit:contain;transform-origin:center;transition:transform 0.12s ease-out;}.item:hover .emotion-character{transform:translateY(-5px);}.item.no:hover .emotion-character{transform:translateY(-3px) rotate(5deg);}.item.ae:hover .emotion-character{transform:translateY(-3px) rotate(-3deg);}.item.rak:hover .emotion-character{transform:translateY(-4px) rotate(8deg);}.item-copy{max-width:560px;}.item h3{margin:0;font-size:20px;font-weight:500;letter-spacing:-0.035em;}.item p{margin:7px 0 0;color:var(--muted);font-size:clamp(12px, 0.75vw, 14px);line-height:1.65;word-break:keep-all;}.item-meta{display:flex;gap:22px;margin-top:9px;color:#8b837c;font-size:10px;line-height:1.6;}.item-meta b{margin-right:7px;color:var(--ink);font-weight:300;}.item:nth-child(even) .item-meta{justify-content:flex-end;}.hee{--color:var(--hee);}.no{--color:var(--no);}.ae{--color:var(--ae);}.rak{--color:var(--rak);}.process{display:block;margin-left:0;border-top:1px solid var(--line);}.process article{display:grid;grid-template-columns:100px 150px minmax(0, 680px);gap:24px;align-items:start;min-height:0;padding:22px 0;border:0;border-bottom:1px solid var(--line);background:none;}.process b{display:block;margin:2px 0 0;font-size:9px;font-weight:500;letter-spacing:0.06em;}.process h3{margin:0;font-size:15px;font-weight:500;}.process p{margin:0;color:var(--muted);font-size:13px;line-height:1.75;text-align:left;}.notice{display:grid;grid-template-columns:1fr;align-content:center;gap:22px;}.notice-copy{display:grid;grid-template-columns:repeat(2, minmax(0, 400px));gap:48px;}.notice-copy h3{margin:0 0 11px;font-size:14px;font-weight:500;}.notice-copy p{margin:0;color:var(--muted);font-size:13px;line-height:1.8;word-break:keep-all;text-align:left;}.final{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:100px max(7vw, 34px);text-align:left;}.final-copy{display:block;}.final h2{margin:0;font-size:clamp(28px, 4vw, 44px);font-weight:500;line-height:1;letter-spacing:-0.055em;text-align:left;}.final p{max-width:460px;margin:18px 0 0;color:var(--muted);font-size:13px;line-height:1.7;text-align:left;word-break:keep-all;}.final a{position:relative;display:grid;width:100%;grid-template-columns:1fr auto;align-items:center;gap:28px;margin-top:58px;padding:24px 0 20px;border:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);color:var(--ink);text-decoration:none;overflow:hidden;}.final a .label{font-size:clamp(48px, 9vw, 96px);font-style:normal;font-weight:500;line-height:0.95;letter-spacing:-0.07em;}.final a .arrow{font-size:clamp(48px, 7vw, 76px);font-style:normal;font-weight:300;line-height:1;transition:transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);}.final a .emotions{position:absolute;right:12%;bottom:12px;display:flex;gap:9px;font-size:18px;opacity:0;transform:translateY(22px);transition:opacity 0.35s,
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);}.final a .emotions b{font-weight:300;}.final a .emotions b:nth-child(1){color:var(--hee);}.final a .emotions b:nth-child(2){color:var(--no);}.final a .emotions b:nth-child(3){color:var(--ae);}.final a .emotions b:nth-child(4){color:var(--rak);}.final a:hover .arrow,
+      .final a:focus-visible .arrow{transform:translate(7px, -7px);}.final a:hover .emotions,
+      .final a:focus-visible .emotions{opacity:1;transform:translateY(0);}.final a .label-wrap{position:relative;display:block;min-width:0;}.final a .label{display:block;transition:transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.2s ease;}.transition-slices{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity 0.16s ease;}.transition-slice{position:absolute;inset:0;display:block;font-size:clamp(48px, 9vw, 96px);font-style:normal;font-weight:500;line-height:0.95;letter-spacing:-0.07em;opacity:0;transform:translate(0);transition:transform 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 0.16s ease;}.transition-slice:nth-child(1){color:var(--hee);clip-path:inset(0 0 75% 0);}.transition-slice:nth-child(2){color:var(--no);clip-path:inset(25% 0 50% 0);}.transition-slice:nth-child(3){color:var(--ae);clip-path:inset(50% 0 25% 0);}.transition-slice:nth-child(4){color:var(--rak);clip-path:inset(75% 0 0 0);}.final a:focus{outline:none;}.final a:focus-visible{outline:1px solid var(--ink);outline-offset:6px;}.final a:hover .label,
+      .final a:focus-visible .label{opacity:0.14;transform:none;}.final a:hover .transition-slices,
+      .final a:focus-visible .transition-slices{opacity:1;}.final a:hover .transition-slice,
+      .final a:focus-visible .transition-slice{opacity:1;}.final a:hover .transition-slice:nth-child(1),
+      .final a:focus-visible .transition-slice:nth-child(1){transform:translateX(8px);}.final a:hover .transition-slice:nth-child(2),
+      .final a:focus-visible .transition-slice:nth-child(2){transform:translateX(-6px);}.final a:hover .transition-slice:nth-child(3),
+      .final a:focus-visible .transition-slice:nth-child(3){transform:translateX(5px);}.final a:hover .transition-slice:nth-child(4),
+      .final a:focus-visible .transition-slice:nth-child(4){transform:translateX(-7px);}.reveal{opacity:0;transform:translateY(10px);filter:blur(3px);transition:opacity 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.58s cubic-bezier(0.16, 1, 0.3, 1);transition-delay:var(--reveal-delay, 0ms);}.reveal.visible{opacity:1;transform:translateY(0);filter:blur(0);}.item.reveal.visible{transition:opacity 0.1s ease-out,
+          transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+          filter 0.58s cubic-bezier(0.16, 1, 0.3, 1);transition-delay:0s;}.process{position:relative;border-top-color:transparent;}.process::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform 0.72s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;}.section.in-view .process::before{transform:scaleX(1);}.item .mark,
+      .item p{transition:transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+          color 0.1s,
+          opacity 0.35s;}@media (hover: hover){.item:nth-child(odd):hover .mark{transform:translateX(3px);}.item:nth-child(even):hover .mark{transform:translateX(-3px);}.item:hover p{color:var(--ink);}}@media (max-width: 900px){.section-head,
+        .notice{grid-template-columns:1fr;}.hero{padding-top:80px;padding-bottom:80px;}.hero-copy h1{font-size:clamp(29px, 5vw, 40px);}.item{width:94%;gap:24px;}.item-mark{flex-basis:76px;}.item .mark{font-size:64px;}.item h3{font-size:18px;}.process article{grid-template-columns:70px 120px 1fr;}}@media (max-width: 600px){html{scroll-snap-type:y proximity;}.hero,
+        .section{min-height:100svh;padding-left:20px;padding-right:20px;}.hero{padding-top:64px;padding-bottom:64px;}.notice-copy{grid-template-columns:1fr;}.emotion-section{padding-top:64px;padding-bottom:64px;}.item{min-height:142px;}.item-mark{flex-basis:58px;}.item .mark{font-size:52px;}.item h3,
+        .process h3{font-size:16px;}.item-meta{display:block;font-size:11px;}.process article{display:block;}.process b{margin-bottom:12px;}.process h3{margin-bottom:8px;}.section{padding-top:64px;padding-bottom:64px;}.final{padding-left:20px;padding-right:20px;}.final p{text-align:left;}.final a{margin-top:42px;}.final a .emotions{display:none;}.scroll-hint{bottom:14px;}}@media (pointer: fine){html,
+        body,
+        a{cursor:none;}.cursor{position:fixed;left:0;top:0;z-index:100;width:7px;height:7px;border-radius:50%;background:var(--ink);pointer-events:none;transform:translate(-50%, -50%);will-change:transform;transition:width 0.2s,
+            height 0.2s,
+            background 0.2s;}.cursor.hover{width:36px;height:36px;background:rgba(40, 35, 31, 0.12);border:1px solid var(--ink);}}@media (pointer: coarse){.cursor{display:none;}}@media (prefers-reduced-motion: reduce){*,
+        *::before,
+        *::after{animation:none !important;transition-duration:0.01ms !important;}html{scroll-behavior:auto;}}@media (prefers-reduced-motion: reduce){.reveal{opacity:1 !important;transform:none !important;filter:none !important;}.process::before{transform:scaleX(1) !important;}}@media (max-width: 600px){html,
+        body,
+        main{width:100%;max-width:100%;overflow-x:hidden;}.hero-copy{width:100%;min-width:0;}.hero-copy h1{font-size:clamp(25px, 7.25vw, 32px);line-height:1.04;}.hero-copy h1 span{display:block;white-space:nowrap;}.hero-copy > p{max-width:100%;margin-top:34px;font-size:12px;line-height:1.75;word-break:keep-all;}.four{gap:9px;margin-top:24px;font-size:clamp(30px, 10vw, 40px);}.section-head h2{max-width:100%;font-size:clamp(23px, 6.8vw, 30px);word-break:keep-all;}.item,
+        .item:nth-child(even){width:100%;padding-right:0;gap:12px;}.item-copy{min-width:0;max-width:calc(100% - 70px);}.item p{font-size:12px;line-height:1.65;word-break:keep-all;}.item-meta{line-height:1.7;word-break:keep-all;}.process article,
+        .notice-copy article{min-width:0;}.process p,
+        .notice-copy p,
+        .final p{font-size:12px;word-break:keep-all;}.final h2{font-size:clamp(27px, 8vw, 36px);word-break:keep-all;}.final a{grid-template-columns:minmax(0, 1fr) auto;gap:14px;padding:18px 0;}.final a .label,
+        .transition-slice{font-size:clamp(33px, 10vw, 48px);white-space:nowrap;}.final a .arrow{font-size:clamp(34px, 10vw, 48px);}}@media (max-width: 360px){.hero,
+        .section,
+        .final{padding-left:16px;padding-right:16px;}.hero-copy h1{font-size:24px;}.hero-copy > p,
+        .item p,
+        .process p,
+        .notice-copy p,
+        .final p{font-size:11px;}.item-mark{flex-basis:66px;}.emotion-character{width:60px;height:60px;}.final a .label,
+        .transition-slice{font-size:31px;}}</style>
+    <script src="exhibition-navigation.js"></script>
+  </head>
+  <body>
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <div class="scroll-hint" id="scrollHint" aria-hidden="true"
+      ><span>스크롤하여 보기</span><i>↓</i></div
+    >
+    <main>
+      <section class="hero">
+        <p class="hero-label">01 / 작품 개요</p>
+        <div class="hero-copy">
+          <h1
+            ><span>감정은 사라지는 것이 아니라,</span
+            ><span><strong>움직임을 거쳐 흔적으로 남습니다.</strong></span></h1
+          >
+          <p
+            >〈감정을 마주하다 — 희로애락〉은 감정을 단순히 설명하거나 평가하지
+            않습니다. 관람객이 카메라와 마우스, 키보드, 몸짓을 사용해 감정을
+            직접 움직이고 사진, 파편, 문장, 소리의 형태로 변환하는 인터랙티브 웹
+            경험입니다.</p
+          >
+          <div class="four" aria-label="희로애락"
+            ><b>喜</b><b>怒</b><b>哀</b><b>樂</b></div
+          >
+        </div>
+      </section>
+      <section class="section emotion-section">
+        <div class="section-head"
+          ><p class="section-tag">02 / 감정 구성</p
+          ><h2>네 가지 감정,<br /><strong>네 가지 변환 방식</strong></h2></div
+        >
+        <div class="map">
+          <article class="item hee"
+            ><div class="item-mark"
+              ><small>희 · 기쁨</small
+              ><img
+                class="emotion-character"
+                src="assets/characters/joy.webp"
+                width="384"
+                height="384"
+                loading="lazy"
+                decoding="async"
+                alt=""
+              /></div
+            ><div class="item-copy"
+              ><h3>기쁨을 포착하다</h3
+              ><p
+                >기쁨에 짧은 이름을 붙이고 여덟 장을 촬영한 뒤, 네 장을 골라 네
+                컷과 GIF로 남깁니다.</p
+              ><div class="item-meta"
+                ><span><b>입력</b>문구 · 카메라 · 표정</span
+                ><span><b>흔적</b>네 컷 · GIF · 인쇄</span></div
+              ></div
+            ></article
+          >
+          <article class="item no"
+            ><div class="item-mark"
+              ><small>로 · 분노</small
+              ><img
+                class="emotion-character"
+                src="assets/characters/anger.webp"
+                width="384"
+                height="384"
+                loading="lazy"
+                decoding="async"
+                alt=""
+              /></div
+            ><div class="item-copy"
+              ><h3>분노를 통과하다</h3
+              ><p
+                >달아나는 캐릭터를 붙잡고 마음에 걸린 말을 꺼낸 뒤, 하나의
+                파일로 만들어 파쇄합니다.</p
+              ><div class="item-meta"
+                ><span><b>입력</b>마우스 · 키보드</span
+                ><span><b>흔적</b>언어 · 파편 · 정적</span></div
+              ></div
+            ></article
+          >
+          <article class="item ae"
+            ><div class="item-mark"
+              ><small>애 · 슬픔</small
+              ><img
+                class="emotion-character"
+                src="assets/characters/sorrow.webp"
+                width="384"
+                height="384"
+                loading="lazy"
+                decoding="async"
+                alt=""
+              /></div
+            ><div class="item-copy"
+              ><h3>슬픔 곁에 머물다</h3
+              ><p
+                >마음에 머무는 문장을 꺼내 잠시 바라보고, 캐릭터와 네 번의
+                호흡을 함께하며 천천히 흘려보냅니다.</p
+              ><div class="item-meta"
+                ><span><b>입력</b>문장 · 호흡</span
+                ><span><b>흔적</b>번짐 · 잔상 · 여백</span></div
+              ></div
+            ></article
+          >
+          <article class="item rak"
+            ><div class="item-mark"
+              ><small>락 · 즐거움</small
+              ><img
+                class="emotion-character"
+                src="assets/characters/pleasure.webp"
+                width="384"
+                height="384"
+                loading="lazy"
+                decoding="async"
+                alt=""
+              /></div
+            ><div class="item-copy"
+              ><h3>즐거움을 증폭하다</h3
+              ><p
+                >음악을 고른 뒤 몸을 움직이고, 음악이 멈추는 다섯 순간의 자세를
+                카메라로 남깁니다.</p
+              ><div class="item-meta"
+                ><span><b>입력</b>웹캠 · 몸짓</span
+                ><span><b>흔적</b>음악 · 움직임 · 사진</span></div
+              ></div
+            ></article
+          >
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head"
+          ><p class="section-tag">03 / 경험 구조</p
+          ><h2
+            >감정을 없애는 대신,<br /><strong
+              >호출하고 변환하고 남깁니다.</strong
+            ></h2
+          ></div
+        >
+        <div class="process">
+          <article
+            ><b>01 / 호출</b><h3>감정 호출</h3
+            ><p
+              >짧은 질문과 문장을 통해 지금 나와 가까운 감정을 떠올립니다.</p
+            ></article
+          >
+          <article
+            ><b>02 / 변환</b><h3>감정 변환</h3
+            ><p
+              >각 감정에 맞는 신체적 인터랙션으로 감정의 움직임을 경험합니다.</p
+            ></article
+          >
+          <article
+            ><b>03 / 흔적</b><h3>흔적 생성</h3
+            ><p
+              >사진, 파편, 잔상, 소리처럼 서로 다른 결과를 바라보고 경험을
+              마무리합니다.</p
+            ></article
+          >
+        </div>
+      </section>
+      <section class="section notice">
+        <p class="section-tag">04 / 전시 안내</p>
+        <div class="notice-copy">
+          <article
+            ><h3>데이터와 개인정보</h3
+            ><p
+              >분노와 슬픔에 입력한 문장은 서버로 전송되지 않습니다. 희의 사진과
+              GIF는 결과물 및 QR 생성을 위해 클라우드 저장소에 업로드됩니다.
+              전시 전 보관 기간과 삭제 정책을 명확히 안내합니다.</p
+            ></article
+          >
+          <article
+            ><h3>카메라 사용</h3
+            ><p
+              >희와 락은 카메라 권한이 필요합니다. 카메라는 사진 촬영과 손동작
+              인식에만 사용되며, 관람객이 경험을 종료하면 촬영 스트림을
+              중지합니다.</p
+            ></article
+          >
+        </div>
+      </section>
+      <section class="final">
+        <div class="final-copy"
+          ><h2>이제, 감정을<br />직접 마주할 차례입니다.</h2
+          ><p
+            >다음 화면에서 희·로·애·락 중 하나를 선택해 경험을 시작합니다.</p
+          ></div
+        >
+        <a href="Home.html" id="emotionStart"
+          ><span class="label-wrap"
+            ><i class="label">감정 선택하기</i
+            ><span class="transition-slices" aria-hidden="true"
+              ><i class="transition-slice">감정 선택하기</i
+              ><i class="transition-slice">감정 선택하기</i
+              ><i class="transition-slice">감정 선택하기</i
+              ><i class="transition-slice">감정 선택하기</i></span
+            ></span
+          ><i class="arrow">↗</i
+          ><span class="emotions" aria-hidden="true"
+            ><b>喜</b><b>怒</b><b>哀</b><b>樂</b></span
+          ></a
+        >
+      </section>
+    </main>
+    <script>const cursor=document.getElementById("cursor");const scrollHint=document.getElementById("scrollHint");let cursorFrame=0,cursorX=0,cursorY=0;addEventListener("pointermove",e=>{if(e.pointerType==="touch")return;cursorX=e.clientX;cursorY=e.clientY;if(cursorFrame)return;cursorFrame=requestAnimationFrame(()=>{cursorFrame=0;cursor.style.transform=`translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`})},{passive:true});addEventListener("pagehide",()=>{cancelAnimationFrame(cursorFrame);cursorFrame=0});document.querySelectorAll("a").forEach(el=>{el.addEventListener("mouseenter",()=>cursor.classList.add("hover"));el.addEventListener("mouseleave",()=>cursor.classList.remove("hover"));el.addEventListener("click",e=>{if(e.metaKey||e.ctrlKey||e.shiftKey)return;e.preventDefault();document.body.classList.add("leaving");setTimeout(()=>location.href=el.href,430)})});const snapSections=[...document.querySelectorAll("main>section")];const reducedMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;let snapIndex=0,wheelGesture=false,wheelEndTimer=0,navigationTimer=0,isNavigating=false,touchStartY=0,touchCurrentY=0,scrollFrame=0;const dismissScrollHint=()=>scrollHint?.classList.add("hidden");const revealSelector=".hero-label,.hero-copy h1,.hero-copy > p,.four,.section-tag,.section-head h2,.item,.process article,.notice-copy article,.final h2,.final p,.final a";snapSections.forEach(section=>{[...section.querySelectorAll(revealSelector)].forEach((element,index)=>{element.classList.add("reveal");element.style.setProperty("--reveal-delay",Math.min(index*80,360)+"ms")})});const revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{const section=entry.target;const targets=section.querySelectorAll(".reveal");if(entry.isIntersecting){section.classList.add("in-view");requestAnimationFrame(()=>targets.forEach(element=>element.classList.add("visible")))}else if(!reducedMotion){section.classList.remove("in-view");targets.forEach(element=>element.classList.remove("visible"))}})},{threshold:.32});snapSections.forEach(section=>revealObserver.observe(section));const nearestSection=()=>{const position=scrollY+innerHeight*.34;let nearest=0,distance=Infinity;snapSections.forEach((section,index)=>{const current=Math.abs(section.offsetTop-position);if(current<distance){distance=current;nearest=index}});return nearest};const moveToSection=index=>{snapIndex=Math.max(0,Math.min(snapSections.length-1,index));if(snapIndex>0)dismissScrollHint();isNavigating=true;clearTimeout(navigationTimer);scrollTo({top:Math.max(0,snapSections[snapIndex].offsetTop),behavior:reducedMotion?"auto":"smooth"});navigationTimer=setTimeout(()=>{isNavigating=false},reducedMotion?20:780)};addEventListener("wheel",event=>{if(event.ctrlKey||Math.abs(event.deltaY)<4)return;event.preventDefault();clearTimeout(wheelEndTimer);wheelEndTimer=setTimeout(()=>{wheelGesture=false},180);if(wheelGesture||isNavigating)return;wheelGesture=true;snapIndex=nearestSection();moveToSection(snapIndex+(event.deltaY>0?1:-1))},{passive:false});addEventListener("keydown",event=>{if(event.defaultPrevented)return;if(event.target.closest("a,button,input,textarea,select"))return;const next=["ArrowDown","PageDown","Space"].includes(event.code);const previous=["ArrowUp","PageUp"].includes(event.code);if(!next&&!previous&&event.code!=="Home"&&event.code!=="End")return;event.preventDefault();if(isNavigating)return;snapIndex=nearestSection();if(event.code==="Home")moveToSection(0);else if(event.code==="End")moveToSection(snapSections.length-1);else moveToSection(snapIndex+(next?1:-1))});ExhibitionNavigation.onAdvance(()=>{if(isNavigating)return false;const next=nearestSection()+1;if(next<snapSections.length)moveToSection(next);else document.getElementById("emotionStart").click();return true});addEventListener("touchstart",event=>{touchStartY=event.touches[0].clientY;touchCurrentY=touchStartY},{passive:true});addEventListener("touchmove",event=>{touchCurrentY=event.touches[0].clientY;if(innerWidth<=600)return;if(Math.abs(touchCurrentY-touchStartY)>12)event.preventDefault()},{passive:false});addEventListener("touchend",()=>{if(innerWidth<=600)return;const distance=touchStartY-touchCurrentY;if(Math.abs(distance)<45||isNavigating)return;snapIndex=nearestSection();moveToSection(snapIndex+(distance>0?1:-1))},{passive:true});addEventListener("scroll",()=>{if(scrollY>40)dismissScrollHint();if(scrollFrame)return;scrollFrame=requestAnimationFrame(()=>{scrollFrame=0;snapIndex=nearestSection()})},{passive:true});if(document.documentElement.classList.contains("from-intro")){try{sessionStorage.removeItem("heerorak-from-intro")}catch{}setTimeout(()=>document.documentElement.classList.remove("from-intro"),80)}</script>
+    <script>(()=>{if(window.top!==window.self)return;if(window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker"in navigator){navigator.serviceWorker.register(new URL("exhibition-font-cache.js",document.baseURI),{scope:new URL("./",document.baseURI).href,updateViaCache:"none"}).catch(()=>{})}const IDLE_LIMIT=5*60*1e3;const INTRO_URL=new URL("index.html",document.baseURI).href;let idleTimer;let lastPointerReset=0;function stopMedia(){document.querySelectorAll("audio, video").forEach(media=>{try{media.pause()}catch{}const stream=media.srcObject;if(stream&&typeof stream.getTracks==="function"){stream.getTracks().forEach(track=>track.stop())}})}function returnToIntro(){stopMedia();location.replace(INTRO_URL)}function resetIdleTimer(){clearTimeout(idleTimer);idleTimer=setTimeout(returnToIntro,IDLE_LIMIT)}function resetFromPointerMove(){const now=Date.now();if(now-lastPointerReset<500)return;lastPointerReset=now;resetIdleTimer()}["pointerdown","keydown","wheel","touchstart","input"].forEach(eventName=>{addEventListener(eventName,resetIdleTimer,{passive:true})});addEventListener("pointermove",resetFromPointerMove,{passive:true});addEventListener("pageshow",resetIdleTimer);addEventListener("pagehide",()=>clearTimeout(idleTimer));resetIdleTimer()})();</script>
+  </body>
 </html>

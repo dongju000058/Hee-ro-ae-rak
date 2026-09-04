@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>喜 · 기쁨의 기록</title>
+    <style>*{box-sizing:border-box;}body{margin:0;min-height:100vh;padding:34px 18px 50px;background:#f6f7f8;color:#252525;font-family:-apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;}main{width:min(760px, 100%);margin:auto;}header{text-align:center;margin-bottom:26px;}h1{margin:0;font-size:24px;font-weight:600;}header p{margin:8px 0 0;color:#888;font-size:13px;}.media-grid{display:grid;grid-template-columns:minmax(180px, 0.72fr) minmax(260px, 1.28fr);gap:18px;align-items:start;}.card{padding:14px;border:1px solid #eee;border-radius:20px;background:#fff;box-shadow:0 12px 35px rgba(0, 0, 0, 0.06);}.card img{display:block;width:100%;border-radius:12px;background:#f2f2f2;object-fit:contain;}.photo img{aspect-ratio:23/61;}.gif img{aspect-ratio:4/3;}h2{margin:12px 2px 8px;font-size:13px;font-weight:600;}button{width:100%;padding:12px;border:0;border-radius:12px;background:#ffd214;color:#443914;font-weight:700;font-size:13px;}.notice{display:none;margin:40px auto;padding:20px;text-align:center;color:#777;}footer{margin-top:22px;color:#aaa;font-size:11px;text-align:center;}@media (max-width: 620px){.media-grid{grid-template-columns:1fr;}.photo{width:min(290px, 100%);margin:auto;}}</style>
+  </head>
+  <body>
+    <main>
+      <header
+        ><h1>喜 · 기쁨의 기록</h1
+        ><p>네 컷과 움직이는 순간을 함께 간직하세요.</p></header
+      >
+      <section class="media-grid" id="media-grid">
+        <article class="card photo"
+          ><img id="photo" alt="기쁨의 네 컷" /><h2>기쁨의 네 컷</h2
+          ><button data-kind="photo">사진 저장</button></article
+        >
+        <article class="card gif"
+          ><img id="gif" alt="기쁨의 움직이는 GIF" /><h2>움직이는 순간</h2
+          ><button data-kind="gif">GIF 저장</button></article
+        >
+      </section>
+      <div class="notice" id="notice" role="status"
+        >결과물을 불러올 수 없습니다. 촬영 화면의 QR을 다시 확인해주세요.</div
+      >
+      <footer>QR을 가진 사람은 이 결과물을 열람하고 저장할 수 있습니다.</footer>
+    </main>
+    <script>const params=new URLSearchParams(location.search);const media={photo:params.get("photo"),gif:params.get("gif")};const isAllowed=url=>{try{const parsed=new URL(url);return parsed.protocol==="https:"&&parsed.hostname==="firebasestorage.googleapis.com"&&parsed.pathname.startsWith("/v0/b/joyy-2c74e.firebasestorage.app/o/fourcuts%2F")}catch{return false}};if(!isAllowed(media.photo)){document.getElementById("media-grid").style.display="none";document.getElementById("notice").style.display="block"}else{document.getElementById("photo").src=media.photo;if(isAllowed(media.gif)){document.getElementById("gif").src=media.gif}else{document.querySelector(".gif").hidden=true}document.querySelectorAll(".card img").forEach(image=>image.addEventListener("error",()=>{document.getElementById("notice").style.display="block"}));document.querySelectorAll("button[data-kind]").forEach(button=>button.addEventListener("click",async()=>{const kind=button.dataset.kind;button.disabled=true;button.textContent="저장 준비 중…";try{const response=await fetch(media[kind]);if(!response.ok)throw new Error("download failed");const blob=await response.blob();const objectUrl=URL.createObjectURL(blob);const anchor=document.createElement("a");anchor.href=objectUrl;anchor.download=kind==="photo"?"joy-fourcut.png":"joy-moments.gif";anchor.click();setTimeout(()=>URL.revokeObjectURL(objectUrl),1e3)}catch{window.open(media[kind],"_blank","noopener")}finally{button.disabled=false;button.textContent=kind==="photo"?"사진 저장":"GIF 저장"}}))}</script>
+  </body>
+</html>
