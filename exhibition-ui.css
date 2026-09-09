@@ -1,0 +1,46 @@
+:root {
+  --exhibition-title-leading: 1.12;
+  --exhibition-title-tracking: -0.035em;
+}
+.joy-intro h1, .camera-gate-copy strong, .intro h1, .intro-card h1,
+.stage-copy h1, .stage-title, .display-title, .ending h2,
+.final-screen h2, .hero-copy h1, .final-copy h2 {
+  line-height: var(--exhibition-title-leading);
+  letter-spacing: var(--exhibition-title-tracking);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.privacy, .privacy-note, .print-help, .artwork-note, .edit-scope,
+.notice-copy p, .camera-gate-copy p, .qr-copy p {
+  font-size: max(14px, 0.875rem);
+  line-height: 1.7;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.text-action, .action-btn, .qr-retry-button {
+  min-height: 44px;
+}
+button:focus-visible, a:focus-visible, summary:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 5px;
+}
+.breath-guide button { display: block; margin: 14px auto 0; font-size: 14px; }
+.breath-guide { font-size: 14px; line-height: 1.6; }
+#targetButton:active { outline: 2px solid #ef4b3d; outline-offset: 6px; }
+.pleasure-keepsake { margin: 0 0 28px; grid-column: 1 / -1; }
+.pleasure-keepsake[hidden] { display: none; }
+.finale-screen > .visit-summary { grid-column: 1 / -1; }
+.ending.show, #finalScene.show { overflow-y: auto; }
+.pleasure-keepsake img { display: block; width: 100%; height: auto; margin-bottom: 12px; }
+.pleasure-keepsake p { font-size: 14px; line-height: 1.6; }
+.visit-summary { padding-top: 18px; margin-top: 24px; border-top: 1px solid #ddd; font-size: 14px; line-height: 1.7; }
+.visit-summary summary { cursor: pointer; min-height: 44px; }
+.visit-summary ol { display: flex; flex-wrap: wrap; gap: 10px 22px; padding-left: 20px; }
+.visit-summary p { font-size: 14px; margin: 12px 0; }
+@media (max-width: 600px) {
+  .text-action, .action-btn, .qr-retry-button { min-height: 48px; }
+  .breath-guide button { margin-top: 8px; }
+  .breath-guide { left: 18px; right: 18px; bottom: 22px; max-width: none; text-align: center; }
+  #breath-stage .breath-wrap { bottom: 170px; }
+  #breath-stage .breath-count { font-size: 14px; }
+}
