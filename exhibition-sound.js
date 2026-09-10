@@ -1,5 +1,6 @@
 (() => {
   let context, bed, timer;
+  let controlsVisible = false;
   let volume = .7, muted = false;
   const outputs = new Map();
   try { const saved = JSON.parse(sessionStorage.getItem('exhibition-sound') || 'null'); if (saved) { volume = Math.max(0, Math.min(1, Number(saved.volume) || 0)); muted = !!saved.muted; } } catch {}
@@ -99,6 +100,7 @@
     play(); timer = setInterval(play, 8000);
   }
   window.ExhibitionSound = {
+    show(visible = true) { controlsVisible = visible; const controls = document.querySelector('.sound-controls'); if (controls) controls.hidden = !visible; },
     output,
     media(audio, level) { audio.dataset.soundLevel = String(level); audio.muted = muted; audio.volume = volume * level; },
     break() { try { impactSound(); } catch {} },
@@ -116,12 +118,25 @@
   document.addEventListener('pointerdown', () => { if (bed && !document.hidden) ready(); }, {passive:true});
   document.addEventListener('DOMContentLoaded', () => {
     const style = document.createElement('style');
-    style.textContent = '.sound-controls{position:fixed;right:16px;bottom:16px;z-index:250;background:#fff;color:#222;border:1px solid #ddd;display:flex;align-items:center;gap:10px;padding:0 10px;font:14px sans-serif}.sound-controls button{font:inherit;color:inherit;background:none;border:0;min-height:44px;min-width:64px;cursor:pointer}.sound-controls input{width:80px;min-height:44px;accent-color:#333}.sound-controls button:focus-visible,.sound-controls input:focus-visible{outline:2px solid #222;outline-offset:2px}@media print{.sound-controls{display:none}}';
+    style.textContent = '.sound-controls{position:fixed;right:max(20px,env(safe-area-inset-right));top:94px;z-index:250;color:#333;display:flex;align-items:center;gap:4px;padding:0;background:none;border:0}.sound-controls[hidden]{display:none}.sound-controls button{display:grid;place-items:center;color:inherit;background:none;border:0;padding:0;width:44px;height:44px;cursor:pointer}.sound-controls svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.sound-controls input{width:76px;min-height:44px;margin:0;accent-color:#333}.sound-controls button:focus-visible,.sound-controls input:focus-visible{outline:2px solid #222;outline-offset:2px}@media(max-width:600px){.sound-controls{top:76px;right:16px}.sound-controls input{width:64px}}@media print{.sound-controls{display:none}}';
+    style.textContent += `
+      .sound-controls{color:#555;gap:2px}
+      .sound-controls svg{width:18px;height:18px;stroke-width:1.35}
+      .sound-controls input{appearance:none;-webkit-appearance:none;width:72px;height:44px;min-height:44px;border:0;border-radius:0;box-shadow:none;outline:none;padding:0;background:transparent;cursor:pointer}
+      .sound-controls input::-webkit-slider-runnable-track{height:1px;border:0;border-radius:0;background:linear-gradient(to right,#555 var(--sound-fill,70%),#ccc var(--sound-fill,70%));box-shadow:none}
+      .sound-controls input::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:7px;height:7px;border:0;border-radius:50%;background:#555;box-shadow:none;margin-top:-3px}
+      .sound-controls input::-moz-range-track{height:1px;border:0;background:#ccc}
+      .sound-controls input::-moz-range-progress{height:1px;background:#555}
+      .sound-controls input::-moz-range-thumb{width:7px;height:7px;border:0;border-radius:50%;background:#555;box-shadow:none}
+      .sound-controls button:hover{color:#111}
+      .sound-controls button:focus-visible,.sound-controls input:focus-visible{outline:1px solid #777;outline-offset:2px}
+    `;
     document.head.append(style);
     const controls = document.createElement('div'); controls.className = 'sound-controls'; controls.setAttribute('role','group'); controls.setAttribute('aria-label','소리 설정');
     const toggle = document.createElement('button'); toggle.type = 'button';
     const slider = document.createElement('input'); slider.type = 'range'; slider.min = '0'; slider.max = '100'; slider.value = String(Math.round(volume * 100)); slider.setAttribute('aria-label','음량');
-    const render = () => { toggle.textContent = muted ? '소리 켜기' : '소리 끄기'; toggle.setAttribute('aria-pressed',String(muted)); slider.setAttribute('aria-valuetext',Math.round(volume*100)+'%'); applyVolume(); };
+    controls.hidden = !controlsVisible;
+    const render = () => { toggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6 6.5 9H4v6h2.5l4.5 3Z"/>' + (muted ? '<path d="m16 10 4 4m0-4-4 4"/>' : '<path d="M15 9a4.5 4.5 0 0 1 0 6m3-9a8.5 8.5 0 0 1 0 12"/>') + '</svg>'; toggle.setAttribute('aria-label',muted ? '소리 켜기' : '소리 끄기'); toggle.setAttribute('aria-pressed',String(muted)); slider.style.setProperty('--sound-fill',Math.round(volume*100)+'%'); slider.setAttribute('aria-valuetext',Math.round(volume*100)+'%'); applyVolume(); };
     toggle.onclick = () => { muted = !muted; if (!muted && volume === 0) { volume = .7; slider.value = '70'; } render(); };
     slider.oninput = () => { volume = Number(slider.value)/100; muted = volume === 0; render(); };
     controls.append(toggle, slider); document.body.append(controls); render();

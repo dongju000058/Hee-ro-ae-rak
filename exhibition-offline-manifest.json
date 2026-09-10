@@ -1,10 +1,10 @@
 {
-  "version": "e2dc010de42105b0",
+  "version": "3a931b912071f3a3",
   "files": [
     {
       "path": "anger.html",
       "bytes": 63664,
-      "hash": "c2935ce38f4cd05b0f70e4c52664c04034db9690da3294189f55886eb84c94ba"
+      "hash": "073e30e29841f84a51520f992b9321d1d93f6cdb33c02d1b945f60d752265ec0"
     },
     {
       "path": "Home.html",
@@ -24,12 +24,12 @@
     {
       "path": "joy.html",
       "bytes": 96379,
-      "hash": "0a2fc025eadfc85a276784153606ee3240114a6da45f0d488e99eebf762dfa93"
+      "hash": "dcbc793ce97fd89d4c2c8d5e3b91cc3f84bae0bb6715fe4bd2b860d9f8ead972"
     },
     {
       "path": "pleasure.html",
       "bytes": 57877,
-      "hash": "920d083c498f8c68a53e40e1f570a64f5ea5d84319f941617c3d85bcfc324015"
+      "hash": "1dbe095120fd46f6145cd3ef504a11c7a66dfbbf3d94ee5d7850e558cc924ac0"
     },
     {
       "path": "result.html",
@@ -39,7 +39,7 @@
     {
       "path": "sorrow.html",
       "bytes": 43240,
-      "hash": "4b42565b2d9d3e2883eee6e7a24c782d3761e87a5db838ad25b9afa9f665ba8a"
+      "hash": "5aca2206e755358e33c020f6ced60e4c448c1e5bb42b4b594d117c7d5217e679"
     },
     {
       "path": "assets/fonts/InterLatin-v20.woff2",
@@ -348,7 +348,7 @@
     },
     {
       "path": "exhibition-sound.js",
-      "hash": "4aa73ab7488eca9581846f9768e3785700fe3b6bf8038ccc79334095a5bed28d"
+      "hash": "5987b06bc030f1e163ea2cee166a913709fdb772198279ee0f03287be14cde63"
     }
   ]
 }
