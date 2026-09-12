@@ -5,7 +5,13 @@
   const outputs = new Map();
   try { const saved = JSON.parse(sessionStorage.getItem('exhibition-sound') || 'null'); if (saved) { volume = Math.max(0, Math.min(1, Number(saved.volume) || 0)); muted = !!saved.muted; } } catch {}
   function output(c) {
-    if (!outputs.has(c)) { const gain = c.createGain(); gain.gain.value = muted ? 0 : volume; gain.connect(c.destination); outputs.set(c, gain); }
+    if (!outputs.has(c)) {
+      const gain = c.createGain(), limiter = c.createDynamicsCompressor();
+      limiter.threshold.value = -12; limiter.knee.value = 12;
+      limiter.ratio.value = 8; limiter.attack.value = .003; limiter.release.value = .2;
+      gain.gain.value = muted ? 0 : volume;
+      gain.connect(limiter).connect(c.destination); outputs.set(c, gain);
+    }
     return outputs.get(c);
   }
   function applyVolume() {
