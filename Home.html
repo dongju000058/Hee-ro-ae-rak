@@ -76,6 +76,37 @@
         .stage{width:100%;max-width:100%;overflow:hidden;}.topbar{gap:16px;}.brand,
         .info-link{max-width:44vw;white-space:nowrap;}.trace-title,
         .trace-line{white-space:nowrap;}.selection-copy{max-width:calc(100vw - 36px);}.selection-title{white-space:nowrap;}.selection-detail{max-width:100%;font-size:9.5px;line-height:1.5;word-break:keep-all;}.trace-tag{white-space:nowrap;}}@media (max-width: 350px){.topbar{padding-left:14px;padding-right:14px;}.selection-copy{left:14px;right:14px;max-width:calc(100vw - 28px);}.selection-detail{font-size:9px;}}</style>
+    <style id="home-filled-graphics">
+      .emotion-trace::after{display:none}
+      .trace-joy-strip{background:transparent;padding:0}
+      .trace-joy-face,.trace-joy-body{background:#fff;opacity:1}
+      .trace-joy-face{animation:homeJoyHead 4.34s ease-in-out infinite;animation-delay:var(--pose-delay,0s)}
+      .trace-joy-body{transform-origin:50% 100%;animation:homeJoyBody 4.34s ease-in-out infinite;animation-delay:var(--pose-delay,0s)}
+      .trace-joy-cell:nth-child(2){--pose-delay:-.62s}
+      .trace-joy-cell:nth-child(3){--pose-delay:-1.24s}
+      .trace-joy-cell:nth-child(4){--pose-delay:-1.86s}
+      .trace-joy-face::after{border:0;background:var(--hee);border-radius:0 0 50% 50%}
+      .trace-hee.is-active .trace-joy-cell{transform:none}
+      .trace-joy-flash{display:none}
+      .trace-shreds{left:36%;right:36%;gap:3px}
+      .trace-shreds i{animation:homeShred 3.8s ease-in-out infinite}
+      .trace-shreds i:nth-child(2n){animation-delay:-.7s}
+      .trace-shreds i:nth-child(3n){animation-delay:-1.4s}
+      .trace-anger-file{animation:homeFeed 5.7s ease-in-out infinite}
+      .emotion-trace.portal.trace-ae{background:none}
+      .trace-breath-ring{border:0;opacity:1;animation:homeBreath 6s ease-in-out infinite;animation-delay:0s}
+      .trace-breath-ring:nth-child(1){background:#e1ecf8}
+      .trace-breath-ring:nth-child(2){background:#bfd5ee}
+      .trace-breath-ring:nth-child(3){background:#83acd8}
+      .trace-ae.is-active .trace-breath-ring{animation-duration:6s}
+      .trace-rak::before,.trace-beat-dot{display:none}
+      @keyframes homeJoyHead{0%,100%{transform:translateX(-50%) translateY(0) rotate(-8deg)}50%{transform:translateX(-35%) translateY(2px) rotate(8deg)}}
+      @keyframes homeJoyBody{0%,100%{transform:rotate(-3.7deg)}50%{transform:rotate(3.7deg)}}
+      @keyframes homeShred{0%,100%{transform:scaleY(.78)}50%{transform:scaleY(1.08)}}
+      @keyframes homeFeed{0%,100%{transform:translate(-50%,-54%)}50%{transform:translate(-50%,-44%)}}
+      @keyframes homeBreath{0%,100%{transform:scale(.94)}50%{transform:scale(1.04)}}
+      @media(prefers-reduced-motion:reduce){.trace-joy-face,.trace-joy-body,.trace-shreds i,.trace-anger-file,.trace-breath-ring{animation:none!important}}
+    </style>
     <script src="exhibition-navigation.js"></script>
 <script src="exhibition-analytics.js"></script>
   </head>
