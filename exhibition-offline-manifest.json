@@ -1,5 +1,5 @@
 {
-  "version": "e5e3fd989cc9849d",
+  "version": "ed76dda55c587fb9",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -11,7 +11,7 @@
     },
     {
       "path": "Home.html",
-      "hash": "28e21bd86ead739412f0fb0bcc2af37ebba1a22aed5332aafa0399b5222340fb"
+      "hash": "608227d35cae6283d03d7c86bad5bc3d69e512b3aa59750226f396ecdd124055"
     },
     {
       "path": "HungarianDance.mp3",
@@ -304,6 +304,10 @@
     {
       "path": "pleasure.html",
       "hash": "005289446ce5274fed20c313bdc2c087f606c873e1129e16ceb37bd3029f5465"
+    },
+    {
+      "path": "prints.html",
+      "hash": "a2dc3ec80c7b3ac0a3f98ad0636813474026b660fa22cfbafb9f0685a1926468"
     },
     {
       "path": "qrcode.min.js",
