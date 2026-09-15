@@ -1,5 +1,5 @@
 {
-  "version": "f7db4de63ab28b76",
+  "version": "f25de1dc078d28ac",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -11,7 +11,7 @@
     },
     {
       "path": "Home.html",
-      "hash": "5df7798a93ddf764ca123180b12145a6e0959608351b84a9f3136bcb883ad7be"
+      "hash": "70abcaa86fa052f207d31fc973d917065f153b32628e333443bcb6a8d32dffcd"
     },
     {
       "path": "HungarianDance.mp3",
@@ -19,7 +19,7 @@
     },
     {
       "path": "Info.html",
-      "hash": "425dc0a4ca3ad26ed93bfb6770e590b3bbe3b86c1f533d8ff843fce65b5650c8"
+      "hash": "757163b92b4e00eaed29396e971df75585e26a0bce74efc2c613a4c5a2642a84"
     },
     {
       "path": "Nutcracker.mp3",
@@ -292,6 +292,14 @@
     {
       "path": "vendor/firebase/firebase-storage-8.10.1.js",
       "hash": "394611f0ab712194e471cfff9d83d78380fcb7bfd8913d90e0d78046eaf567c6"
+    },
+    {
+      "path": "home-music.js",
+      "hash": "e621958a25655b2a7c6f5c9be05486d1a7232ff1fa5a53c36f8c9297f6c9bd28"
+    },
+    {
+      "path": "home-easy-lemon.mp3",
+      "hash": "2486b8ecfe4575f9ab31613a2c03c2ee45e6e5280301d05b4dd7237c9e1c2531"
     }
   ]
 }
