@@ -112,13 +112,22 @@
     <script src="exhibition-sound.js" defer></script>
     <script src="home-music.js" defer></script>
 <script src="exhibition-analytics.js"></script>
-  <style>.home-links{display:flex;align-items:center;gap:24px}@media(max-width:430px){.home-links{gap:14px}}</style></head>
+  <style>
+    .home-links{display:flex;align-items:center}
+    .home-message-link{position:absolute;z-index:21;top:75%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px;font-size:13px;font-weight:400;letter-spacing:-.03em;line-height:1.5;white-space:nowrap;text-decoration:none;color:var(--ink,#101010)}
+    .home-message-link:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+    .home-message-description{position:absolute;top:100%;left:50%;width:max-content;max-width:calc(100vw - 48px);transform:translateX(-50%);color:#555;font-size:12px;font-weight:400;line-height:1.6;text-align:center;white-space:normal;word-break:keep-all;opacity:0;pointer-events:none;transition:opacity .18s ease}
+    .home-message-link:focus-visible .home-message-description{opacity:1}
+    @media(hover:hover){.home-message-link:hover .home-message-description{opacity:1}}
+    .stage.has-active .home-message-link{visibility:hidden;pointer-events:none}
+    @media(max-width:430px){.home-message-link{top:72%;font-size:13px}}
+  </style></head>
   <body>
     <div class="cursor" id="cursor" aria-hidden="true"></div>
     <main class="stage" id="stage">
       <header class="topbar"
         ><a class="brand" href="index.html">희로애락</a
-        ><nav class="home-links" aria-label="추가 메뉴"><a class="info-link" href="messages.html">한마디 받기 →</a><a class="info-link" href="Info.html">작품 소개 →</a></nav></header
+        ><nav class="home-links" aria-label="추가 메뉴"><a class="info-link" href="Info.html">작품 소개 →</a></nav></header
       >
 
       <section
@@ -233,6 +242,8 @@
         </div>
       </section>
 
+      <a class="home-message-link" href="messages.html" aria-describedby="homeMessageDescription">한마디 주고받기 ↗<span class="home-message-description" id="homeMessageDescription">지금 필요한 말을 받고, 누군가에게 한마디를 남겨보세요.</span></a>
+
       <div class="selection-copy" id="selectionCopy" aria-live="polite">
         <p class="selection-title" id="selectionTitle"
           >하나의 감정을 선택하세요.</p
@@ -244,6 +255,11 @@
     </main>
 
     <script>const stage=document.getElementById("stage"),cursor=document.getElementById("cursor"),selectionCopy=document.getElementById("selectionCopy"),selectionTitle=document.getElementById("selectionTitle"),selectionDetail=document.getElementById("selectionDetail"),experiencePreview=document.getElementById("experiencePreview"),experienceCharacter=document.getElementById("experienceCharacter"),experienceKicker=document.getElementById("experienceKicker"),experienceTitle=document.getElementById("experienceTitle"),experienceDetail=document.getElementById("experienceDetail"),experienceEnter=document.getElementById("experienceEnter"),portals=[...document.querySelectorAll(".portal")];const states={hee:{title:"희 · 기쁨",heading:"기쁨을 포착하다",detail:"기쁨에 이름을 붙이고 여덟 장을 촬영한 뒤, 네 장을 골라 네 컷과 GIF로 남겨보세요.",color:"#f2c230",image:"assets/characters/joy.webp",href:"joy.html"},no:{title:"로 · 분노",heading:"분노를 통과하다",detail:"달아나는 캐릭터를 붙잡고 마음에 걸린 말을 꺼낸 뒤, 하나의 파일로 만들어 파쇄해보세요.",color:"#ef4b3d",image:"assets/characters/anger.webp",href:"anger.html"},ae:{title:"애 · 슬픔",heading:"슬픔 곁에 머물다",detail:"마음에 머무는 문장을 꺼내 바라보고, 캐릭터와 네 번의 호흡을 함께하며 천천히 흘려보내세요.",color:"#4d86c6",image:"assets/characters/sorrow.webp",href:"sorrow.html"},rak:{title:"락 · 즐거움",heading:"즐거움을 증폭하다",detail:"음악에 맞춰 자유롭게 움직이고, 음악이 멈추는 다섯 순간의 모습을 카메라로 남겨보세요.",color:"#4ba86a",image:"assets/characters/pleasure.webp",href:"pleasure.html"}};const coarsePointer=matchMedia("(pointer: coarse)");let copyTimer;function fitComposition(){const viewportWidth=window.visualViewport?.width||innerWidth;const viewportHeight=window.visualViewport?.height||innerHeight;const horizontalMargin=viewportWidth<600?24:72;const verticalMargin=viewportHeight<700?150:180;const scale=Math.max(.18,Math.min((viewportWidth-horizontalMargin)/1600,(viewportHeight-verticalMargin)/900));stage.style.setProperty("--composition-scale",scale.toFixed(4))}fitComposition();addEventListener("resize",fitComposition,{passive:true});window.visualViewport?.addEventListener("resize",fitComposition,{passive:true});requestAnimationFrame(()=>document.body.classList.add("ready"));function activate(portal){const state=states[portal.dataset.emotion];stage.classList.add("has-active");stage.dataset.active=portal.dataset.emotion;portals.forEach(item=>item.classList.toggle("is-active",item===portal));document.documentElement.style.setProperty("--cursor",state.color);stage.style.setProperty("--active-color",state.color);experienceCharacter.src=state.image;experienceKicker.textContent=state.title;experienceTitle.textContent=state.heading;experienceDetail.textContent=state.detail;experienceEnter.href=state.href;experiencePreview.setAttribute("aria-hidden","false");selectionCopy.classList.add("is-changing");clearTimeout(copyTimer);copyTimer=setTimeout(()=>{selectionTitle.textContent=state.title;selectionDetail.textContent=state.detail;selectionCopy.classList.remove("is-changing")},120)}function reset(){stage.classList.remove("has-active");delete stage.dataset.active;portals.forEach(item=>item.classList.remove("is-active"));document.documentElement.style.setProperty("--cursor","#101010");stage.style.removeProperty("--active-color");experiencePreview.setAttribute("aria-hidden","true");selectionCopy.classList.add("is-changing");clearTimeout(copyTimer);copyTimer=setTimeout(()=>{selectionTitle.textContent="하나의 감정을 선택하세요.";selectionDetail.textContent="그래픽에 마우스를 올리면 경험 방법이 나타납니다.";selectionCopy.classList.remove("is-changing")},120)}function leaveTo(href){document.body.classList.add("leaving");setTimeout(()=>location.href=href,420)}addEventListener("pointermove",event=>{cursor.style.left=event.clientX+"px";cursor.style.top=event.clientY+"px"});portals.forEach(portal=>{portal.addEventListener("pointerenter",()=>{activate(portal);cursor.classList.add("hover")});portal.addEventListener("pointerleave",()=>{if(!coarsePointer.matches)reset();cursor.classList.remove("hover")});portal.addEventListener("focus",()=>activate(portal));portal.addEventListener("blur",reset);portal.addEventListener("click",event=>{if(event.metaKey||event.ctrlKey||event.shiftKey)return;event.preventDefault();if(coarsePointer.matches){activate(portal);return}leaveTo(portal.href)})});experienceEnter.addEventListener("click",event=>{if(event.metaKey||event.ctrlKey||event.shiftKey)return;event.preventDefault();leaveTo(experienceEnter.href)});ExhibitionNavigation.onAdvance(()=>{if(!stage.classList.contains("has-active"))return false;experienceEnter.click();return true});stage.addEventListener("pointerdown",event=>{if(coarsePointer.matches&&stage.classList.contains("has-active")&&!event.target.closest(".portal,.experience-enter"))reset()});addEventListener("keydown",event=>{if(event.key==="Escape"&&stage.classList.contains("has-active"))reset()});document.querySelectorAll(".brand,.info-link").forEach(link=>{link.addEventListener("pointerenter",()=>cursor.classList.add("hover"));link.addEventListener("pointerleave",()=>cursor.classList.remove("hover"));link.addEventListener("click",event=>{if(event.metaKey||event.ctrlKey||event.shiftKey)return;event.preventDefault();leaveTo(link.href)})});</script>
+    <script>
+      const messageLink = document.querySelector('.home-message-link');
+      messageLink.addEventListener('pointerenter', () => cursor.classList.add('hover'));
+      messageLink.addEventListener('pointerleave', () => cursor.classList.remove('hover'));
+    </script>
     <script src="exhibition-idle.js"></script>
   </body>
 </html>
