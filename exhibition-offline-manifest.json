@@ -1,5 +1,5 @@
 {
-  "version": "f25de1dc078d28ac",
+  "version": "388577ccfff14c6d",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -11,7 +11,7 @@
     },
     {
       "path": "Home.html",
-      "hash": "70abcaa86fa052f207d31fc973d917065f153b32628e333443bcb6a8d32dffcd"
+      "hash": "2ea02d32b31cc983630e0c353d35dbbf0e4cf7c2cf6195d5db606fef7fc642a8"
     },
     {
       "path": "HungarianDance.mp3",
@@ -19,7 +19,7 @@
     },
     {
       "path": "Info.html",
-      "hash": "757163b92b4e00eaed29396e971df75585e26a0bce74efc2c613a4c5a2642a84"
+      "hash": "f24a72dd37959422328131628e012fa6968f3d040c30eb7c4cdacebdd8d70efc"
     },
     {
       "path": "Nutcracker.mp3",
@@ -31,7 +31,7 @@
     },
     {
       "path": "anger.html",
-      "hash": "cb167afebeeed440db6b9bd61afe686c0a2dc27fd07004a41e6c641bf26002e7"
+      "hash": "581f4a77af195cb5019e6efb676ad1bc15738cc896fa75693602eee2f8082f94"
     },
     {
       "path": "assets/characters/anger-03.webp",
@@ -239,7 +239,7 @@
     },
     {
       "path": "exhibition-sound.js",
-      "hash": "57a0a50dbc5af1bb7a96a32798002d4008b866250a03eea078dbe05aa4104a8a"
+      "hash": "0ac2f879797a8acf03c2e7dd8f7e5b7d373100294b5a7a764926f81d08e3789e"
     },
     {
       "path": "gifshot.min.js",
@@ -247,7 +247,7 @@
     },
     {
       "path": "index.html",
-      "hash": "8ab9562f3affea10778dc3401ea1c18ba3047bd6a76f60777930bb341e7437a2"
+      "hash": "139debf63bdede6c2779c5a92809ade432bbb6b3e07567f7f577dfc7eb7fb447"
     },
     {
       "path": "joy-artwork.js",
@@ -263,11 +263,11 @@
     },
     {
       "path": "joy.html",
-      "hash": "f634b8eb94f8a3b6db46811d272f545cfd2c4095cb75aaefabe09ca210cf4d55"
+      "hash": "abc21221b989e917fcee9a4f3cd0307f117484702e2bb874f194fe3e1f333e12"
     },
     {
       "path": "pleasure.html",
-      "hash": "4b8cf965941712abe11b8ff8d39915fb119d1f67e1ef5a0a7d85db00dc673883"
+      "hash": "005289446ce5274fed20c313bdc2c087f606c873e1129e16ceb37bd3029f5465"
     },
     {
       "path": "qrcode.min.js",
@@ -275,11 +275,11 @@
     },
     {
       "path": "result.html",
-      "hash": "097b75c1835939861b375ed9fb681523962188f13babf42540f1cb89876589a1"
+      "hash": "b856ca6b3f251a8c16f0fbd74c4e23ecc871838d10127546d3ad6612aef8fcc3"
     },
     {
       "path": "sorrow.html",
-      "hash": "9296b7bdbd7e0f8ef8e58ff89d8047c96551bedf49ab7ce64e8e2725010e66bd"
+      "hash": "3d6635cc3deca384f293100406e132755766905885366b4a782e84517f6892da"
     },
     {
       "path": "vendor/firebase/firebase-app-8.10.1.js",
@@ -295,11 +295,23 @@
     },
     {
       "path": "home-music.js",
-      "hash": "e621958a25655b2a7c6f5c9be05486d1a7232ff1fa5a53c36f8c9297f6c9bd28"
+      "hash": "899316e06d706cee882fe17568d3dc9ddc911c90263eb36d1428cb4b4c24bb2a"
     },
     {
       "path": "home-easy-lemon.mp3",
       "hash": "2486b8ecfe4575f9ab31613a2c03c2ee45e6e5280301d05b4dd7237c9e1c2531"
+    },
+    {
+      "path": "navigation-click.js",
+      "hash": "fcdcf097111b7f81f61a7065a4f7b8351598ae844c5728a11f22cfb713af03fb"
+    },
+    {
+      "path": "navigation-click.mp3",
+      "hash": "41872975675ec1116f37cb76f2bad6e61dcb57662428d7f0f35923ff60d0be16"
+    },
+    {
+      "path": "anger-mobile-target.js",
+      "hash": "4fff93e20a0f2987fe8ddd7cbdfb3bef6aba6dc27d1fabf226adee4468f23db6"
     }
   ]
 }

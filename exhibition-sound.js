@@ -86,6 +86,31 @@
       bass.onended = () => { bass.disconnect(); envelope.disconnect(); };
     }
   }
+  let evadeBuffer, lastEvade = -Infinity;
+  function evadeSound() {
+    if (muted || volume === 0 || document.hidden) return;
+    const c = ready(), now = c.currentTime;
+    if (c.state !== 'running' || now - lastEvade < .28) return;
+    lastEvade = now;
+    const duration = .14;
+    if (!evadeBuffer) {
+      evadeBuffer = c.createBuffer(1, Math.ceil(c.sampleRate * duration), c.sampleRate);
+      const samples = evadeBuffer.getChannelData(0);
+      for (let i = 0; i < samples.length; i++) {
+        samples[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / samples.length) ** 2;
+      }
+    }
+    const source = c.createBufferSource(), filter = c.createBiquadFilter(), gain = c.createGain();
+    source.buffer = evadeBuffer;
+    filter.type = 'bandpass'; filter.Q.value = .65;
+    filter.frequency.setValueAtTime(1900, now);
+    filter.frequency.exponentialRampToValueAtTime(550, now + duration);
+    gain.gain.value = .16;
+    source.connect(filter).connect(gain).connect(output(c));
+    voices.add(source);
+    source.onended = () => { voices.delete(source); source.disconnect(); filter.disconnect(); gain.disconnect(); };
+    source.start(); source.stop(now + duration);
+  }
   function stopBed() {
     clearInterval(timer); timer = null;
     if (!bed) return;
@@ -111,8 +136,10 @@
     media(audio, level) { audio.dataset.soundLevel = String(level); audio.muted = muted; audio.volume = volume * level; },
     break() { try { impactSound(); } catch {} },
     throw(strength) { try { impactSound(true, strength); } catch {} },
+    evade() { try { evadeSound(); } catch {} },
     shutter() { try { noise(.18, 6500, .32, true); } catch {} },
     shred() { try { for (const voice of voices) voice.stop(); noise(.65, 2600, .2); } catch {} },
+    shredStop() { try { for (const voice of voices) voice.stop(); noise(.12, 650, .09, true); } catch {} },
     meditation: startBed,
     stop: stopBed
   };
