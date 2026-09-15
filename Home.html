@@ -112,13 +112,13 @@
     <script src="exhibition-sound.js" defer></script>
     <script src="home-music.js" defer></script>
 <script src="exhibition-analytics.js"></script>
-  </head>
+  <style>.home-links{display:flex;align-items:center;gap:24px}@media(max-width:430px){.home-links{gap:14px}}</style></head>
   <body>
     <div class="cursor" id="cursor" aria-hidden="true"></div>
     <main class="stage" id="stage">
       <header class="topbar"
         ><a class="brand" href="index.html">희로애락</a
-        ><a class="info-link" href="Info.html">작품 소개 →</a></header
+        ><nav class="home-links" aria-label="추가 메뉴"><a class="info-link" href="messages.html">한마디 받기 →</a><a class="info-link" href="Info.html">작품 소개 →</a></nav></header
       >
 
       <section
