@@ -1,5 +1,5 @@
 {
-  "version": "f4b8d223620554ac",
+  "version": "a4d5355b5091b1f7",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -306,8 +306,20 @@
       "hash": "41872975675ec1116f37cb76f2bad6e61dcb57662428d7f0f35923ff60d0be16"
     },
     {
+      "path": "pleasure-presentation.js",
+      "hash": "9b410a70226be3bda6437c8636e954c4d258c326189d7a0b4de121800a8cb672"
+    },
+    {
+      "path": "pleasure-wave-worker.js",
+      "hash": "7d99aecb547beed403292bea8701fa755448df9af6534d79b5b47cc5a3dad884"
+    },
+    {
+      "path": "pleasure-wave.js",
+      "hash": "545e082fb78e1aa59a687da7cd2efd50814a9a24aca4408ea41398c0f5900326"
+    },
+    {
       "path": "pleasure.html",
-      "hash": "005289446ce5274fed20c313bdc2c087f606c873e1129e16ceb37bd3029f5465"
+      "hash": "05b2b16124337fc2b25e776410be53e15f2917c6f958adab08222d405d88b822"
     },
     {
       "path": "prints.html",
