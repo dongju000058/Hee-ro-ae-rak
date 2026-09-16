@@ -1,5 +1,5 @@
 {
-  "version": "ed76dda55c587fb9",
+  "version": "f4b8d223620554ac",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -274,8 +274,12 @@
       "hash": "252550d02512aa441de3f5967732f4fc4f52ad8d352dac674e130f585fb29a7c"
     },
     {
+      "path": "joy-presentation.js",
+      "hash": "fef290f1c8dcf290a4b20e7edde422b42eba45f67c0c28eeeca01cd25833bcef"
+    },
+    {
       "path": "joy.html",
-      "hash": "abc21221b989e917fcee9a4f3cd0307f117484702e2bb874f194fe3e1f333e12"
+      "hash": "29fe76d93b9cc874b6b9a6413e002412ed73be68171531c63f16320cfdc5f9ae"
     },
     {
       "path": "message-audio.js",
