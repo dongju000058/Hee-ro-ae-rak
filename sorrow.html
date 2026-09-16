@@ -89,6 +89,7 @@
     <script src="navigation-click.js"></script>
 <script src="exhibition-sound.js"></script>
 <script src="exhibition-analytics.js"></script>
+<link rel="stylesheet" href="sorrow-breath.css" />
 </head>
   <body>
     <main class="app" id="app">
@@ -232,16 +233,19 @@
           aria-label="누르고 있는 동안 들이마시고 놓으면 내쉬기"
         >
           <div class="breath-ring" id="breath-ring">
-            <img
-              class="breath-character"
-              id="breath-character"
-              src="assets/characters/sorrow-breath-hd.webp"
-              width="2048"
-              height="2048"
-              alt="함께 숨 쉬는 파란 캐릭터"
-              loading="lazy"
-              draggable="false"
-            />
+            <svg class="breath-character" id="breath-character" viewBox="0 0 320 320" role="img" aria-label="함께 숨 쉬는 파란 캐릭터">
+              <g class="breath-body">
+                <path fill="#4879ba" d="M17 213C25 168 67 100 102 57C124 30 145 17 166 20C201 22 236 49 255 80C281 122 300 190 305 227C313 268 297 288 266 291C211 297 107 285 54 268C24 258 12 239 17 213Z"/>
+                <g class="breath-face">
+                  <g fill="none" stroke="#15232e" stroke-width="3.8" stroke-linecap="round">
+                    <path class="breath-eye" d="M66 182Q74 192 82 183"/>
+                    <path class="breath-eye" d="M93 185Q101 195 109 186"/>
+                  </g>
+                  <ellipse class="breath-mouth" cx="88" cy="207" rx="7.5" ry="4.5" fill="#e8799a"/>
+                  <path class="breath-smile" d="M80 205Q88 213 96 205" fill="none" stroke="#15232e" stroke-width="3" stroke-linecap="round"/>
+                </g>
+              </g>
+            </svg>
           </div>
           <span
             class="breath-word"

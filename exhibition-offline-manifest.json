@@ -1,5 +1,5 @@
 {
-  "version": "2bf79fadb748f319",
+  "version": "0cb44f4b3f4c12c3",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -334,8 +334,12 @@
       "hash": "b856ca6b3f251a8c16f0fbd74c4e23ecc871838d10127546d3ad6612aef8fcc3"
     },
     {
+      "path": "sorrow-breath.css",
+      "hash": "19231e366d28ad8e394e1ddd0b72ec7e568eb2c0f24eb53178f513e9a06d3f3a"
+    },
+    {
       "path": "sorrow.html",
-      "hash": "3d6635cc3deca384f293100406e132755766905885366b4a782e84517f6892da"
+      "hash": "e6a8180ab8886f6ba229224e8b63ea66f858c049d8fa87df40ace557cc480f62"
     },
     {
       "path": "vendor/firebase/firebase-app-8.10.1.js",

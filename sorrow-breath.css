@@ -1,0 +1,67 @@
+.breath-ring {
+  transform: scale(.82);
+  transform-origin: center;
+  transition: transform 3.7s cubic-bezier(.35, 0, .2, 1);
+  border: 0;
+}
+.breath-ring.inhale { transform: scale(1.06); transition-duration: 3.4s; }
+.breath-ring.exhale { transform: scale(.82); transition-duration: 3.7s; }
+.breath-ring::before {
+  inset: 0;
+  width: auto;
+  height: auto;
+  background: none;
+  border: 1px solid rgba(77, 134, 198, .35);
+  border-left-color: transparent;
+  transform: scale(.92);
+  transition: transform 3.4s cubic-bezier(.35, 0, .2, 1), opacity 3.4s;
+  opacity: .6;
+}
+.breath-ring.inhale::before { transform: scale(1); opacity: 1; }
+.breath-ring.exhale::before { transition-duration: 3.7s; }
+.breath-ring .breath-character {
+  overflow: visible;
+  transform: none;
+}
+.breath-body {
+  transform-origin: 160px 288px;
+  transform: scale(1.025, .965);
+  transition: transform 3.7s cubic-bezier(.22, .6, .3, 1);
+}
+.inhale .breath-body {
+  transform: translateY(-4px) scale(.97, 1.06) rotate(-1deg);
+  transition-duration: 3.4s;
+}
+.breath-face {
+  transform-origin: 88px 190px;
+  transition: transform 3.7s ease;
+}
+.inhale .breath-face { transform: translate(2px, -5px) rotate(2deg); }
+.breath-eye { transform-origin: 88px 186px; transition: transform 2s ease; }
+.inhale .breath-eye { transform: scaleY(.7); }
+.breath-mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 1.4s ease, opacity 1s ease;
+}
+.inhale .breath-mouth { transform: scale(.65, 1.5); }
+.breath-smile { opacity: 0; transition: opacity 1.2s ease; }
+.exhale .breath-mouth { animation: breath-release-mouth 3.7s both; }
+.exhale .breath-smile { opacity: 1; transition-delay: 2.5s; }
+@keyframes breath-release-mouth {
+  0%, 40% { opacity: 1; transform: scale(.75, 1.2); }
+  100% { opacity: 0; transform: scale(1.2, .5); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .breath-ring,
+  .breath-ring.inhale,
+  .breath-ring.exhale,
+  .breath-ring::before,
+  .breath-ring.inhale::before,
+  .breath-body,
+  .inhale .breath-body,
+  .inhale .breath-face,
+  .inhale .breath-eye { transform: none; }
+  .breath-ring *, .breath-ring::before { transition-duration: .15s; }
+  .exhale .breath-mouth { animation: none; opacity: 0; }
+}
