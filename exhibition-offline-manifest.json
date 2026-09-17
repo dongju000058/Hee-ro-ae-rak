@@ -1,5 +1,5 @@
 {
-  "version": "0cb44f4b3f4c12c3",
+  "version": "6930763e313b254a",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -270,12 +270,20 @@
       "hash": "02d9369955c219f640de73c4f249f6811e28621c3404d052c9006218f52d515a"
     },
     {
+      "path": "joy-demo-result.html",
+      "hash": "48b3681e3c1b6defe1b068a554cce9183646dfda8caaa401ab13fb5f3110e38d"
+    },
+    {
+      "path": "joy-demo-result.js",
+      "hash": "5ac372d385b5405cbb7709de64146c6b1122f61b9efeb1174aaee3f03b903767"
+    },
+    {
       "path": "joy-drawing.js",
       "hash": "252550d02512aa441de3f5967732f4fc4f52ad8d352dac674e130f585fb29a7c"
     },
     {
       "path": "joy-presentation.js",
-      "hash": "fef290f1c8dcf290a4b20e7edde422b42eba45f67c0c28eeeca01cd25833bcef"
+      "hash": "aacc7a2d71db5f2d18ffea7e2363f2120bf99859fbdd7f0abb72166d90978858"
     },
     {
       "path": "joy.html",

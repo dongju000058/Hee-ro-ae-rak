@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>희 · 발표용 기쁨의 기록</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#fff;color:#252321;font-family:Arial,sans-serif;padding:28px 5vw}h1{font-size:clamp(26px,4vw,48px);letter-spacing:-.055em;margin:12px 0 28px;line-height:1.25}.note{font-size:12px;color:#777}.layout{display:grid;grid-template-columns:minmax(150px,.7fr) minmax(260px,1fr);gap:6vw;align-items:center;max-width:1000px;margin:auto}.photo{display:block;max-height:65vh;max-width:100%;width:auto;margin:auto}.details p{font-size:15px;line-height:1.65}#qr{margin:24px 0}#qr img,#qr canvas{width:160px;height:160px}.actions{display:flex;flex-wrap:wrap;gap:22px;border-top:1px solid #ddd;padding-top:20px}a,button{font:inherit;color:inherit;background:none;border:0;border-bottom:1px solid;padding:8px 0;cursor:pointer;text-decoration:none}button:disabled{opacity:.4;cursor:wait}[hidden]{display:none!important}#status{font-size:13px;color:#777}.photo:not([src]){display:none}@media(max-width:600px){.layout{grid-template-columns:1fr}.photo{max-height:54vh}.details{text-align:center}#qr{display:flex;justify-content:center}.actions{justify-content:center}}@media print{@page{size:2in 6in;margin:0}body{padding:0}h1,.note,.details{display:none}.layout{display:block}.photo{width:100%;max-width:none;max-height:none;height:auto}}
+  </style>
+  <script src="joy-artwork.js" defer></script>
+  <script src="qrcode.min.js" defer></script>
+  <script src="joy-demo-result.js" defer></script>
+</head>
+<body>
+  <p class="note">발표용 목업 · 실제 관람객의 사진이 아닙니다.</p>
+  <h1>오래 기억하고 싶은 순간.</h1>
+  <main class="layout">
+    <img class="photo" id="demo-photo" alt="함께 웃던 날을 담은 발표용 네 컷">
+    <section class="details">
+      <p>네 컷으로 남긴 기쁨.<br>QR을 스캔하면 휴대전화에서 사진을 저장할 수 있습니다.</p>
+      <div id="qr" aria-label="발표용 네 컷 저장 화면 QR"></div>
+      <p id="status" role="status">목업 결과를 준비하고 있습니다.</p>
+      <div class="actions">
+        <a id="save" hidden download="joy-presentation-fourcut.png">네 컷 저장</a>
+        <button id="print" disabled>네 컷 인쇄</button>
+        <a href="Home.html" target="_top">감정 선택으로 돌아가기 ↗</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

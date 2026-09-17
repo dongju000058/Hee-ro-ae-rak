@@ -2,6 +2,7 @@
   let dialog;
   let video;
   let previousFocus;
+  let result;
 
   function openPresentation() {
     if (!dialog) {
@@ -13,6 +14,8 @@
         #joy-presentation header{all:initial;box-sizing:border-box;display:flex;position:static;align-items:center;justify-content:space-between;min-height:60px;padding:8px 16px;font:14px sans-serif;color:#fff;background:#111}
         #joy-presentation button{min-width:44px;min-height:44px;border:0;color:#fff;background:none;font-size:24px;cursor:pointer!important}
         #joy-presentation video{position:static!important;display:block;width:100%!important;height:auto!important;max-height:calc(94dvh - 60px);object-fit:contain;transform:none!important;background:#111}
+        #joy-presentation video[hidden],#joy-presentation iframe[hidden]{display:none!important}
+        #joy-presentation iframe{display:block;width:100%;height:calc(90dvh - 60px);border:0;background:#fff}
       `;
       document.head.append(style);
       dialog = document.createElement('dialog');
@@ -21,6 +24,21 @@
       dialog.innerHTML = '<header><span>희 · 체험 영상</span><button type="button" aria-label="영상 닫기">×</button></header><video controls playsinline preload="none" aria-label="15초 목업 체험 영상"></video>';
       video = dialog.querySelector('video');
       video.src = new URL('assets/joy-demo.mp4', document.baseURI).href;
+      result = document.createElement('iframe');
+      result.title = '발표용 네 컷 결과와 QR';
+      result.hidden = true;
+      dialog.append(result);
+      result.addEventListener('load', () => {
+        result.contentWindow?.addEventListener('keydown', event => {
+          if (event.key === 'Escape') { event.preventDefault(); dialog.close(); }
+        });
+      });
+      video.addEventListener('ended', () => {
+        video.hidden = true;
+        result.hidden = false;
+        dialog.querySelector('header span').textContent = '희 · 기쁨의 기록 · 발표용 목업';
+        dialog.querySelector('button').focus();
+      });
       dialog.querySelector('button').addEventListener('click', () => dialog.close());
       dialog.addEventListener('close', () => {
         video.pause();
@@ -30,6 +48,10 @@
     }
     previousFocus = document.activeElement;
     dialog.showModal();
+    result.hidden = true;
+    video.hidden = false;
+    dialog.querySelector('header span').textContent = '희 · 체험 영상';
+    if (!result.getAttribute('src')) result.src = new URL('joy-demo-result.html', document.baseURI).href;
     video.currentTime = 0;
     video.play().catch(() => { /* Native controls remain available. */ });
   }
