@@ -1,5 +1,23 @@
 (() => {
-  let dialog, video, previousFocus;
+  let dialog, video;
+  function showResult() {
+    window.dispatchEvent(new Event('pleasure-presentation-result'));
+    const gallery = document.getElementById('finale-gallery');
+    gallery.replaceChildren();
+    for (let i = 0; i < 5; i++) {
+      const figure = document.createElement('figure');
+      figure.className = 'finale-photo';
+      const image = new Image();
+      image.src = new URL('assets/pleasure-demo-photo.png', document.baseURI).href;
+      image.alt = `${i + 1}번째 발표용 목업 사진`;
+      image.style.cssText = 'display:block;width:100%;aspect-ratio:4/3;object-fit:cover';
+      const caption = document.createElement('figcaption');
+      caption.textContent = `${String(i + 1).padStart(2, '0')} · 발표용 목업`;
+      figure.append(image, caption);
+      gallery.append(figure);
+    }
+    document.getElementById('change-music-button').focus({preventScroll:true});
+  }
   function open() {
     if (!dialog) {
       const style = document.createElement('style');
@@ -18,15 +36,15 @@
       dialog.innerHTML = '<header><span>락 · 18초 발표용 목업</span><button type="button" aria-label="영상 닫기">×</button></header><video controls playsinline preload="none" aria-label="락 체험 영상"></video>';
       video = dialog.querySelector('video');
       video.src = new URL('assets/pleasure-demo.mp4', document.baseURI).href;
+      video.addEventListener('ended', () => dialog.close());
       dialog.querySelector('button').addEventListener('click', () => dialog.close());
       dialog.addEventListener('close', () => {
         video.pause();
         window.dispatchEvent(new Event('pleasure-presentation-close'));
-        previousFocus?.focus({ preventScroll: true });
+        showResult();
       });
       document.body.append(dialog);
     }
-    previousFocus = document.activeElement;
     window.dispatchEvent(new Event('pleasure-presentation-open'));
     dialog.showModal();
     video.currentTime = 0;
