@@ -1,8 +1,64 @@
 (() => {
   let dialog;
   let video;
-  let previousFocus;
   let result;
+  let resultTimer;
+
+  function showPageResult() {
+    stopCamera();
+    const intro = document.getElementById('joy-intro');
+    intro.classList.add('is-hidden');
+    intro.setAttribute('aria-hidden', 'true');
+    intro.setAttribute('inert', '');
+    const main = document.getElementById('experience-main');
+    main.removeAttribute('inert');
+    main.setAttribute('aria-hidden', 'false');
+    for (const selector of ['.center-booth', '#panel', '#select-panel', '#main-frame']) {
+      document.querySelector(selector).style.display = 'none';
+    }
+    const area = document.getElementById('qr-area');
+    area.classList.add('is-visible');
+    area.style.opacity = '1';
+    updateJoyStage(4, '발표용 목업 · 기쁨의 기록', 100);
+    document.getElementById('qr-status-msg').textContent = '발표용 결과를 준비하고 있습니다…';
+    document.getElementById('home-return-btn').style.display = 'inline-block';
+    clearTimeout(resultTimer);
+    const deadline = Date.now() + 15000;
+    const populate = () => {
+      const source = result.contentDocument;
+      const photo = source?.getElementById('demo-photo');
+      const qr = source?.querySelector('#qr img');
+      if (!photo?.src || !photo.complete || !qr?.src) {
+        if (Date.now() < deadline) { resultTimer = setTimeout(populate, 150); return; }
+        document.getElementById('qr-status-msg').textContent = '결과 준비가 지연되고 있습니다. A키로 영상을 다시 열어주세요.';
+        return;
+      }
+      isFinished = true;
+      if (finalFourcutUrl?.startsWith('blob:')) URL.revokeObjectURL(finalFourcutUrl);
+      finalFourcutUrl = photo.src;
+      finalGifUrl = '';
+      const preview = document.getElementById('fourcut-preview');
+      preview.src = finalFourcutUrl;
+      preview.classList.add('is-ready');
+      document.getElementById('print-image').src = finalFourcutUrl;
+      document.getElementById('download-fourcut').disabled = false;
+      document.getElementById('print-fourcut').disabled = false;
+      document.getElementById('download-gif').style.display = 'none';
+      const still = document.getElementById('gif-preview');
+      still.src = new URL('assets/joy-demo-photo.png', document.baseURI).href;
+      still.alt = '발표용 목업 사진';
+      still.classList.add('is-ready');
+      document.getElementById('gif-label').textContent = '발표용 목업 사진';
+      const targetQr = document.getElementById('qr-image-holder');
+      targetQr.src = qr.src;
+      targetQr.alt = '발표용 네 컷 저장 화면 QR';
+      targetQr.style.display = 'block';
+      targetQr.closest('.qr-delivery').classList.add('has-qr');
+      document.getElementById('qr-status-msg').textContent = '발표용 네 컷 · QR로 열어 저장하실 수 있습니다.';
+      document.getElementById('download-fourcut').focus({preventScroll:true});
+    };
+    populate();
+  }
 
   function openPresentation() {
     if (!dialog) {
@@ -33,20 +89,14 @@
           if (event.key === 'Escape') { event.preventDefault(); dialog.close(); }
         });
       });
-      video.addEventListener('ended', () => {
-        video.hidden = true;
-        result.hidden = false;
-        dialog.querySelector('header span').textContent = '희 · 기쁨의 기록 · 발표용 목업';
-        dialog.querySelector('button').focus();
-      });
+      video.addEventListener('ended', () => dialog.close());
       dialog.querySelector('button').addEventListener('click', () => dialog.close());
       dialog.addEventListener('close', () => {
         video.pause();
-        previousFocus?.focus({ preventScroll: true });
+        showPageResult();
       });
       document.body.append(dialog);
     }
-    previousFocus = document.activeElement;
     dialog.showModal();
     result.hidden = true;
     video.hidden = false;
@@ -73,5 +123,5 @@
     event.stopImmediatePropagation();
     openPresentation();
   }, true);
-  window.addEventListener('pagehide', () => video?.pause());
+  window.addEventListener('pagehide', () => { video?.pause(); clearTimeout(resultTimer); });
 })();
