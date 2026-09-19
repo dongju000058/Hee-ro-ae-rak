@@ -121,7 +121,7 @@
     @media(hover:hover){.home-message-link:hover .home-message-description{opacity:1}}
     .stage.has-active .home-message-link{visibility:hidden;pointer-events:none}
     @media(max-width:430px){.home-message-link{top:72%;font-size:13px}}
-  </style></head>
+  </style><link rel="stylesheet" href="copyright.css"></head>
   <body>
     <div class="cursor" id="cursor" aria-hidden="true"></div>
     <main class="stage" id="stage">
@@ -261,5 +261,6 @@
       messageLink.addEventListener('pointerleave', () => cursor.classList.remove('hover'));
     </script>
     <script src="exhibition-idle.js"></script>
+    <footer class="site-copyright site-copyright--home">© 2026 Dongju Gwak. All rights reserved.</footer>
   </body>
 </html>

@@ -1,5 +1,5 @@
 {
-  "version": "144c2d649788d297",
+  "version": "a3a27b17a21ada5f",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -11,7 +11,7 @@
     },
     {
       "path": "Home.html",
-      "hash": "608227d35cae6283d03d7c86bad5bc3d69e512b3aa59750226f396ecdd124055"
+      "hash": "da757a21146d710b8d708a6072b49d5a43c3f73cf4e90354ee233e7114ae2750"
     },
     {
       "path": "HungarianDance.mp3",
@@ -19,7 +19,7 @@
     },
     {
       "path": "Info.html",
-      "hash": "f24a72dd37959422328131628e012fa6968f3d040c30eb7c4cdacebdd8d70efc"
+      "hash": "71f37645d87d208adc07952ed7c0fc6e9159945532673604566d1e6f632620fa"
     },
     {
       "path": "Nutcracker.mp3",
@@ -222,6 +222,10 @@
       "hash": "1e9a0da268b5208d0090962dd0e101e19a5970021094486b3cfd4b104087768e"
     },
     {
+      "path": "copyright.css",
+      "hash": "6d71c3c04f059993f188cc5c2c269ef769e91aeca15d7ad57fd51fb5498377b6"
+    },
+    {
       "path": "exhibition-analytics.js",
       "hash": "8e47acb81c4ca1a41f8b136664d6aa9507eb833ef29f9316cf23083a39d8e816"
     },
@@ -331,7 +335,7 @@
     },
     {
       "path": "prints.html",
-      "hash": "a2dc3ec80c7b3ac0a3f98ad0636813474026b660fa22cfbafb9f0685a1926468"
+      "hash": "2e5bd4f31fca9f7fe64b9efdabd6db791570b4916ca9c0b42ff07787c6371a67"
     },
     {
       "path": "qrcode.min.js",
