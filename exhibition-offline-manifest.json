@@ -1,5 +1,5 @@
 {
-  "version": "aed59ce1481e9af8",
+  "version": "3f3c6984165005d2",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -311,7 +311,7 @@
     },
     {
       "path": "message-moderation.js",
-      "hash": "cf3a98a02b0b9761d41d011a5b41ecd03caf07d44a0433fc9cf8d59495c8b603"
+      "hash": "cc26075e72209960a24f5ec621a83f9745b355b854e47adcaeaf061c020e20ed"
     },
     {
       "path": "messages.html",
