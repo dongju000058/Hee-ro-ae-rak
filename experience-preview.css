@@ -1,0 +1,10 @@
+.preview-trigger{display:block;width:fit-content;margin-top:24px;padding:8px 0;border:0;border-bottom:1px solid #999;background:none;color:#444;font:inherit;font-size:14px;line-height:1.5;cursor:pointer!important}
+.preview-trigger:hover{color:#111;border-color:#111}
+.preview-trigger:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+dialog.experience-preview{width:min(1100px,92vw);max-width:92vw;max-height:92dvh;padding:0;border:0;background:#fff;color:#222;overflow:auto;cursor:auto!important}
+.experience-preview::backdrop{background:rgba(0,0,0,.75)}
+.experience-preview *{cursor:auto!important}
+.experience-preview header{all:unset;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;font:14px/1.5 sans-serif}
+.experience-preview header button{border:0;background:none;color:#222;font-size:28px;width:44px;height:44px;cursor:pointer!important}
+.experience-preview video{position:static!important;display:block;width:100%!important;height:auto!important;max-height:calc(92dvh - 130px);object-fit:contain;transform:none!important;background:#111}
+.experience-preview p{margin:0;padding:14px 20px;font:14px/1.6 sans-serif;color:#555}

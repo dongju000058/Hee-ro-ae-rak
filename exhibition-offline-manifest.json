@@ -1,5 +1,5 @@
 {
-  "version": "a3a27b17a21ada5f",
+  "version": "71ac0b3b953ab501",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -19,7 +19,7 @@
     },
     {
       "path": "Info.html",
-      "hash": "71f37645d87d208adc07952ed7c0fc6e9159945532673604566d1e6f632620fa"
+      "hash": "1bbae496cf41bb51641bb0aa76586355f89fce152d143775bab429dd9ee5b0ce"
     },
     {
       "path": "Nutcracker.mp3",
@@ -250,6 +250,14 @@
       "hash": "0ac2f879797a8acf03c2e7dd8f7e5b7d373100294b5a7a764926f81d08e3789e"
     },
     {
+      "path": "experience-preview.css",
+      "hash": "7d4ee9974fd0adad026c9f39db22b217a80b058157a4bff7ba8536aadc59c140"
+    },
+    {
+      "path": "experience-preview.js",
+      "hash": "f549149b44a4547289a6c43da1740b8b927019823216df887d93a7bac3b0a345"
+    },
+    {
       "path": "gifshot.min.js",
       "hash": "b22925efd728efe8de89dc1a10186f292792cad4a6d061a5b18138ab5a576cb3"
     },
@@ -291,7 +299,7 @@
     },
     {
       "path": "joy.html",
-      "hash": "29fe76d93b9cc874b6b9a6413e002412ed73be68171531c63f16320cfdc5f9ae"
+      "hash": "85846f688a8b4e7aa06fb5d936f248c3c1823b151927fcc38c44fc5c1662a132"
     },
     {
       "path": "message-audio.js",
@@ -331,7 +339,7 @@
     },
     {
       "path": "pleasure.html",
-      "hash": "b0266be10340b6f89a20e3331a03be8621494360f18e1bbeed11f98f6946111d"
+      "hash": "f6c25a29836ba752153a4436d1849e27d7e230434e3a517b24ac6ed5e44ed45a"
     },
     {
       "path": "prints.html",
