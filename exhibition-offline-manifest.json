@@ -1,5 +1,5 @@
 {
-  "version": "3f3c6984165005d2",
+  "version": "a7f047b9cf4b833f",
   "files": [
     {
       "path": "Cancan.mp3",
@@ -19,7 +19,7 @@
     },
     {
       "path": "Info.html",
-      "hash": "0754218aaf0c56df8f4a72242dd94d1ad9421aa03e812a6b87ef754cef318a06"
+      "hash": "7e8a0cad13cfd984d020ff83199d33c4b529cd585cc266f19f5fed3a86900f78"
     },
     {
       "path": "Nutcracker.mp3",
@@ -235,7 +235,7 @@
     },
     {
       "path": "exhibition-idle.js",
-      "hash": "2e3b9cada7bb4807215ed80be0ef072299c5c4acf6a982962aba9e3379fae23f"
+      "hash": "9921a217412bf531816c40f5e98cd36e4e78d3a98016fab8304d58509e30ccdf"
     },
     {
       "path": "exhibition-navigation.js",
@@ -298,8 +298,16 @@
       "hash": "17893001c0942cb6f83c10d7682caf78a6273a7e9202f23ec5021a2b3f1901a4"
     },
     {
+      "path": "joy-print.css",
+      "hash": "74e4861cdad04cae841d50befe92a091b190fb8f6b9e8160699ff36c99b6fe58"
+    },
+    {
+      "path": "joy-print.js",
+      "hash": "8e5f94ac8e0bb10f0e4fad9bdacd27a1eb12bcca5eaab13d2ce86585df0b61e2"
+    },
+    {
       "path": "joy.html",
-      "hash": "85846f688a8b4e7aa06fb5d936f248c3c1823b151927fcc38c44fc5c1662a132"
+      "hash": "edd38c648f1345177bd1ab7d9aad5efceef96dbb8af44bfa9471b83759d332fa"
     },
     {
       "path": "message-audio.js",
@@ -351,7 +359,7 @@
     },
     {
       "path": "result.html",
-      "hash": "b856ca6b3f251a8c16f0fbd74c4e23ecc871838d10127546d3ad6612aef8fcc3"
+      "hash": "834e51eae0fc63184a87fdf54c63f8416fe1c8dca653ab3689a3f3deda7521a3"
     },
     {
       "path": "sorrow-breath.css",

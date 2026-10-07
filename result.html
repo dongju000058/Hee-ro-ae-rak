@@ -13,7 +13,7 @@
     <main>
       <header
         ><h1>喜 · 기쁨의 기록</h1
-        ><p>네 컷과 움직이는 순간을 함께 간직하세요.</p></header
+        ><p>하나의 QR에서 사진과 GIF를 각각 저장할 수 있어요.<br />아래의 ‘사진 저장’과 ‘GIF 저장’을 눌러주세요.</p></header
       >
       <section class="media-grid" id="media-grid">
         <article class="card photo"
@@ -28,7 +28,9 @@
       <div class="notice" id="notice" role="status"
         >결과물을 불러올 수 없습니다. 촬영 화면의 QR을 다시 확인해주세요.</div
       >
-      <footer>QR을 가진 사람은 이 결과물을 열람하고 저장할 수 있습니다.</footer>
+      <footer>QR을 가진 사람은 이 결과물을 열람하고 저장할 수 있습니다.<br />
+        전시 결과물 삭제 예정: 2026년 11월 4일 낮 12시 30분(한국 시간). 자동 삭제 설정은 준비 중입니다.<br />
+        보관할 사진과 GIF는 기기에 미리 저장해주세요.</footer>
     </main>
     <script>const params=new URLSearchParams(location.search);const media={photo:params.get("photo"),gif:params.get("gif")};const isAllowed=url=>{try{const parsed=new URL(url);return parsed.protocol==="https:"&&parsed.hostname==="firebasestorage.googleapis.com"&&parsed.pathname.startsWith("/v0/b/joyy-2c74e.firebasestorage.app/o/fourcuts%2F")}catch{return false}};if(!isAllowed(media.photo)){document.getElementById("media-grid").style.display="none";document.getElementById("notice").style.display="block"}else{document.getElementById("photo").src=media.photo;if(isAllowed(media.gif)){document.getElementById("gif").src=media.gif}else{document.querySelector(".gif").hidden=true}document.querySelectorAll(".card img").forEach(image=>image.addEventListener("error",()=>{document.getElementById("notice").style.display="block"}));document.querySelectorAll("button[data-kind]").forEach(button=>button.addEventListener("click",async()=>{const kind=button.dataset.kind;button.disabled=true;button.textContent="저장 준비 중…";try{const response=await fetch(media[kind]);if(!response.ok)throw new Error("download failed");const blob=await response.blob();const objectUrl=URL.createObjectURL(blob);const anchor=document.createElement("a");anchor.href=objectUrl;anchor.download=kind==="photo"?"joy-fourcut.png":"joy-moments.gif";anchor.click();setTimeout(()=>URL.revokeObjectURL(objectUrl),1e3)}catch{window.open(media[kind],"_blank","noopener")}finally{button.disabled=false;button.textContent=kind==="photo"?"사진 저장":"GIF 저장"}}))}</script>
   </body>
