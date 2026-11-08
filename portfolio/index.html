@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="감정을 마주하다 — 희로애락 인터랙티브 졸업전시 프로젝트 포트폴리오">
+  <title>감정을 마주하다 — Project Archive</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="adjustments.css">
+</head>
+<body>
+  <a class="skip" href="#content">본문으로 이동</a>
+
+  <header class="topbar">
+    <a class="wordmark" href="#top" aria-label="처음으로">감정을 마주하다</a>
+    <nav aria-label="프로젝트 탐색">
+      <a href="#overview">개요</a>
+      <a href="#experience">경험</a>
+      <a href="#system">구현</a>
+      <a class="live-link" href="https://joyy-2c74e.web.app/" target="_blank" rel="noreferrer">작품 보기 ↗</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="hero home-hero" id="top" aria-labelledby="hero-title">
+      <h1 class="visually-hidden" id="hero-title">감정을 마주하다 — 희로애락</h1>
+      <iframe
+        class="home-preview"
+        src="home-preview.html"
+        title="감정을 마주하다 작품 홈 화면"
+        loading="eager"
+      ></iframe>
+      <a class="portfolio-scroll" href="#overview">프로젝트 기록 보기 ↓</a>
+    </section>
+
+    <section class="overview section" id="overview">
+      <p class="eyebrow reveal">01 / OVERVIEW</p>
+      <div class="overview-grid reveal">
+        <h2>감정은 사라지는 것이 아니라,<br><strong>움직임을 거쳐 흔적으로 남는다.</strong></h2>
+        <div class="body-copy">
+          <p>〈감정을 마주하다 — 희로애락〉은 감정을 설명하거나 평가하는 대신, 관람객이 직접 움직여 감정의 형태를 바꾸는 인터랙티브 웹 작품입니다.</p>
+          <p>카메라, 마우스, 키보드와 몸짓은 각 감정에 맞는 매체가 되고, 경험의 끝에는 사진·파편·문장·소리의 흔적이 남습니다.</p>
+        </div>
+      </div>
+      <dl class="facts reveal">
+        <div><dt>TYPE</dt><dd>Interactive Web</dd></div>
+        <div><dt>ROLE</dt><dd>Concept · UX/UI · Development</dd></div>
+        <div><dt>MEDIA</dt><dd>Camera · Mouse · Keyboard · Gesture</dd></div>
+        <div><dt>OUTPUT</dt><dd>Photo · GIF · Print · Motion · Sound</dd></div>
+      </dl>
+    </section>
+
+    <section class="experience section" id="experience">
+      <div class="section-heading reveal">
+        <p class="eyebrow">02 / FOUR EMOTIONS</p>
+        <h2>같은 화면 안에서,<br>감정마다 다른 움직임을 설계하다.</h2>
+      </div>
+
+      <article class="emotion emotion-joy reveal">
+        <div class="emotion-copy">
+          <span class="emotion-number">01</span>
+          <div class="hanja">喜</div>
+          <p class="emotion-label">기쁨을 포착하다</p>
+          <p>떠오른 기쁨을 표정과 움직임으로 기록합니다. 네 장의 사진을 고르고 꾸민 뒤, 사진·GIF·인쇄물로 남깁니다.</p>
+          <ul><li>Webcam capture</li><li>Four-cut editor</li><li>Firebase QR sharing</li></ul>
+        </div>
+        <figure class="media media-video">
+          <video muted loop playsinline preload="metadata" poster="https://joyy-2c74e.web.app/assets/joy-demo-photo.png">
+            <source src="https://joyy-2c74e.web.app/assets/joy-demo.mp4" type="video/mp4">
+          </video>
+          <figcaption>기쁨을 촬영하고 편집하는 흐름</figcaption>
+        </figure>
+      </article>
+
+      <article class="emotion emotion-anger reveal">
+        <figure class="graphic-stage anger-stage" aria-label="분노 경험의 시각화">
+          <div class="file-sheet"><i></i><i></i><i></i><span>마음에 걸린 말</span></div>
+          <div class="shreds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </figure>
+        <div class="emotion-copy">
+          <span class="emotion-number">02</span>
+          <div class="hanja">怒</div>
+          <p class="emotion-label">분노를 통과하다</p>
+          <p>작은 자극을 마주하고, 마음에 걸린 말을 꺼내 파일로 만든 뒤 반복적인 움직임으로 파쇄합니다.</p>
+          <ul><li>Mouse interaction</li><li>Text fragmentation</li><li>Progressive release</li></ul>
+        </div>
+      </article>
+
+      <article class="emotion emotion-sorrow reveal">
+        <div class="emotion-copy">
+          <span class="emotion-number">03</span>
+          <div class="hanja">哀</div>
+          <p class="emotion-label">슬픔 곁에 머물다</p>
+          <p>마음에 머무는 문장을 꺼내 바라보고, 세 번의 호흡과 함께 문장이 천천히 옅어지는 과정을 경험합니다.</p>
+          <ul><li>Text input</li><li>Guided breathing</li><li>Afterimage motion</li></ul>
+        </div>
+        <figure class="graphic-stage sorrow-stage" aria-label="호흡에 따라 퍼지는 원">
+          <div class="breath-ring r1"></div><div class="breath-ring r2"></div><div class="breath-ring r3"></div>
+          <p>들이쉬고<br>내쉬기</p>
+        </figure>
+      </article>
+
+      <article class="emotion emotion-pleasure reveal">
+        <figure class="media media-video pleasure-media">
+          <video muted loop playsinline preload="metadata" poster="https://joyy-2c74e.web.app/assets/pleasure-demo-photo.png">
+            <source src="https://joyy-2c74e.web.app/assets/pleasure-demo.mp4" type="video/mp4">
+          </video>
+          <figcaption>몸의 움직임으로 달라지는 리듬</figcaption>
+        </figure>
+        <div class="emotion-copy">
+          <span class="emotion-number">04</span>
+          <div class="hanja">樂</div>
+          <p class="emotion-label">즐거움을 증폭하다</p>
+          <p>손과 몸의 움직임을 인식해 음악의 속도와 에너지를 바꿉니다. 관람객의 제스처가 곧 연주가 됩니다.</p>
+          <ul><li>Gesture tracking</li><li>Audio tempo</li><li>Realtime waveform</li></ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="journey section" id="system">
+      <div class="section-heading reveal">
+        <p class="eyebrow">03 / EXPERIENCE SYSTEM</p>
+        <h2>감정을 호출하고,<br>변환하고, 흔적으로 남긴다.</h2>
+      </div>
+      <ol class="journey-list reveal">
+        <li><span>01</span><h3>호출</h3><p>관람객이 현재 마주하고 싶은 감정을 선택하고 개인적인 기억이나 문장을 떠올립니다.</p></li>
+        <li><span>02</span><h3>변환</h3><p>카메라·마우스·키보드·몸짓을 통해 감정에 고유한 움직임을 수행합니다.</p></li>
+        <li><span>03</span><h3>흔적</h3><p>사진, GIF, 파편, 잔상과 소리로 변한 결과가 화면과 인쇄물에 남습니다.</p></li>
+      </ol>
+    </section>
+
+    <section class="output section">
+      <div class="output-copy reveal">
+        <p class="eyebrow">04 / PHYSICAL TRACE</p>
+        <h2>화면을 벗어나<br>손에 남는 경험.</h2>
+        <p>‘희’에서 만든 네 컷은 QR로 휴대폰에 저장하고, 전시장에서는 4×6인치 엽서로 바로 인쇄할 수 있습니다. 디지털 인터랙션이 개인적인 기념물로 이어지도록 설계했습니다.</p>
+      </div>
+      <div class="print-stack reveal">
+        <img class="poster" src="https://joyy-2c74e.web.app/assets/print-poster.png" alt="전시 인쇄 안내 포스터">
+        <img class="postcard" src="https://joyy-2c74e.web.app/assets/print-postcard.png" alt="네 컷 엽서 결과물">
+      </div>
+    </section>
+
+    <section class="tech section reveal">
+      <p class="eyebrow">05 / IMPLEMENTATION</p>
+      <div class="tech-grid">
+        <h2>브라우저를<br>전시 장치로.</h2>
+        <div>
+          <p>별도의 앱 설치 없이 웹 브라우저 하나로 네 가지 경험을 연결했습니다. 전시 환경에서는 일정 시간 입력이 없으면 인트로로 복귀하고, 카메라 스트림은 경험 종료 시 중지됩니다.</p>
+          <div class="chips"><span>HTML/CSS/JavaScript</span><span>Canvas</span><span>MediaDevices API</span><span>Firebase</span><span>GA4</span><span>Responsive UI</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <p class="eyebrow">VIEW THE LIVE EXPERIENCE</p>
+      <h2>당신은 지금,<br>어떤 감정을 마주하고 있나요?</h2>
+      <a href="https://joyy-2c74e.web.app/" target="_blank" rel="noreferrer">작품 경험하기 <span>↗</span></a>
+      <p class="credit">DESIGN & DEVELOPMENT · DONGJU GWAK · 2026</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

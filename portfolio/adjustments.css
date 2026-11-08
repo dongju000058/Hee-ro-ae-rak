@@ -1,0 +1,58 @@
+.overview h2 {
+  font-size: clamp(34px, 4.35vw, 70px);
+  line-height: 1.12;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.home-hero {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.home-preview {
+  display: block;
+  width: 100%;
+  height: 100svh;
+  border: 0;
+  background: #fff;
+}
+
+.topbar {
+  transition: opacity 220ms ease;
+}
+
+.topbar.is-over-home {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portfolio-scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  z-index: 2;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.92);
+  font: 600 9px Inter, sans-serif;
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 560px) {
+  .overview h2 {
+    font-size: 32px;
+  }
+}
